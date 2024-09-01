@@ -45,7 +45,6 @@ header{
 
 .navbar a:hover{
     color: #ec1111;
- 
 }
 
 
@@ -229,7 +228,7 @@ header{
     width: 930px;
     padding: 20px;
     position: relative;
-    top: 70px;
+    top: 50px;
     height: 500px;
     display: flex;
     justify-content: space-evenly;
@@ -240,10 +239,12 @@ header{
 .card{
     transition: transform 1s ease, filter 1s ease;
 }
+
 .card:hover{
     transform: scale(1.1);
     gap: 20px;
 }
+
 .gallery-images:hover .card{
     filter: blur(3px);
     transform: none; 
@@ -257,19 +258,44 @@ header{
     width: 300px;
     border-radius: 20px;
 }
-.card:hover .description{
-   bottom: 5%;
-    height: 200px;
+.card:hover .description {
+   bottom: 28%;
+   height: 120px;
+}
+.card:hover .title-card {
+    bottom: 0%;
+    height: 150px;
+
+ }
+ 
+.title-card{
+    position: absolute;
+    height: 0px;
+    transition:  1s ease;
+    bottom: 80px;
+}
+.title-card p{
+
+    position: relative;
+    bottom: 80px;
+    text-align: left;
+    margin-left: 10px;
+    font-size: 13px;
+}
+.title-card span{
+    font-size: 20px;
 }
 .description{
     height:0;
-    width: 200px;
-    position: absolute;
+    width: 250px;
+    position: relative;
     left: 10px;
+    bottom: 5px;
     font-size: .5rem;
     text-align: left;
     overflow: hidden;
-    transition: top 1s ease;
+    transition:  1s ease;
+
 }
 
 
