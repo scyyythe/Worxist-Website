@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    color:white;
+}
+
+body{
+    background-color: black;
+    overflow-x: hidden;
+
+}
+.wrapper{
+    margin: 0 auto;
+    width: 1350px;
+    height: 100%;
+    padding: 10px;
+}
+header{
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+
+}
+.logo img{
+    width: 50px;
+}
+
+.navbar{
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 100px;
+ 
+}
+
+.navbar a{
+    text-decoration: none;
+    color: white;
+}
+
+.navbar a:hover{
+    color: #ec1111;
+ 
+}
+
+
+/* HOME PAGE CSS */
+#home-page{
+    height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px;
+    
+}
+.left-description{
+    width: 550px;
+    position: relative;
+    bottom: 50px;
+}
+
+.left-description span{
+    font-size: 5rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+}
+.left-description p{
+    line-height:2;
+    margin-bottom: 30px;
+}
+
+.explore-button button{
+    border-style: solid;
+    width: 150px;
+    background-color: #ec1111;
+    padding: 10px;
+    border-radius: 30px;
+    transition: transform .8s ease;
+}
+.explore-button button:hover{
+    transform: scale(0.9);
+}
+.right-image{
+    
+    position: relative;
+    bottom: 30px;
+    right: 20px;
+    height: 700px;
+}
+.circle{
+    width: 630px;
+    height: 600px;
+    border-radius: 600px;
+    background-color: #ec1111;
+    box-shadow: 0 0 30px #ec1111;
+ 
+}
+.circle2{
+    position: relative;
+    left: 400px;
+    top: 100px;
+    width: 150px;
+    height: 150px;
+    border-radius: 100px;
+    background-color: #ec1111;
+}
+.zues{
+    position: relative;
+    width: 600px;
+    height: 800px;
+    bottom: 650px;
+}
+.zues img{
+    width: 550px;
+    height: 850px;
+    z-index: 1;
+    
+}
