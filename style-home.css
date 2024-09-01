@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+
 *{
     margin: 0;
     padding: 0;
     font-family: "Poppins", sans-serif;
     color:white;
+    scroll-behavior: smooth;
 }
 
 body{
@@ -22,7 +24,7 @@ header{
     padding: 20px;
     display: flex;
     flex-direction: row;
-
+    align-items: center;
 }
 .logo img{
     width: 50px;
@@ -49,17 +51,17 @@ header{
 
 /* HOME PAGE CSS */
 #home-page{
-    height: 700px;
+    height: 650px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 50px;
-    
+    position: relative;
+    bottom:50px;    
 }
 .left-description{
     width: 550px;
     position: relative;
-    bottom: 50px;
 }
 
 .left-description span{
@@ -82,12 +84,11 @@ header{
 }
 .explore-button button:hover{
     transform: scale(0.9);
+    cursor: pointer;
 }
 .right-image{
-    
     position: relative;
-    bottom: 30px;
-    right: 20px;
+    bottom: 10px;
     height: 700px;
 }
 .circle{
@@ -98,10 +99,10 @@ header{
     box-shadow: 0 0 30px #ec1111;
  
 }
-.circle2{
+.small-circle{
     position: relative;
     left: 400px;
-    top: 100px;
+    top: 150px;
     width: 150px;
     height: 150px;
     border-radius: 100px;
@@ -115,7 +116,109 @@ header{
 }
 .zues img{
     width: 550px;
-    height: 850px;
+    height: 800px;
     z-index: 1;
     
+}
+
+
+/* ABOUT SECTION CSS */
+#about{
+    padding: 50px;
+    height: 500px;
+    background: url(image/red.png);
+    background-size: cover;
+    background-position: center;
+}
+
+.picture{
+    position: absolute;
+    width: fit-content;     
+}
+
+.right-description{
+    float: right;
+    width: 600px;
+    margin-top: 30px;
+    margin-right: 50px;
+}
+.right-description h1,span,h5{
+    font-weight: 550;
+}
+.right-description h1{
+    font-size: 2.5rem;
+}
+.right-description span{
+    color: #ec1111;
+}
+
+.right-description p{
+    line-height: 2;
+    text-align: justify;
+    font-size: 1rem;
+}
+.contact{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 160px;
+}
+.icon-contact{
+    border-style: solid;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 100px;
+    border-width: 1px;
+}
+
+.icon-contact i{
+    font-size: 15px;
+}
+
+
+/* GALLERY SECTION CSS */
+
+#gallery{
+    height: 700px;
+    background: url(image/bg-gallery\ red.png);
+    background-size: cover;
+    background-position: center;
+    padding: 50px;
+}
+
+.gallery-container{
+    border-style: solid;
+    text-align: center;
+}
+.gallery-container h1{
+    color: #ec1111;
+    font-weight: 800;
+    letter-spacing: 3px;
+    font-size: 2rem;
+}
+
+/* Responsive PC SIZE */
+/* continue after mahuman na tanan */
+@media (min-width:1500px) {
+    .wrapper{
+        margin: 0 auto;
+        width: 1500px;
+    }
+    .navbar{
+        width: 900px;
+        display: flex;
+        justify-content: space-evenly;
+    }
+    .navbar a{
+        margin-right: 150px;
+    }
+    #home-page{
+        height: 800px;
+    }
+ 
 }
