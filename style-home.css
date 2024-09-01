@@ -322,10 +322,33 @@ header{
 }
 
 
+/* FOOTER CSS */
 
-
-
-
+footer{
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon{
+    width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    transition: transform 1s ease;
+}
+.icon button{
+    background-color: transparent;
+    border-style: none;
+}
+.icon i{
+    font-size: 25px;
+}
+.icon i:hover{
+    color: #ec1111;
+    cursor: pointer;
+    transform: scale(1.1);
+}
 
 
 

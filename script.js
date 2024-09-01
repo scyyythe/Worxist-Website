@@ -1,4 +1,9 @@
 
+// Explore More Button
+
+function scrollToAbout() {
+    document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+  }
 // Gallery move
 const carousel=document.querySelector(".gallery-images"),
     firstImg=document.querySelectorAll("img")[0];
