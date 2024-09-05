@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin: 0;
+    padding: 0px;
+    font-family: "Poppins", sans-serif;
+ 
+}
+body{
+    background-color: black;
+    overflow-x: hidden;
+
+}
+.wrapper{
+    position: relative;
+    top:50px;
+    margin: 0 auto;
+    width: 1000px;
+    height:540px;
+    
+}
+.logo{
+    position: relative;
+    top: 100px;
+    color: wheat;
+    width: 50px;
+    border-style: solid;
+
+}
+.logo img{
+    width: 50px;
+    z-index: 1;
+}
+
+/* LOG IN FORM CSS */
+.form-container{
+    position: absolute;
+    bottom: 5px;
+    height: 550px;
+    background-color: white;
+    width: 50%;
+    border-radius: 20px;
+}
+
+.right-image{
+    position: relative;
+    left: 500px;
+    bottom: 70px;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 20px;
+}
+.circle{
+    width: 300px;
+    height: 300px;
+    border-radius: 600px;
+    background-color: #ec1111;
+    box-shadow: 0 0 30px #ec1111;
+ 
+}
+.zues{
+    position: relative;
+    width: 400px;
+    height: 500px;  
+    bottom: 300px;
+
+}
+.zues img{
+    width: 450px;
+    height: 600px;
+    
+}
+form{
+    padding: 10px;
+    width: 350px;
+    position: relative;
+    left: 60px;
+}
+.create{
+    color: black;
+    text-align: center ;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.login-withAccounts {
+    color: black;
+    display: flex;
+    justify-content: space-between;
+
+    i{
+        font-size: 20px;
+    }
+    button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-style: none;
+        padding: 6px;
+        border-radius: 15px;
+        font-size: .5rem;
+        width: 150px;
+        cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.822);
+    transition: box-shadow 0.3s ease;
+    }
+
+}
+.login-withAccounts button:first-child {
+    background-color: #ec1111;
+    color: white;
+}
+.login-withAccounts button:nth-child(2) {
+    background-color:rgb(110, 109, 109);
+    color: white;
+}
+form    placeholder{
+    color: black;
+}
+
+.input-form{
+   margin-top: 20px;
+   font-size: .7rem;
+    line-height: 1.5; 
+    ::placeholder{
+        padding: 5px;
+        font-size: .7rem;
+    }
+
+    input{
+        border-radius: 10px;
+        border-style: solid;
+        border-width: 1px;
+        width: 340px;
+        height: 25px;
+        padding: 3px;
+        margin-bottom: 10px;
+    }
+   
+}
+
+.terms{
+    margin-top: 0px;
+    label{
+        font-size: .7rem;
+    }
+   
+}
+
+.signup-btn{
+    width: 350px;
+    border-radius: 10px;
+    background-color: #ec1111;
+    border-style: none;
+    color: white;
+    height: 35px;
+
+  
+}
+
+.signin{
+    margin-top: 18px;
+    font-size: .8rem;
+}

@@ -159,7 +159,6 @@ header{
     
 }
 
-
 /* ABOUT SECTION CSS */
 #about{
     padding: 50px;
@@ -215,7 +214,7 @@ header{
 }
 
 .icon-contact i{
-    font-size: 15px;
+    font-size: 20px;
 }
 
 
@@ -394,7 +393,7 @@ footer{
     border-radius: 40px; 
     box-sizing: border-box;
     line-height: 40px; 
-    transition: all 0.3s ease-out;
+    transition: all 0.5s ease-out;
 }
 .icon span{
     position: relative;
@@ -454,5 +453,8 @@ footer{
     #home-page{
         height: 800px;
     }
- 
+    #gallery{
+        width: 1900px;
+        width: 100%;
+    }
 }
