@@ -9,7 +9,6 @@
 body{
     background-color: black;
     overflow: hidden;
-
 }
 .wrapper{
     position: relative;
@@ -29,14 +28,15 @@ body{
 }
 .to-login{
     position: relative;
-    left: 450px;
+    left: 250px;
     bottom: 50px;
     width: 200px;
+    color: black;
 }
 .to-login p{
     color: black;
-    font-size: .7rem;
-
+    font-size: .8rem;
+    
     a{
         text-decoration: none;
         color:#ec1111;
@@ -95,7 +95,7 @@ body{
 }
 form{
     padding: 10px;
-    top: 50px;
+    top: 60px;
     width: 500px;
     position: relative;
     left: 80px;
@@ -103,8 +103,9 @@ form{
 .create{
     color: black;
     text-align: center ;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     margin-top: 10px;
+    font-size: 1.2rem;
 }
 
 .login-withAccounts {
@@ -173,7 +174,7 @@ form{
   
 }
 
-.signup-btn{
+.signup-btn,.signin-btn{
     width: 410px;
     border-radius: 20px;
     background-color:#b61616;
@@ -185,6 +186,60 @@ form{
   
 }
 
-.signup-btn:hover {
+.signup-btn, .signin-btn:hover {
     cursor: pointer;
+}
+
+/* LOGIN CSS */
+.container-login{
+    position: absolute;
+    bottom: 0px;
+    height: 650px;
+    background-color: white;
+    width: 48%;
+    border-radius: 20px;
+    top: 1px;
+}
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 30px 0;
+    p{
+        position: relative;
+        right: 22px;
+    }
+}
+
+.separator span {
+    position: relative;
+    right: 25px;
+    flex: 1;
+    height: 1.5px;
+    background-color: #000000; 
+    margin: 0 10px;
+}
+
+.separator p {
+    margin: 0;
+    font-size: 14px;
+    color: #000000; 
+}
+
+.to-create{
+    position: relative;
+    left: 350px;
+    bottom: 130px;
+    width: 200px;
+    z-index: 1;
+}
+.to-create p{
+    color: black;
+    font-size: .8rem;
+    
+    a{
+        text-decoration: none;
+        color:#ec1111;
+          z-index: 1;
+    }
 }
