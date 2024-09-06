@@ -8,73 +8,97 @@
 }
 body{
     background-color: black;
-    overflow-x: hidden;
+    overflow: hidden;
 
 }
 .wrapper{
     position: relative;
-    top:50px;
     margin: 0 auto;
     width: 1000px;
-    height:540px;
-    
+    height:600px;
 }
 .logo{
     position: relative;
-    top: 100px;
-    color: wheat;
-    width: 50px;
-    border-style: solid;
-
-}
-.logo img{
-    width: 50px;
+    top: 5px;
+    right: 170px;
+    width: 500px;
     z-index: 1;
 }
+.logo img{
+    width: 70px;
+}
+.to-login{
+    position: relative;
+    left: 450px;
+    bottom: 50px;
+    width: 200px;
+}
+.to-login p{
+    color: black;
+    font-size: .7rem;
 
+    a{
+        text-decoration: none;
+        color:#ec1111;
+    }
+}
 /* LOG IN FORM CSS */
 .form-container{
-    position: absolute;
-    bottom: 5px;
-    height: 550px;
+    position: relative;
+    bottom: 100px;
+    height: 650px;
     background-color: white;
-    width: 50%;
+    width: 68%;
     border-radius: 20px;
-}
+    right:200px;
 
+}
+.name{
+    position: absolute;
+    color: white;
+    z-index: 1;
+    left: 520px;
+    bottom: 600px;
+
+    span{
+        color: #c40d0d;
+    }
+}
 .right-image{
     position: relative;
-    left: 500px;
-    bottom: 70px;
-    height: 500px;
-    overflow: hidden;
-    border-radius: 20px;
+    height: 600px;
+    left: 530px;
+    bottom: 680px;
+    color: white;
 }
 .circle{
-    width: 300px;
-    height: 300px;
+    width: 530px;
+    height: 530px;
     border-radius: 600px;
     background-color: #ec1111;
-    box-shadow: 0 0 30px #ec1111;
- 
+    box-shadow: 0 0 200px #920c0c;
+   position: relative;
+   left: 50px;
 }
 .zues{
     position: relative;
-    width: 400px;
-    height: 500px;  
-    bottom: 300px;
+    width: 600px;
+    height: 800px;
+    bottom: 570px;
+    left: 50px;
 
 }
 .zues img{
-    width: 450px;
-    height: 600px;
+    width: 500px;
+    height: 700px;
     
 }
 form{
     padding: 10px;
-    width: 350px;
+    top: 50px;
+    width: 500px;
     position: relative;
-    left: 60px;
+    left: 80px;
 }
 .create{
     color: black;
@@ -86,8 +110,7 @@ form{
 .login-withAccounts {
     color: black;
     display: flex;
-    justify-content: space-between;
-
+    justify-content: space-evenly;
     i{
         font-size: 20px;
     }
@@ -99,7 +122,7 @@ form{
         padding: 6px;
         border-radius: 15px;
         font-size: .5rem;
-        width: 150px;
+        width: 200px;
         cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.822);
     transition: box-shadow 0.3s ease;
@@ -107,21 +130,24 @@ form{
 
 }
 .login-withAccounts button:first-child {
-    background-color: #ec1111;
+    background-color: #b61616;
     color: white;
 }
 .login-withAccounts button:nth-child(2) {
     background-color:rgb(110, 109, 109);
     color: white;
 }
-form    placeholder{
-    color: black;
-}
 
+.fields{
+    
+    position: relative;
+    left:40px;
+    
+}
 .input-form{
    margin-top: 20px;
    font-size: .7rem;
-    line-height: 1.5; 
+
     ::placeholder{
         padding: 5px;
         font-size: .7rem;
@@ -131,34 +157,34 @@ form    placeholder{
         border-radius: 10px;
         border-style: solid;
         border-width: 1px;
-        width: 340px;
+        width: 400px;
         height: 25px;
         padding: 3px;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
    
 }
 
 .terms{
-    margin-top: 0px;
+    margin-top: 10px;
     label{
         font-size: .7rem;
     }
-   
-}
-
-.signup-btn{
-    width: 350px;
-    border-radius: 10px;
-    background-color: #ec1111;
-    border-style: none;
-    color: white;
-    height: 35px;
-
   
 }
 
-.signin{
-    margin-top: 18px;
-    font-size: .8rem;
+.signup-btn{
+    width: 410px;
+    border-radius: 20px;
+    background-color:#b61616;
+    border-style: none;
+    color: white;
+    height: 35px;
+    position: relative;
+    bottom: 20px;
+  
+}
+
+.signup-btn:hover {
+    cursor: pointer;
 }

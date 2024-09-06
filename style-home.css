@@ -134,7 +134,7 @@ header{
     height: 600px;
     border-radius: 600px;
     background-color: #ec1111;
-    box-shadow: 0 0 30px #ec1111;
+    box-shadow: 0 0 1000px #970707d3;
  
 }
 .small-circle{
@@ -151,6 +151,7 @@ header{
     width: 600px;
     height: 800px;
     bottom: 650px;
+   
 }
 .zues img{
     width: 550px;
