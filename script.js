@@ -20,3 +20,13 @@ arrowIcons.forEach(icon=>{
     });
 });
 
+
+document.getElementById("show-login").addEventListener("click", function(event) {
+    event.preventDefault(); // Prevents default anchor behavior
+    
+    // Show the login container
+    document.getElementById("login-container").style.right = "0";
+
+    // Hide the form container
+    document.getElementById("form-container").style.display = "none"; // Hides the form-container
+});
