@@ -29,4 +29,6 @@ document.getElementById("show-login").addEventListener("click", function(event) 
 
     // Hide the form container
     document.getElementById("form-container").style.display = "none"; // Hides the form-container
+
+    document.getElementById("greek-god").style.right="0";
 });

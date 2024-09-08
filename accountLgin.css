@@ -8,27 +8,49 @@
 }
 body{
     background-color: black;
+    overflow: hidden;
   
 }
 .wrapper{
+
     position: relative;
+    bottom: 30px;
+    right: 10px;
     margin: 0 auto;
-    width: 1000px;
+    width: 1350px;
     height:600px;
+    margin: 0 auto;
 }
 .logo{
     position: relative;
     top: 5px;
-    right: 170px;
+    left: 20px;
     width: 500px;
     z-index: 1;
 }
 .logo img{
     width: 70px;
 }
+.form-container, .container-login{
+    position: absolute;
+    width: 675px;
+    height: 610px;
+    transition: all 0.6s ease-in-out;
+}
+.form-container{
+    width: 50%;
+    z-index: 2;
+    background-color: white;
+}
+.container-login{
+    width: 50%;
+    z-index: 1;
+    opacity: 0;
+}
+
 .to-login{
     position: relative;
-    top: 50px;
+    bottom: 50px;
     left: 450px;
     width: 200px;
     color: black;
@@ -44,18 +66,9 @@ body{
         color:#ec1111;
     }
 }
-/* LOG IN FORM CSS */
-.form-container{
-    border-style: solid;
-    color: white;
-    position: relative;
-    bottom: 100px;
-    height: 650px;
-    background-color: white;
-    width: 70%;
-    border-radius: 20px;
-    right:200px;
-}
+
+/* CREATE ACCOUNT */
+
 .name{
     position: absolute;
     color: white;
@@ -67,41 +80,12 @@ body{
         color: #c40d0d;
     }
 }
-.right-image{
-    position: relative;
-    height: 600px;
-    left: 530px;
-    bottom: 680px;
-    color: white;
-    background-color: black;
-}
-.circle{
-    width: 530px;
-    height: 530px;
-    border-radius: 600px;
-    background-color: #ec1111;
-    box-shadow: 0 0 200px #920c0c;
-   position: relative;
-   left: 50px;
-}
-.zues{
-    position: relative;
-    width: 600px;
-    height: 800px;
-    bottom: 570px;
-    left: 50px;
 
-}
-.zues img{
-    width: 500px;
-    height: 700px;
-    
-}
 form{
     padding: 10px;
-    top: 60px;
     width: 500px;
     position: relative;
+    bottom: 50px;
     left: 80px;
 }
 .create{
@@ -194,58 +178,48 @@ form{
     cursor: pointer;
 }
 
+.wrapper .right-panel-activate .form-container{
+    transform: translateX(100%);
+}
+.wrapper .right-panel-activate .container-login{
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+}
 /* LOGIN CSS */
-.container-login{
+
+/* IMAGE RIGHT */
+.overlay-container{
     position: absolute;
-    bottom: 0px;
-    height: 650px;
-    background-color: white;
-    width: 50%;
-    border-radius: 20px;
-    top: 1px;
-    right: -100%;
-}
-.separator {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 30px 0;
-    p{
-        position: relative;
-        right: 22px;
-    }
+    top: 0;
+    left: 50%;
+    border-style: solid;
+    color: white;
+    width: 675px;
+    height: 600px;
+    transition: 0.6s ease-in-out;
+    z-index: 100;
 }
 
-.separator span {
+.circle{
+    width: 530px;
+    height: 530px;
+    border-radius: 600px;
+    background-color: #ec1111;
+    box-shadow: 0 0 200px #920c0c;
+   position: relative;
+   left: 50px;
+}
+.zues{
     position: relative;
-    right: 25px;
-    flex: 1;
-    height: 1.5px;
-    background-color: #000000; 
-    margin: 0 10px;
-}
+    width: 600px;
+    height: 800px;
+    bottom: 570px;
+    left: 50px;
 
-.separator p {
-    margin: 0;
-    font-size: 14px;
-    color: #000000; 
 }
-
-.to-create{
-    position: relative;
-    left: 350px;
-    bottom: 130px;
-    width: 200px;
-    z-index: 1;
-}
-.to-create p{
-    color: black;
-    font-size: .8rem;
+.zues img{
+    width: 500px;
+    height: 700px;
     
-    a{
-        text-decoration: none;
-        color:#ec1111;
-          z-index: 1;
-    }
 }
-
