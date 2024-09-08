@@ -1,44 +1,77 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Explore More Button
+    function scrollToAbout() {
+      const aboutSection = document.getElementById('about');
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        console.error("Element with id='about' not found.");
+      }
+    }
+  
+    // Gallery move
+    const carousel = document.querySelector(".gallery-images"),
+          firstImg = document.querySelectorAll("img")[0];
+  
+    if (firstImg) {
+      const arrowIcons = document.querySelectorAll(".arrow i");
+      let firstImgWidth = firstImg.clientWidth + 272;
+      arrowIcons.forEach(icon => {
+        icon.addEventListener("click", () => {
+          carousel.scrollLeft += icon.id == "left" ? -firstImgWidth : firstImgWidth;
+        });
+      });
+    } else {
+      console.error("Gallery images not found.");
+    }
+  
+    // left click
+    const leftBtn = document.getElementById('left');
+    if (leftBtn) {
+      leftBtn.addEventListener('click', function() {
+        window.location.href = 'home.html';
+      });
+    } else {
+      console.error("Left button with id='left' not found.");
+    }
+  
+    // return click
+    const returnBtn = document.getElementById('return');
+    if (returnBtn) {
+      returnBtn.addEventListener('click', function() {
+        window.location.href = 'home.html';
+      });
+    } else {
+      console.error("Return button with id='return' not found.");
+    }
+  
 
-// Explore More Button
+    const signIn = document.getElementById("show-login");
+    const signUp = document.getElementById("show-create");
+    const wrapper = document.getElementById("wrapper");
+  
+    if (signIn && signUp && wrapper) {
+      signIn.addEventListener('click', (event) => {
+        event.preventDefault();  
+        wrapper.classList.add("right-panel-activate");
+      });
+  
+      signUp.addEventListener('click', (event) => {
+        event.preventDefault();  
+        wrapper.classList.remove("right-panel-activate");
+      });
+    } else {
+      console.error("Sign-in, Sign-up, or wrapper elements not found.");
+    }
+  
 
-function scrollToAbout() {
-    document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
-  }
-// Gallery move
-const carousel=document.querySelector(".gallery-images"),
-    firstImg=document.querySelectorAll("img")[0];
-
-
-const arrowIcons=document.querySelectorAll(".arrow i");
-
-
-let dragStart=false, prevPageX, prevScrollLeft;
-let firstImgWidth= firstImg.clientWidth+272;
-arrowIcons.forEach(icon=>{
-    icon.addEventListener("click",()=>{
-        carousel.scrollLeft+=icon.id=="left"?-firstImgWidth:firstImgWidth
-    });
-});
-
-
-document.getElementById('left').addEventListener('click', function() {
-    window.location.href = 'home.html'; 
-});
-
-document.getElementById('return').addEventListener('click', function() {
-    window.location.href = 'home.html'; 
-});
-
-const signIn = document.getElementById("show-login");
-const signUp = document.getElementById("show-create");
-const wrapper = document.getElementById("wrapper");
-
-signIn.addEventListener('click', (event) => {
-    event.preventDefault();  
-    wrapper.classList.add("right-panel-activate");  
-});
-
-signUp.addEventListener('click', (event) => {
-    event.preventDefault();  
-    wrapper.classList.remove("right-panel-activate");  
-});
+    const exploreBtn = document.getElementById('explore');
+    if (exploreBtn) {
+      exploreBtn.addEventListener('click', function() {
+        window.location.href = 'accounLogin.html';
+      });
+    } else {
+      console.error("Explore button with id='explore' not found.");
+    }
+  });
+  

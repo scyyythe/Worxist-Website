@@ -348,3 +348,41 @@ form{
         color: #c40d0d;
     }
 }
+
+@media (min-width:1500px){
+    .wrapper{
+        width: 1500px;
+        margin-top: 100px;
+        height: 700px;
+    }
+
+    body{
+        
+        background-color: black;
+    }
+
+    .container-login, .form-container{
+        height: 700px;
+        height: 700px;
+        border-radius: 25px;
+           
+    }
+    .container-login{
+
+        form{
+            top: 30px;
+            left: 120px;
+        }
+     
+    }
+    .overlay-container-c{
+        height: 700px;
+        border-radius: 25px;
+    }
+    .wrapper.right-panel-activate .name {
+        left: calc(100% - 650px); 
+        top: calc(100% - 670px); 
+       
+    }
+
+}
