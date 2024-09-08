@@ -20,6 +20,15 @@ arrowIcons.forEach(icon=>{
     });
 });
 
+
+document.getElementById('left').addEventListener('click', function() {
+    window.location.href = 'home.html'; 
+});
+
+document.getElementById('return').addEventListener('click', function() {
+    window.location.href = 'home.html'; 
+});
+
 const signIn = document.getElementById("show-login");
 const signUp = document.getElementById("show-create");
 const wrapper = document.getElementById("wrapper");

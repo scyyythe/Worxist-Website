@@ -14,7 +14,6 @@ body{
 .wrapper{
 
     position: relative;
-    bottom: 30px;
     right: 10px;
     margin: 0 auto;
     width: 1350px;
@@ -23,6 +22,7 @@ body{
 }
 .logo{
     position: absolute;
+    top: 10px   ;
     left: 20px;
     width: 100px;
     z-index: 110;
@@ -33,7 +33,7 @@ body{
 .form-container, .container-login{
     position: absolute;
     width: 675px;
-    height: 610px;
+    height:600px;
     transition: all 0.6s ease-in-out;
 }
 .form-container{
@@ -50,31 +50,50 @@ body{
      }
 }
 .to-create{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
     top: 30px;
-    left: 450px;
-    width: 200px;
+    left: 100px;
+    width: 500px;
     color: black;
     z-index: 1;
-}
-.to-create p{
-    color: black;
+    p{
+        color: black;
     font-size: .8rem;
-    
+    }
+    i{
+        font-size: 30px;
+    }
+
+    i:hover{
+        cursor: pointer;
+    }
     a{
         text-decoration: none;
         color:#ec1111;
     }
 }
 
+
 .to-login{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: relative;
     top: 30px;
-    left: 450px;
-    width: 200px;
-    color: black;
+    left: 120px;
+    width: 500px;
     z-index: 1;
 
+    i{
+        font-size: 30px;
+    }
+
+    i:hover{
+        cursor: pointer;
+    }
 }
 .to-login p{
     color: black;
@@ -94,27 +113,41 @@ body{
     z-index: 1;
     left: 520px;
     bottom: 600px;
-
+    font-size: 1.5rem;
+    font-weight: 700;
     span{
         color: #c40d0d;
     }
+
 }
 
 form{
     padding: 10px;
     width: 500px;
     position: relative;
-    top: 20px;
+    top: 40px;
     left: 80px;
+}
+.login-form{
+    width: 500px;
+    position: relative;
+    top: 10px;
+    left: 80px
 }
 .create{
     color: black;
     text-align: center ;
     margin-bottom: 15px;
     margin-top: 10px;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
-
+.welcome{
+    color: black;
+    text-align: center ;
+    margin-bottom: 40px;
+    margin-top: 10px;
+    font-size: 1rem;
+}
 .login-withAccounts {
     color: black;
     display: flex;
@@ -130,7 +163,7 @@ form{
         padding: 6px;
         border-radius: 15px;
         font-size: .5rem;
-        width: 200px;
+        width: 190px;
         cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.822);
     transition: box-shadow 0.3s ease;
@@ -165,16 +198,22 @@ form{
         border-radius: 10px;
         border-style: solid;
         border-width: 1px;
-        width: 400px;
+        width: 410px;
         height: 25px;
         padding: 3px;
         margin-bottom: 15px;
     }
-   
-}
 
+}
+.line{
+    display: block;
+    width: 30px;
+    height: 2px;
+    background-color: gray;
+    margin-bottom: 10px;
+}
 .terms{
-    margin-top: 10px;
+    margin-top: 5px;
     label{
         font-size: .7rem;
     }
@@ -228,9 +267,9 @@ form{
 .separator span {
     position: relative;
     right: 25px;
-    flex: 1;
+    width: 200px;
     height: 1.5px;
-    background-color: #000000; 
+    background-color: rgb(92, 91, 91);
     margin: 0 10px;
 }
 
@@ -244,13 +283,20 @@ form{
     width: 700px;
     top: 0;
     left: 50%;
-    height: 610px;
+    height:600px;
     overflow: hidden;
     border-radius: 20px;
     transition: transform 0.6s ease-in-out;
     z-index: 100;
     background-color: black;
 }
+
+.wrapper.right-panel-activate .name {
+        left: calc(100% - 570px); 
+        top: calc(100% - 580px); 
+       
+    }
+
 .wrapper.right-panel-activate .overlay-container-c{
     transform: translateX(-100%);
 }
@@ -272,7 +318,7 @@ form{
     border-radius: 600px;
     background-color: #ec1111;
    position: relative;
-   top: 70px;
+   top: 80px;
    left: 100px;
 }
 
@@ -285,7 +331,7 @@ form{
 
 }
 .zues img{
-    width: 550px;
+    width: 500px;
     height: 700px;
     
 }
