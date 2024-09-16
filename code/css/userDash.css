@@ -250,10 +250,10 @@ body {
 .profile{
     padding: 2px;
     display: flex;
-    gap: 5px;
     margin-right: 10px;
 }
 .profile-pic{
+    overflow: hidden;
     width: 30px;
     height: 30px;
     border-style: solid;
