@@ -2,6 +2,12 @@
 // Include the connection script
 include('connection.php');
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    echo "POST request received.";
+} else {
+    echo "This script only handles POST requests.";
+}
+
 // Get form data using POST method
 $name = $_POST['name'];
 $email = $_POST['email'];
