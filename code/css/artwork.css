@@ -6,7 +6,10 @@
     font-family: "Poppins", sans-serif;
     box-sizing: border-box;
 }
-
+.dark-mode {
+  background-color: black;
+  color: white;
+}
 :root {
     --body-color: #f7f7f7;
     --sidebar-color: #f0f0f0;
@@ -23,6 +26,7 @@
 body {
     height: 100vh;
     background-color: var(--body-color);
+    overflow: hidden;
 }
 
 
@@ -36,16 +40,19 @@ body {
     display: flex;
     align-items: center;
 }
-
+.nameLogo{
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
 .text {
     font-size: 16px;
     font-weight: 500;
     transition: var(--tran-03);
 }
-
 /* sidebar */
 .sidebar {
-    
+    z-index: 1;
     position: fixed;
     top: 0;
     left: 0;
@@ -66,7 +73,6 @@ body {
     width: 0;
     transition: opacity 0.3s ease, width 0.3s ease;
     white-space: nowrap;
-    overflow: hidden;
 }
 .sidebar:hover .text {
     opacity: 1;
@@ -148,13 +154,12 @@ body {
 }
 /*  *end of side bar css*/
 
-.wrapper {
-    margin: 0 auto;
-    padding: 20px;
-    width: 95%;
+.artwork-section {
+    width: 1100px;
     height: 100vh;
-    float: right;
-    margin-left: 78px; 
+    position: absolute;
+    padding: 20px;  
+
 
 }
 

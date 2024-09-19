@@ -24,6 +24,7 @@
 }
 
 body {
+
     height: 100vh;
     background-color: var(--body-color);
 }
@@ -154,6 +155,7 @@ body {
 
 
 .wrapper {
+    position: relative;
     margin: 0 auto;
     padding: 20px;
     width: 95%;
@@ -268,14 +270,13 @@ body {
 
 /* container artwork css */
 
-.art-container {
-    overflow: auto;
-    margin-top: 60px;
+.dashcontainer{
+    position: relative;
     width: 100%;
-    height: 92%;
+    height: 100%;
     border-radius: 20px;
     padding: 20px;
-    box-sizing: border-box;
+    padding-top: 50px;    box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start; 
@@ -326,3 +327,241 @@ body {
     height: 40px;
     cursor: pointer;
  }
+
+
+ /* artwork section */
+ .artwork-section {
+    position: absolute;
+    margin: 0 auto;
+    padding: 20px;
+    width: 95%;
+    height: 100vh;
+    float: right;
+}
+
+.profile-info{
+    width: 100%;
+    height: 30%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.image-profile{
+   width: 10%;
+   height: 100%;
+    border-radius: 80%;
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+}
+
+
+.name{
+    width: 30%;
+    position: relative;
+    left: 50px;
+
+    span{
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    p{
+        font-size: .8rem;
+    }
+}
+.follow{
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+}
+.follow a{
+    text-decoration: none;
+    color: black;
+
+   
+}
+
+.follow  a:hover{
+    color: #ec1111;
+    text-decoration: underline;
+}
+.follow span{
+    font-size: 1rem;
+}
+
+.edit-profile-container{
+    height: 30%;
+    width: 15%;
+    position: relative;
+    left: 40%;
+    top: 50%;
+
+    button{
+        width: 200px;
+        height: 30px;
+        border-radius: 20px;
+        border-style: none;
+    }
+
+    button:hover{
+        color: #ec1111;
+        cursor: pointer;
+    }
+}
+
+.tabpanes{
+    padding: 20px;
+   
+}
+.tab {
+
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.tab a {
+    text-decoration: none;
+    position: relative;
+    transition: .5s;
+    opacity: 1;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: .9rem;
+}
+
+.tab a:hover, .tab a.active {
+    color: #ec1111; 
+    cursor: pointer;
+}
+
+.tab a span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    border-bottom: 1px solid transparent; 
+    transform: scale(0) translateY(50px);
+    transition: .5s;
+}
+
+.tab a:hover span, .tab a.active span {
+    border-bottom: 1px solid #ec1111; 
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+  /* Style the tab content */
+  .tabcontent {
+
+    display: none;
+    padding: 6px 12px;
+  }
+
+/* Creations */
+#upload{
+    background-color:rgba(128, 128, 128, 0.219);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: none;
+    i{
+        font-size: 25px;
+    }
+}
+  /* Saved */
+.image-artwork {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.image-artwork img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.box{
+    font-size: .8rem;
+    height: 350px;
+    cursor: pointer;
+}
+
+.box span{
+    font-size: .8rem;
+}
+
+.artist-name {
+    height: 0; 
+    width: 260px;
+    position: relative;
+    left: 10px;
+    bottom: 15px;
+    font-size: 0.7rem;
+    text-align: left;
+    overflow: hidden;
+    transition: 1s ease;
+    border-radius: 20px;
+    padding: 2px 10px; 
+    backdrop-filter: blur(3px); 
+    color: white;
+}
+
+.box:hover .artist-name{
+    bottom: 20%;
+    height: 40px;
+    cursor: pointer;
+ }
+
+
+ /* messages */
+ .messages-container{
+    position: absolute;
+    margin: 0 auto;
+    padding: 20px;
+    width: 95%;
+    height: 100vh;
+    float: right;
+}
+
+
+/* notifications  css*/
+.notification-container{
+    position: absolute;
+    margin: 0 auto;
+    padding: 20px;
+    width: 95%;
+    height: 100vh;
+    float: right;
+}
+
+/* exhbit css */
+.exhibit-container{
+    position: absolute;
+    margin: 0 auto;
+    padding: 20px;
+    width: 95%;
+    height: 100vh;
+    float: right;
+}
+
+
+/* settings css */
+.settings-container{
+    position: absolute;
+    margin: 0 auto;
+    padding: 20px;
+    width: 95%;
+    height: 100vh;
+    float: right;
+}
