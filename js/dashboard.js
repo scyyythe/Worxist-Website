@@ -1,3 +1,28 @@
+// tabpane in Artwork Dashboard
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// dropdown filter
+function toggleDropdown() {
+  var dropdown = document.getElementById("dropdown");
+  if (dropdown.style.display === "block") {
+      dropdown.style.display = "none";
+  } else {
+      dropdown.style.display = "block";
+  }
+}
+
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -103,29 +128,4 @@ settingLink.addEventListener('click', function(e) {
 
    
 });
-
-// tabpane in Artwork Dashboard
-function openCity(evt, cityName) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-  document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " active";
-}
-
-// dropdown filter
-function toggleDropdown() {
-  var dropdown = document.getElementById("dropdown");
-  if (dropdown.style.display === "block") {
-      dropdown.style.display = "none";
-  } else {
-      dropdown.style.display = "block";
-  }
-}
 

@@ -166,10 +166,10 @@ body {
 
 .top-head{
     padding: 5px;
-    position: relative;
+    position: absolute;
+    top: 0px;
     height: 50px;
-    width: 90%;
-    position: fixed;
+    width: 96%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -332,6 +332,8 @@ body {
  /* artwork section */
  .artwork-section {
     position: absolute;
+    top: 0px;
+    border-style: solid;
     margin: 0 auto;
     padding: 20px;
     width: 95%;

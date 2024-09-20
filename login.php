@@ -1,4 +1,41 @@
+<?php 
+    session_start();
+    $_SESSION;
 
+    include("include/connection.php");
+
+    if($_SERVER['REQUEST_METHOD']== "POST"){
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+  
+        if(!empty($username) && !empty($password)) {
+            // Query to fetch user data
+            $query = "SELECT * FROM accounts WHERE username = '$username' LIMIT 1";
+            $result = mysqli_query($con, $query);
+  
+            if($result && mysqli_num_rows($result) > 0) {
+                $user_data = mysqli_fetch_assoc($result);
+                
+                if(password_verify($password, $user_data['password'])) {
+                    // Set session variables
+                    $_SESSION['u_id'] = $user_data['id'];
+                    $_SESSION['username'] = $user_data['username'];
+                
+                    // Redirect to dashboard
+                    header("Location:dashboard.php");
+                    die;
+                } else {
+                    echo "Invalid password.";
+                }
+                
+            } else {
+                
+            }
+        } else {
+            echo "Please enter both username and password.";
+        }
+            }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

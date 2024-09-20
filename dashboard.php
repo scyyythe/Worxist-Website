@@ -2,11 +2,10 @@
 <?php 
     session_start();
     $_SESSION;
-    include("include/connection.php");
-    include("include/functions.php");
-    
+    require("include/connection.php");
     // check the user if log in
-    $user_data=check_login($con);
+    // $user_data=check_login($con);
+
 ?>
 
 <!DOCTYPE html>
@@ -99,7 +98,7 @@
 
             <div class="bottom-content">
                 <li class="nav-link">
-                    <a href="login-register.html">
+                    <a href="logout.php">
                         <i class='bx bx-log-out'></i>
                         <span class="text nav-text">
                         Sign Out
@@ -115,8 +114,12 @@
 
    <div class="wrapper">
 
-        <header class="top-head">
-            <p>Good Day <span>Jai</span>!</p>
+
+    <!-- artworks display -->
+     <div class="dashcontainer" id="dashboardContainer">
+     <div class="top-head">
+        <p>Good Day <span>
+        </span></p>
 
             <div class="searchbar">
                  <input type="text" class="bar">
@@ -140,12 +143,8 @@
                 </div>
                 <p><b>Jai</b></p>
             </div>
-        </header>
+        </div>
 
-
-
-    <!-- artworks display -->
-     <div class="dashcontainer" id="dashboardContainer">
             <div class="image-artwork">
             
             <div class="box">

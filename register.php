@@ -1,6 +1,39 @@
 <!-- PHP -->
 <?php 
+session_start();
+    $_SESSION;
 
+    include("include/connection.php");
+
+    if($_SERVER['REQUEST_METHOD']== "POST"){
+        // somehting was posted
+                    $name = $_POST['name'];
+                    $email = $_POST['email'];
+                    $username = $_POST['username'];
+                    $password = $_POST['password'];
+        
+        
+                if(!empty($name) && !empty($email) && !empty($username) && !empty($password)){
+                    // save to database
+                    
+                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                    // Insert user data into the database
+                    $query = "INSERT INTO accounts (u_name, email, username, password) VALUES ('$name', '$email', '$username', '$hashed_password')";
+        
+        
+                     // Execute the query and check for success
+                     if(mysqli_query($con, $query)){
+                        // Redirect to the login page
+        
+                        header("Location: login.php");
+                      
+                        die;    
+                    }else{
+                        echo "Please enter some valid information";
+                    }
+            }
+        
+            }
 ?>
 
 <!DOCTYPE html>
@@ -35,12 +68,14 @@
             <img src="image/vags-logo.png" alt="Worxist Logo">
         </div>
 
+
         <!-- CREATE ACCOUNT -->
         <div class="form-container" id="form-container">
-          
+        
+
             <div class="to-login">
                 <p> <i id="left" class='bx bx-chevron-left'></i></p>
-                <p>Already a member? <a href="login-register.php" id="show-login">Sign in</a></p>
+                <p>Already a member? <a href="login.php" id="show-login">Sign in</a></p>
                 
             </div>
             <form method="POST" name="register">
