@@ -1,3 +1,14 @@
+<!-- PHP -->
+<?php 
+    session_start();
+    $_SESSION;
+    include("include/connection.php");
+    include("include/functions.php");
+    
+    // check the user if log in
+    $user_data=check_login($con);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,7 +99,7 @@
 
             <div class="bottom-content">
                 <li class="nav-link">
-                    <a href="accounLogin.html">
+                    <a href="login-register.html">
                         <i class='bx bx-log-out'></i>
                         <span class="text nav-text">
                         Sign Out

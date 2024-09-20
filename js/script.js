@@ -46,32 +46,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   
 
-    const signIn = document.getElementById("show-login");
-    const signUp = document.getElementById("show-create");
-    const wrapper = document.getElementById("wrapper");
+  //   const signIn = document.getElementById("show-login");
+  //   const signUp = document.getElementById("show-create");
+  //   const wrapper = document.getElementById("wrapper");
   
-    if (signIn && signUp && wrapper) {
-      signIn.addEventListener('click', (event) => {
-        event.preventDefault();  
-        wrapper.classList.add("right-panel-activate");
-      });
+  //   if (signIn && signUp && wrapper) {
+  //     signIn.addEventListener('click', (event) => {
+  //       event.preventDefault();  
+  //       wrapper.classList.add("right-panel-activate");
+  //     });
   
-      signUp.addEventListener('click', (event) => {
-        event.preventDefault();  
-        wrapper.classList.remove("right-panel-activate");
-      });
-    } else {
-      console.error("Sign-in, Sign-up, or wrapper elements not found.");
-    }
+  //     signUp.addEventListener('click', (event) => {
+  //       event.preventDefault();  
+  //       wrapper.classList.remove("right-panel-activate");
+  //     });
+  //   } else {
+  //     console.error("Sign-in, Sign-up, or wrapper elements not found.");
+  //   }
   
 
-    const exploreBtn = document.getElementById('explore');
-    if (exploreBtn) {
-      exploreBtn.addEventListener('click', function() {
-        window.location.href = 'accounLogin.html';
-      });
-    } else {
-      console.error("Explore button with id='explore' not found.");
-    }
+  //   const exploreBtn = document.getElementById('explore');
+  //   if (exploreBtn) {
+  //     exploreBtn.addEventListener('click', function() {
+  //       window.location.href = 'accounLogin.html';
+  //     });
+  //   } else {
+  //     console.error("Explore button with id='explore' not found.");
+  //   }
   });
   

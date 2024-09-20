@@ -1,3 +1,7 @@
+<!-- PHP -->
+<?php 
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +11,8 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/accountLgin.css">
     <link rel="shortcut icon" href="image/vags-logo.png" type="image/x-icon">
-    <title>Worxist Login</title>
+
+    <title>Worxist Register</title>
 </head>
 <body>
     <div class="wrapper" id="wrapper">
@@ -35,10 +40,10 @@
           
             <div class="to-login">
                 <p> <i id="left" class='bx bx-chevron-left'></i></p>
-                <p>Already a member? <a href="#" id="show-login">Sign in</a></p>
+                <p>Already a member? <a href="login-register.php" id="show-login">Sign in</a></p>
                 
             </div>
-            <form action="php/register.php" method="POST" name="register">
+            <form method="POST" name="register">
 
                 
                     <div class="create">
@@ -78,55 +83,10 @@
             </div>
             </form>
         </div>
-        
-        <!-- LOGIN -->
-
-        <div class="container-login" id="login-container">
-            <div class="to-create">
-                <p> <i id="return" class='bx bx-chevron-left'></i></p>
-                <p>Not a member? <a href="" id="show-create">Sign up</a></p>
-                
-            </div>
-            <form action="php/register.php" method="POST" class="login-form" name="login">
-            
-                <div class="welcome">
-                      <h1>Welcome Back!</h1>
-                </div>
-    
-                <div class="login-withAccounts">
-                    <button><i class='bx bxl-google'></i>&nbsp;Sign up with Google</button>
-                    <button><i class='bx bxl-facebook-circle' ></i>&nbsp;with Facebook</button>
-                </div>
-              
-    <div class="fields">
-        <div class="input-form">   
-            <div class="separator">
-                <span></span>
-                <p>or</p>
-                <span></span>
-            </div>
-            
-                <label for="username">Username</label> <br>
-                <input type="text" id="username" name="username"  placeholder="Username" required> <br>
-
-                <label for="password">Password</label><br>
-                <input type="password" id="password" name="password" placeholder="Password" required>
-            </div>
-               
-                <div class="terms">
-                    <input type="checkbox" id="terms" required>
-                    <label for="Remember">Remember me</label>
-                </div>
-                <br>
-                <button type="submit" class="signin-btn">Sign In</button>
-
-        </div>
-    </form>
-
-          
-       
+         
         <!-- end of wrapper -->
     </div>
     <script src="js/script.js" ></script>
+
 </body>
 </html>
