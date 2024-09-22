@@ -124,6 +124,9 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
 
     <!-- artworks display -->
      <div class="dashcontainer" id="dashboardContainer">
+    <div class="overlay">
+
+    </div>
      <div class="top-head">
         <p>Good Day <span>
         </span></p>
@@ -152,11 +155,22 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
             </div>
         </div>
 
+
                     <!-- pop-up -->
-                <div class="popup" id="popup">
+                <div class="popup" id="popup" >
                     <div class="box-pop">
-                        <img src="gallery/hands.jpg" alt="Hands">       
+                        <img src="gallery/hands.jpg" alt="Hands">  
+                             
                     </div>
+
+                    <!-- interction like save favorites -->
+                     <div class="social-interact-icons">
+                        <i class='bx bxs-heart'></i>
+                        <i class='bx bxs-bookmark-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                     </div>
+                    
+
 
                     <div class="art-details">
                         <div class="top-details"> 
@@ -171,6 +185,23 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
                             <p>Category: Painting </p>
                             <br>
                             <p>&nbsp;&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                        </div>
+
+                        <div class="interaction">
+                            <h5>Comments</h5>
+            
+                            <div class="user-image">
+                                <div class="profile-pic"> 
+                                <img src="gallery/eyes.jpg" alt=""> 
+                                </div> 
+                                <h5>Angel Canete</h5>                             
+                             </div>
+                            
+                                <div class="comment">
+                                <p>Wow!</p>
+                                </div>
+
+                                
                         </div>
                     </div>
                 </div>
@@ -192,6 +223,55 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
 
 
      <!-- my artworks -->
+        <!-- pop-up -->
+        <div class="popup" id="popup-creation" >
+                    <div class="box-pop">
+                        <img src="  gallery/rose.png" alt="Hands">  
+                             
+                    </div>
+
+                    <!-- interction like save favorites -->
+                     <div class="social-interact-icons">
+                        <i class='bx bxs-heart'></i>
+                        <i class='bx bxs-bookmark-star' ></i>
+                        <i class='bx bxs-star' ></i>
+                     </div>
+                    
+
+
+                    <div class="art-details">
+                        <div class="top-details"> 
+                            <h3>The Caress</h3>
+                            <div class="close-popup" onclick="toggleCreation()">
+                                <i class='bx bx-x'></i>
+                            </div>
+                        </div>
+    
+                        <div class="art-information">
+                            <p>Artist: <em><a href="">Jamaica Anuba</a></em> </p>
+                            <p>Category: Painting </p>
+                            <br>
+                            <p>&nbsp;&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                        </div>
+
+                        <div class="interaction">
+                            <h5>Comments</h5>
+            
+                            <div class="user-image">
+                                <div class="profile-pic"> 
+                                <img src="gallery/eyes.jpg" alt=""> 
+                                </div> 
+                                <h5>Angel Canete</h5>                             
+                             </div>
+                            
+                                <div class="comment">
+                                <p>Wow!</p>
+                                </div>
+
+                                
+                        </div>
+                    </div>
+        </div>
      <div class="artwork-section" id="artworkContainer">
     
         <div class="profile-info">
@@ -225,30 +305,31 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
     <div class="tabpanes">
     
     <div class="tab">
-      <a class="tablinks" onclick="openCity(event, 'Created')">Created <span></span></a>
-      <a class="tablinks" onclick="openCity(event, 'Saved')">Saved <span></span></a>
-      <a class="tablinks" onclick="openCity(event, 'Favorites')">Favorites<span></span></a>
+      <a class="tablinks" onclick="myOption(event, 'Created')">Created <span></span></a>
+      <a class="tablinks" onclick="myOption(event, 'Saved')">Saved <span></span></a>
+      <a class="tablinks" onclick="myOption(event, 'Favorites')">Favorites<span></span></a>
+
     </div>
     <!-- Created -->
-    <div id="Created" class="tabcontent">
+    <div class="tabcontent" id="Created" >
       <h3>My Creations</h3>
+     
+        <div class="image-artwork">
+            <button class="box-button" id="upload" >
+                <i class='bx bx-message-square-add'></i>
+            </button>
+                    <div class="box" onclick="toggleCreation()">
+                        <img src="gallery/rose.png" alt="Hands">
+
+                        <div class="artist-name">
+                            <p><span><b>Jamaica Anuba</b></span><br>
+                            The Caress</p>
+                        </div>
+                    </div>
+         </div>
+
+
       
-    
-      <div class="image-artwork">
-    
-        <button class="box" id="upload">
-            <i class='bx bx-message-square-add'></i>
-        </button>
-    
-        <div class="box">
-            <img src="gallery/eyes.jpg" alt="Hands">
-            <div class="artist-name">
-                <p><span><b>Jerald Aliviano</b></span><br>
-                The Eternity</p>
-            </div>
-            
-        </div>
-      </div>
     </div>
     
     
@@ -268,24 +349,28 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
     
         </div>
       
-    </div>
-    
-    
-    <!-- Favorites -->
-    <div id="Favorites" class="tabcontent">
-      <h3>My Favorites</h3>
-      <div class="image-artwork">
-        <div class="box">
-            <img src="gallery/guitar.jpg" alt="Hands">
-            <div class="artist-name">
-                <p><span><b>Jerald Aliviano</b></span><br>
-                The Eternity</p>
-            </div>
-            
         </div>
     
-    </div>
-    </div>
+    
+         <!-- Favorites -->
+         <div id="Favorites" class="tabcontent">
+            <h3>My Favorites</h3>
+            <div class="image-artwork">
+                <div class="box">
+                    <img src="gallery/guitar.jpg" alt="Hands">
+                    <div class="artist-name">
+                        <p><span><b>Jerald Aliviano</b></span><br>
+                        The Eternity</p>
+                    </div>
+                    
+                </div>
+    
+        </div>
+        </div>
+
+        
+
+        <!-- end of tabpande -->
     </div>
     
         <!-- end of myartwork -->
@@ -295,8 +380,12 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
 
        <!-- Messegaes -->
         <div class="messages-container" id="messageContainer">
-            <h1>hello message</h1>
-
+            <div class="head-message">
+                 <h1>Messages </h1>
+                 <i class='bx bxs-message-alt-edit'></i>
+            </div>
+           
+            
             <!-- end of message container -->
         </div>
 
@@ -337,20 +426,7 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
     <!-- end of wrapper -->
    </div>
   
-   <script src="js/dashboard.js">
-
-    // pop up image description
-    function toggleImage() {
-    var blur = document.getElementById('blur');
-    var popup = document.getElementById('popup');
-    
-    blur.classList.toggle('active'); 
-    popup.classList.toggle('active');
-}
-
-
-
-   </script>
+   <script src="js/dashboard.js"></script>
 
    
 </body>

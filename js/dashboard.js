@@ -1,5 +1,5 @@
 // tabpane in Artwork Dashboard
-function openCity(evt, cityName) {
+function myOption(evt, option) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
@@ -9,7 +9,7 @@ function openCity(evt, cityName) {
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
-  document.getElementById(cityName).style.display = "block";
+  document.getElementById(option).style.display = "block";
   evt.currentTarget.className += " active";
 }
 
@@ -24,13 +24,14 @@ function toggleDropdown() {
 }
 
 
+
 document.addEventListener('DOMContentLoaded', function() {
 
   // sidebar links
   const dashboardLink = document.querySelector('.dashboard');
   const artworkLink = document.querySelector('.my-artworks');
   const messageLink=document.querySelector('.messages');
-  const notificationLink=document.querySelector('.notification-container');
+  const notificationLink=document.querySelector('.notifications');
   const exhibitLink=document.querySelector('.exhibit');
   const settingLink=document.querySelector('.settings');
 
@@ -124,9 +125,22 @@ settingLink.addEventListener('click', function(e) {
       settingContainer.style.display = 'block';
 
 });
-
-
-   
+ 
 });
 
+    // pop up image description
+    function toggleImage() {
+      var blur = document.getElementById('blur');
+      var popup = document.getElementById('popup');
+      
+      blur.classList.toggle('active'); 
+      popup.classList.toggle('active');
+  }
 
+  function toggleCreation() {
+    var blur = document.getElementById('artworkContainer');
+    var popup = document.getElementById('popup-creation');
+    
+    blur.classList.toggle('active'); 
+    popup.classList.toggle('active');
+}
