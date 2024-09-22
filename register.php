@@ -1,40 +1,49 @@
-<!-- PHP -->
 <?php 
 session_start();
     $_SESSION;
 
     include("include/connection.php");
 
-    if($_SERVER['REQUEST_METHOD']== "POST"){
-        // somehting was posted
-                    $name = $_POST['name'];
-                    $email = $_POST['email'];
-                    $username = $_POST['username'];
-                    $password = $_POST['password'];
-        
-        
-                if(!empty($name) && !empty($email) && !empty($username) && !empty($password)){
-                    // save to database
+    $result = [];
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        // something was posted
+        $accType = 'User';
+        $accStatus = 'Pending';
+
+        // Get data from text fields
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
                     
-                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                    // Insert user data into the database
-                    $query = "INSERT INTO accounts (u_name, email, username, password) VALUES ('$name', '$email', '$username', '$hashed_password')";
-        
-        
-                     // Execute the query and check for success
-                     if(mysqli_query($con, $query)){
-                        // Redirect to the login page
-        
-                        header("Location: login.php");
-                      
-                        die;    
-                    }else{
-                        echo "Please enter some valid information";
-                    }
-            }
-        
-            }
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        // Insert user data into the database
+        $statement = $conn->prepare("INSERT INTO accounts (u_name, email, username, password, u_type, u_status) VALUES (:name, :email, :username, :hashed_password, :accType, :accStatus)");
+
+        $statement->bindValue(':name', $name);
+        $statement->bindValue(':email', $email);
+        $statement->bindValue(':username', $username);
+        $statement->bindValue(':hashed_password', $hashed_password);
+        $statement->bindValue(':accType', $accType);
+        $statement->bindValue(':accStatus', $accStatus);
+
+        $result = $statement->execute();
+
+        if ($result) {
+            $_SESSION['username'] = $username;
+            $_SESSION['name'] = $name; 
+            $_SESSION['email'] = $email;
+            $_SESSION['accType'] = $accType;
+            $_SESSION['accStatus'] = $accStatus;
+
+           
+            header("Location: login.php");  
+            die;
+        }
+    }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +87,15 @@ session_start();
                 <p>Already a member? <a href="login.php" id="show-login">Sign in</a></p>
                 
             </div>
-            <form method="POST" name="register">
+
+
+            <?php if($result):?>
+                <div class="alert-sucess">
+                    <?php echo "Created Successfully" ?>
+                </div>
+
+            <?php endif ?>
+            <form action="" method="POST" name="register">
 
                 
                     <div class="create">
@@ -117,6 +134,7 @@ session_start();
 
             </div>
             </form>
+
         </div>
          
         <!-- end of wrapper -->

@@ -1,14 +1,16 @@
 <?php
-    $host = "localhost";
+    $servername = "localhost";
     $username = "root";
     $password = "";
-    $db_name = "gallery_db";
+    $dbname = "gallery_db";
 
-    // Connect to the MySQL database
-    $con = mysqli_connect($host, $username, $password, $db_name);
 
-    // Check for connection errors
-    if(!$con){
-        die("Failed to Connect to MySQL: " . mysqli_connect_error());
+    try{
+        $conn=new PDO("mysql:host=$servername;dbname=gallery_db", $username, $password);
+
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }catch(PDOException $e){
+        echo "Connection Failed ". $e->getMessage();
     }
+
 ?>

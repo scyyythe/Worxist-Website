@@ -1,41 +1,32 @@
-<?php 
-    session_start();
-    $_SESSION;
+<?php
+session_start();
+include("include/connection.php");
 
-    include("include/connection.php");
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    if($_SERVER['REQUEST_METHOD']== "POST"){
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-  
-        if(!empty($username) && !empty($password)) {
-            // Query to fetch user data
-            $query = "SELECT * FROM accounts WHERE username = '$username' LIMIT 1";
-            $result = mysqli_query($con, $query);
-  
-            if($result && mysqli_num_rows($result) > 0) {
-                $user_data = mysqli_fetch_assoc($result);
-                
-                if(password_verify($password, $user_data['password'])) {
-                    // Set session variables
-                    $_SESSION['u_id'] = $user_data['id'];
-                    $_SESSION['username'] = $user_data['username'];
-                
-                    // Redirect to dashboard
-                    header("Location:dashboard.php");
-                    die;
-                } else {
-                    echo "Invalid password.";
-                }
-                
-            } else {
-                
-            }
-        } else {
-            echo "Please enter both username and password.";
-        }
-            }
+    // Fetch user from the database based on the username
+    $statement = $conn->prepare("SELECT u_id, u_name, username, password FROM accounts WHERE username = :username");
+    $statement->bindValue(':username', $username);
+    $statement->execute();
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($password, $user['password'])) {
+        // Set session variables on successful login
+        $_SESSION['u_id'] = $user['u_id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['name'] = $user['u_name'];  // Set the 'name' session variable
+        header("Location: dashboard.php");
+        die;
+    } else {
+        echo "Invalid credentials";
+    }
+}
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

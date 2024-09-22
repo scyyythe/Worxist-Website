@@ -14,10 +14,9 @@
     --body-color: #f7f7f7;
     --sidebar-color: #f0f0f0;
     --primary-color: #ec1111;
-    --primary-color-light: gray;
+    --primary-color-light: rgb(73, 38, 38);
     --toggle-color: #DDD;
     --text-color: #000000;
-
     --tran-03: all 0.3s ease;
     --tran-04: all 0.4s ease;
     --tran-05: all 0.5s ease;
@@ -49,7 +48,7 @@ body {
 
 /* sidebar */
 .sidebar {
-    z-index: 1;
+    z-index: 100;
     position: fixed;
     top: 0;
     left: 0;
@@ -70,11 +69,16 @@ body {
     width: 0;
     transition: opacity 0.3s ease, width 0.3s ease;
     white-space: nowrap;
-    overflow: hidden;
+    position: relative;
+    left: 20px;
 }
 .sidebar:hover .text {
     opacity: 1;
     width: auto;
+}
+.name{
+    width: 200px;
+    position: relative;
 }
 .sidebar li a {
     width: 100%;
@@ -108,6 +112,7 @@ body {
 .image-text img {
     width: 50px;
     border-radius: 6px;
+    position: fixed;
 }
 
 .menu-links li {
@@ -129,11 +134,16 @@ body {
 }
 
 .header-text span {
+    position: relative;
+    left: 50px;
     font-weight: 700;
     font-size: 1.5rem;
     color: var(--text-color);
 }
-
+.bottom-content{
+    position: relative;
+    top: 50px;
+}
 .menu-links span,
 .bottom-content span {
     color: var(--text-color);
@@ -174,7 +184,6 @@ body {
     align-items: center;
     justify-content: space-between;
     font-size: 1rem;    
-    background-color: rgba(170, 168, 168, 0.24);
     border-radius: 10px;
 
 }
@@ -193,14 +202,12 @@ body {
     height: 40px;
     border-radius: 50%; 
     border-style: none;
-    background-color: #fff8f8;
+    background-color: #c0bcbc70;
     padding: 10px;
     font-size: 12px;
     transition: width 0.5s ease;
-    outline: none;
     position: absolute;
     right: 0;
-    
 }
 .searchbar input:focus, 
 .bar:hover{
@@ -333,7 +340,6 @@ body {
  .artwork-section {
     position: absolute;
     top: 0px;
-    border-style: solid;
     margin: 0 auto;
     padding: 20px;
     width: 95%;
@@ -350,8 +356,8 @@ body {
 }
 
 .image-profile{
-   width: 10%;
-   height: 100%;
+   width: 150px;
+   height: 150px;
     border-radius: 80%;
     border-style: solid;
     border-width: 1px;

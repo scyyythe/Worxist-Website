@@ -1,12 +1,16 @@
-<!-- PHP -->
-<?php 
-    session_start();
-    $_SESSION;
-    require("include/connection.php");
-    // check the user if log in
-    // $user_data=check_login($con);
+<?php
+session_start();
 
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    die;
+}
+
+// Access user data from session
+$username = $_SESSION['username'];
+$name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User'; 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +20,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="shortcut icon" href="image/vags-logo.png" type="image/x-icon">
+
     <title>Worxist</title>
 </head>
 <body>
@@ -24,13 +29,14 @@
             <div class="image-text">
                 <span class="image">
                     <img src="image/vags-logo.png" alt="Logo">
-                </span>
-                
-                <div class="text header-text">
-                    <span class="name">
+                    <div class="text header-text">
+                    <span class="nameLogo">
                         Worxist
                     </span>        
                 </div>
+                </span>
+                
+                
             </div>
            
         </header>
@@ -77,7 +83,7 @@
 
             <li class="nav-link">
                 <a href="" class="exhibit">
-                    <i class='bx bxs-bell' ></i>
+                <i class='bx bx-image-alt'></i>
                     <span class="text nav-text">
                       Exhibits
                     </span>
@@ -98,7 +104,7 @@
 
             <div class="bottom-content">
                 <li class="nav-link">
-                    <a href="logout.php">
+                    <a href="index.php">
                         <i class='bx bx-log-out'></i>
                         <span class="text nav-text">
                         Sign Out
@@ -141,7 +147,7 @@
                 <div class="profile-pic"> 
                  <img src="gallery/eyes.jpg" alt=""> 
                 </div>
-                <p><b>Jai</b></p>
+                <p><b><?php echo $username; ?> </b></p>
             </div>
         </div>
 
