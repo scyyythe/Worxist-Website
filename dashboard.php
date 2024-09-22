@@ -19,6 +19,7 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/dashboard.css">
+
     <link rel="shortcut icon" href="image/vags-logo.png" type="image/x-icon">
 
     <title>Worxist</title>
@@ -151,49 +152,42 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
             </div>
         </div>
 
-            <div class="image-artwork">
-            
-            <div class="box">
-                <img src="gallery/hands.jpg" alt="Hands">
+                    <!-- pop-up -->
+                <div class="popup" id="popup">
+                    <div class="box-pop">
+                        <img src="gallery/hands.jpg" alt="Hands">       
+                    </div>
 
-                <div class="artist-name">
-                    <p><span><b>Jamaica Anuba</b></span><br>
-                    The Caress</p>
+                    <div class="art-details">
+                        <div class="top-details"> 
+                            <h3>The Caress</h3>
+                            <div class="close-popup" onclick="toggleImage()">
+                                <i class='bx bx-x'></i>
+                            </div>
+                        </div>
+    
+                        <div class="art-information">
+                            <p>Artist: <em><a href="">Jamaica Anuba</a></em> </p>
+                            <p>Category: Painting </p>
+                            <br>
+                            <p>&nbsp;&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                        </div>
+                    </div>
                 </div>
-                
-            </div>
 
-            <div class="box">
-                <img src="gallery/eyes.jpg" alt="Hands">
+         
+                <div class="image-artwork" id="blur">
+                    <div class="box" onclick="toggleImage()">
+                        <img src="gallery/hands.jpg" alt="Hands">
 
-                <div class="artist-name">
-                    <p><span><b>Angel Canete</b></span><br>
-                    Vision</p>
+                        <div class="artist-name">
+                            <p><span><b>Jamaica Anuba</b></span><br>
+                            The Caress</p>
+                        </div>
+                    </div>
                 </div>
-                
-            </div>
 
-            
-            <div class="box">
-                <img src="gallery/eternity.jpg" alt="Hands">
-                <div class="artist-name">
-                    <p><span><b>Jerald Aliviano</b></span><br>
-                    The Eternity</p>
-                </div>
-                
-            </div>
-
-            <div class="box">
-                <img src="gallery/skel.jpg" alt="Hands">
-                <div class="artist-name">
-                    <p><span><b>James Arpilang</b></span><br>
-                    Intrusive Thoughts</p>
-                </div>
-                
-            </div>
-           
-            
-            </div>
+         
      </div>
 
 
@@ -321,7 +315,7 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
         <!-- Exhbits -->
         <div class="exhibit-container" id="exhibitContainer">
             <h1>hello exhbit</h1>
-
+    
 
             <!-- end of exhibit container -->
         </div>
@@ -343,6 +337,21 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
     <!-- end of wrapper -->
    </div>
   
-   <script src="js/dashboard.js"></script>
+   <script src="js/dashboard.js">
+
+    // pop up image description
+    function toggleImage() {
+    var blur = document.getElementById('blur');
+    var popup = document.getElementById('popup');
+    
+    blur.classList.toggle('active'); 
+    popup.classList.toggle('active');
+}
+
+
+
+   </script>
+
+   
 </body>
 </html>
