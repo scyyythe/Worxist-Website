@@ -12,11 +12,11 @@
 }
 :root {
     --body-color: #eeecec;
-    --sidebar-color: #aa0606;
-    --primary-color: #fdfdfd;
+    --sidebar-color: #e7e3e3;
+    --primary-color: #b10505;
     --primary-color-light: rgb(73, 38, 38);
-    --toggle-color: #DDD;
-    --text-color: #ffffff;
+    --toggle-color: #c70909;
+    --text-color: #000000;
     --tran-03: all 0.3s ease;
     --tran-04: all 0.4s ease;
     --tran-05: all 0.5s ease;
@@ -166,7 +166,7 @@ body {
 
 .wrapper {
     position: relative;
-    margin: 0 auto;
+    margin: 0 a uto;
     padding: 20px;
     width: 95%;
     height: 100vh;
@@ -179,54 +179,48 @@ body {
     position: absolute;
     top: 0px;
     height: 50px;
-    width: 96%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: 1rem;    
     border-radius: 10px;
-
 }
 .top-head p{
     position: relative;
     left: 10px;
+  
 }
 .searchbar{
+    width: 300px; 
     position: relative;
-    bottom: 5px;
-    left: 460px;
+    left: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
 
 }
 .searchbar input {
-    width: 40px; 
-    height: 40px;
-    border-radius: 50%; 
+   
+    width: 100%; 
+    height: 35px;
+    border-radius: 20px;
     border-style: none;
     background-color: #c0bcbc70;
     padding: 10px;
     font-size: 12px;
-    transition: width 0.5s ease;
     position: absolute;
-    right: 0;
-}
-.searchbar input:focus, 
-.bar:hover{
-    width: 300px; 
-    border-radius: 20px;
-    cursor: pointer; 
+
 }
 
 .search{
     position: relative;
-    left: 20px;
-    top: 5px;
+    right: 20px;
 }
-
 .filter-container {
     position: relative;
     display: inline-block;
     top: 5px;
-    left: 25px;
 }
 
 .dropdown-content {
@@ -237,9 +231,11 @@ body {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     
-}
+}   
 .filter-icon{
-    font-size: 25px;
+    font-size: 30px;
+    position: relative;
+    left: 250px;
 }
 .filter-icon:hover{
     cursor: pointer;
@@ -323,6 +319,7 @@ body {
 .box-pop {
     width: 100%;
     object-fit: contain;
+
 }
 
 .box-pop img {
@@ -360,12 +357,17 @@ body {
     cursor: pointer;
 }
 .art-details{
-    
     width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding: 10px;
     background-color: rgb(255, 255, 255);
 }
 .top-details{
+    position: relative;
+    right: 15px;
     display: flex;
     justify-content: space-between;
 }
@@ -387,11 +389,23 @@ body {
 }
 .social-interact-icons{
     position: relative;
-    top: 5%;
-    right: 3%;
+    top: 40%;
+    right: 3.1%;
+    padding: 3px;
+    width: 50px;
+    height: 100px;
+    border-radius: 10px;
     font-size: 1.2rem;
     color: white;
+    backdrop-filter: blur(10px); 
 }
+/* .bookmark{
+    height: 20px;
+    position: relative;
+    left: 100px;
+    border-style: solid;
+    color: #000000;
+} */
 .social-interact-icons i:hover{
     cursor: pointer;
 }
@@ -420,6 +434,42 @@ body {
     font-size: .8rem;
     border-radius: 20px;
     margin-bottom: 10px;
+
+}
+.input-comment{
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.comment-area{
+    width: 85%;
+    height: 30px;
+    border-radius: 50px;
+    padding: 3px;
+    border-style: none;
+    background-color: #c0bcbc70;
+}
+.comment-btn{
+    border-radius: 20px;
+    border-style: none;
+    width: 50px;
+    height: 30px;
+    background-color: white;
+
+    i{
+        color: rgb(136, 136, 250);
+        font-size: 25px;
+    }
+}
+.comment-btn:hover{
+    cursor: pointer;
+}
+.comment-btn button{
+        display: flex;
+    align-content: center;
+    justify-content: center;
 }
 .box{
     font-size: .8rem;
@@ -463,6 +513,7 @@ body {
     width: 95%;
     height: 100vh;
     float: right;
+    z-index: 1;
 }
 
 .profile-info{

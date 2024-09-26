@@ -136,11 +136,30 @@ settingLink.addEventListener('click', function(e) {
       blur.classList.toggle('active'); 
       popup.classList.toggle('active');
   }
-
+// created
   function toggleCreation() {
     var blur = document.getElementById('artworkContainer');
     var popup = document.getElementById('popup-creation');
     
     blur.classList.toggle('active'); 
     popup.classList.toggle('active');
+}
+
+
+// saved
+function toggleSaved() {
+  var blur = document.getElementById('artworkContainer');
+  var popup = document.getElementById('popup-creation');
+  
+  blur.classList.toggle('active'); 
+  popup.classList.toggle('active');
+}
+
+// favortes
+function toggleFavorite() {
+  var blur = document.getElementById('artworkContainer');
+  var popup = document.getElementById('popup-creation');
+  
+  blur.classList.toggle('active'); 
+  popup.classList.toggle('active');
 }

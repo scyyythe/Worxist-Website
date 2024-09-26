@@ -135,18 +135,18 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
                  <input type="text" class="bar">
                 <i class='bx bx-search search'></i>
 
-
-                <div class="filter-container">
-    <i class='bx bx-filter filter-icon' onclick="toggleDropdown()"></i>
-                    <div class="dropdown-content" id="dropdown">
-                        <a href="#">Sketches</a>
-                        <a href="#">Sculpture</a>
-                        <a href="#">Painting    </a>
-                    </div>
-                </div>
-
             </div>
            
+            
+            <div class="filter-container">
+                <i class='bx bx-filter filter-icon' onclick="toggleDropdown()"></i>
+                                <div class="dropdown-content" id="dropdown">
+                                    <a href="#">Sketches</a>
+                                    <a href="#">Sculpture</a>
+                                    <a href="#">Painting    </a>
+                                </div>
+            </div>
+
             <div class="profile">
                 <div class="profile-pic"> 
                  <img src="gallery/eyes.jpg" alt=""> 
@@ -162,15 +162,13 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
                         <img src="gallery/hands.jpg" alt="Hands">  
                              
                     </div>
-
-                    <!-- interction like save favorites -->
-                     <div class="social-interact-icons">
+                    
+                       <!-- interction like save favorites -->
+                       <div class="social-interact-icons">
                         <i class='bx bxs-heart'></i>
-                        <i class='bx bxs-bookmark-star' ></i>
+                        <i class='bx bxs-bookmark-star bookmark' ></i>
                         <i class='bx bxs-star' ></i>
                      </div>
-                    
-
 
                     <div class="art-details">
                         <div class="top-details"> 
@@ -199,10 +197,16 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
                             
                                 <div class="comment">
                                 <p>Wow!</p>
-                                </div>
-
+                                </div>                            
                                 
                         </div>
+
+                        <div class="input-comment">
+
+                            <textarea name="comment" id="comment" class="comment-area"></textarea>
+                            <button class="comment-btn"><i class='bx bxs-send'></i></button>
+                        </div>
+
                     </div>
                 </div>
 
@@ -231,9 +235,11 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
                     </div>
 
                     <!-- interction like save favorites -->
+                
+
                      <div class="social-interact-icons">
-                        <i class='bx bxs-heart'></i>
-                        <i class='bx bxs-bookmark-star' ></i>
+                        <i class='bx bxs-heart'></i>  
+                        <i class='bx bxs-bookmark-star'></i>       
                         <i class='bx bxs-star' ></i>
                      </div>
                     
@@ -266,8 +272,14 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
                             
                                 <div class="comment">
                                 <p>Wow!</p>
+
                                 </div>
 
+                                <div class="input-comment">
+
+                                    <textarea name="comment" id="comment" class="comment-area"></textarea>
+                                    <button class="comment-btn"><i class='bx bxs-send'></i></button>
+                                </div>
                                 
                         </div>
                     </div>
@@ -338,7 +350,7 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
       <h3>Saved Artworks</h3>
      
         <div class="image-artwork">
-            <div class="box">
+            <div class="box" onclick="toggleSaved()">
                 <img src="gallery/eternity.jpg" alt="Hands">
                 <div class="artist-name">
                     <p><span><b>Jerald Aliviano</b></span><br>
@@ -356,7 +368,7 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
          <div id="Favorites" class="tabcontent">
             <h3>My Favorites</h3>
             <div class="image-artwork">
-                <div class="box">
+                <div class="box" onclick="toggleFavorite()">
                     <img src="gallery/guitar.jpg" alt="Hands">
                     <div class="artist-name">
                         <p><span><b>Jerald Aliviano</b></span><br>
