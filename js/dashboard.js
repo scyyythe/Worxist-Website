@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const dashboardLink = document.querySelector('.dashboard');
   const artworkLink = document.querySelector('.my-artworks');
   const messageLink=document.querySelector('.messages');
-  const notificationLink=document.querySelector('.notifications');
   const exhibitLink=document.querySelector('.exhibit');
   const settingLink=document.querySelector('.settings');
 
@@ -56,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
       dashboardContainer.style.display = 'block';
       artworkContainer.style.display = 'none';
       messageContainer.style.display = 'none';
-      notificationContainer.style.display = 'none';
       exhibitContainer.style.display = 'none';
       settingContainer.style.display = 'none';
 
@@ -68,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
       dashboardContainer.style.display = 'none';
       artworkContainer.style.display = 'block';
       messageContainer.style.display = 'none';
-      notificationContainer.style.display = 'none';
       exhibitContainer.style.display = 'none';
       settingContainer.style.display = 'none';
 
@@ -80,7 +77,6 @@ messageLink.addEventListener('click', function(e) {
     dashboardContainer.style.display = 'none';
     artworkContainer.style.display = 'none';
     messageContainer.style.display = 'block';
-    notificationContainer.style.display = 'none';
     exhibitContainer.style.display = 'none';
     settingContainer.style.display = 'none';
 
@@ -150,16 +146,19 @@ function toggleFavorite() {
 }
 
 function toggleEditProfile() {
-
+  // Access the sections that need to be hidden/shown
+  const dashboardContainer = document.getElementById('dashboardContainer');
+  const artworkContainer = document.getElementById('artworkContainer');
+  const messageContainer = document.getElementById('messageContainer');
+  const exhibitContainer = document.getElementById('exhibitContainer');
   const settingContainer = document.getElementById('settingsContainer');
   
-  // hide section
+  // Hide all sections
   dashboardContainer.style.display = 'none';
   artworkContainer.style.display = 'none';
   messageContainer.style.display = 'none';
   exhibitContainer.style.display = 'none';
   
-  //show
+  // Show the settings container
   settingContainer.style.display = 'block';
 }
-

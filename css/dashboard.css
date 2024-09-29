@@ -526,7 +526,6 @@ body {
     width: 95%;
     height: 100vh;
     float: right;
-    z-index: 1;
 }
 
 .profile-info{
@@ -734,15 +733,6 @@ body {
     }
 }
 
-/* notifications  css*/
-.notification-container{
-    position: absolute;
-    margin: 0 auto;
-    padding: 20px;
-    width: 95%;
-    height: 100vh;
-    float: right;
-}
 
 /* exhbit css */
 .exhibit-container{
