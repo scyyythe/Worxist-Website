@@ -19,7 +19,6 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/dashboard.css">
-
     <link rel="shortcut icon" href="image/vags-logo.png" type="image/x-icon">
 
     <title>Worxist</title>
@@ -320,10 +319,12 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
     <div class="tabcontent" id="Created" >
       <h3>My Creations</h3>
      
-        <div class="image-artwork">
-            <button class="box-button" id="upload" >
-                <i class='bx bx-message-square-add'></i>
-            </button>
+        <div class="image-artwork" >
+
+        <button class="box-button" id="upload" onclick="window.location.href='uploadArt.php'"> 
+            <i class='bx bx-message-square-add'></i>
+        </button>
+
                     <div class="box" onclick="toggleCreation()">
                         <img src="gallery/rose.png" alt="Hands">
 
@@ -386,12 +387,59 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
 
        <!-- Messegaes -->
         <div class="messages-container" id="messageContainer">
+            
             <div class="head-message">
                  <h1>Messages </h1>
                  <i class='bx bxs-message-alt-edit'></i>
             </div>
            
-            
+            <div class="message-name">
+
+                <div class="message-name-box">
+                         <div class="profile-pic message-profile"> 
+                             <img src="gallery/eyes.jpg" alt=""> 
+                        </div>
+    
+                        <h4>Angel Canete</h4>
+                </div>
+
+                <div class="message-name-box">
+                    <div class="profile-pic message-profile"> 
+                        <img src="gallery/eyes.jpg" alt=""> 
+                   </div>
+
+                   <h4>Angel Canete</h4>
+           </div>
+                 
+            </div>
+
+            <!-- image display -->
+            <div class="message-display ">
+                <div class="message-name-box header-chat" >
+                    <div class="profile-pic message-profile"> 
+                        <img src="gallery/eyes.jpg" alt=""> 
+                   </div>
+
+                   <h4>Angel Canete</h4>
+                </div>
+
+                <div class="conversation">
+                    <div class="message-from-person">
+                          <p>hello</p>
+                    </div>
+                  
+                    <div class="your-reply">
+                        <p>hi</p>
+                    </div>
+
+                    <div class="input-message">
+                        <textarea name="message" id="input-message"></textarea>
+                        <button class="send-btn"><i class='bx bxs-send'></i></button>
+                    </div>
+                </div>
+
+                
+            </div>
             <!-- end of message container -->
         </div>
 

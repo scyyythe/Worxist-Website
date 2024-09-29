@@ -162,3 +162,5 @@ function toggleEditProfile() {
   // Show the settings container
   settingContainer.style.display = 'block';
 }
+
+
