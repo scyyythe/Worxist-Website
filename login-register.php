@@ -1,32 +1,8 @@
 <?php
-session_start();
+
 include("include/connection.php");
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-
-    // Fetch user from the database based on the username
-    $statement = $conn->prepare("SELECT u_id, u_name, username, password FROM accounts WHERE username = :username");
-    $statement->bindValue(':username', $username);
-    $statement->execute();
-    $user = $statement->fetch(PDO::FETCH_ASSOC);
-
-    if ($user && password_verify($password, $user['password'])) {
-        // Set session variables on successful login
-        $_SESSION['u_id'] = $user['u_id'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['name'] = $user['u_name'];  // Set the 'name' session variable
-        header("Location: dashboard.php");
-        die;
-    } else {
-        echo "Invalid credentials";
-    }
-}
+include("include/loginregister.php");
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,13 +12,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="css/accountLgin.css">
     <link rel="shortcut icon" href="image/vags-logo.png" type="image/x-icon">
 
+</script>
     <title>Worxist Login</title>
 </head>
 <body>
     <div class="wrapper" id="wrapper">
    
           <!-- Right Image -->
-          <div class="overlay-container-login" id="overlay-container">
+          <div class="overlay-container-c" id="overlay-container">
             
             <div class="name">
                 <p><span>W</span>orxist</p>
@@ -59,13 +36,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <img src="image/vags-logo.png" alt="Worxist Logo">
         </div>
 
+        <!-- CREATE ACCOUNT -->
+        <div class="form-container" id="form-container">
+          
+            <div class="to-login">
+                <p> <i id="left" class='bx bx-chevron-left'></i></p>
+                <p>Already a member? <a href="#" id="show-login">Sign in</a></p>
+                
+            </div>
+            <form method="POST" name="register">
+
+                
+                    <div class="create">
+                          <h2>Create Account</h2>
+                    </div>
+                
+                    <div class="login-withAccounts">
+                        <button><i class='bx bxl-google'></i>&nbsp;Sign up with Google</button>
+                        <button><i class='bx bxl-facebook-circle' ></i>&nbsp;with Facebook</button>
+                    </div>
+                 
+        <div class="fields">
+            <div class="input-form">   
+                    <span class="line"></span>
+                    <p>Or sign up using your email address</p><br>
+                   
+                     <label for="name">Name</label><br>
+                    <input type="text" id="name" name="name" placeholder="Name" required><br>
+
+                    <label for="email">Email or Phone no</label> <br>
+                    <input type="text" id="email" name="email"  placeholder="Email or Phone No." required> <br>
+
+                    <label for="username">Username</label> <br>
+                    <input type="text" id="username" name="username"  placeholder="Username" required> <br>
+
+                    <label for="password">Password</label><br>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                   
+                    <div class="terms">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to all terms and Privacy Policy</label>
+                    </div>
+                    <br>
+                    <button type="submit" class="signup-btn" name="register">Sign Up</button>
+
+            </div>
+            </form>
+        </div>
+        
        
         <!-- LOGIN -->
-
+        
         <div class="container-login" id="login-container">
             <div class="to-create">
                 <p> <i id="return" class='bx bx-chevron-left'></i></p>
-                <p>Not a member? <a href="register.php" id="show-create">Sign up</a></p>
+                <p>Not a member? <a href="" id="show-create">Sign up</a></p>
                 
             </div>
             <form method="POST" class="login-form" name="login">
@@ -99,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label for="Remember">Remember me</label>
                 </div>
                 <br>
-                <button type="submit" class="signin-btn">Sign In</button>
+                <button type="submit" class="signin-btn" name="login">Sign In</button>
 
         </div>
     </form>

@@ -424,7 +424,7 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
                 </div>
 
                 <div class="conversation">
-                    <div class="message-from-person">
+                    <div class="message -from-person">
                           <p>hello</p>
                     </div>
                   

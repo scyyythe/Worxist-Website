@@ -1,49 +1,7 @@
+<!-- PHP -->
 <?php 
-session_start();
-    $_SESSION;
 
-    include("include/connection.php");
-
-    $result = [];
-    if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        // something was posted
-        $accType = 'User';
-        $accStatus = 'Pending';
-
-        // Get data from text fields
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-                    
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-        // Insert user data into the database
-        $statement = $conn->prepare("INSERT INTO accounts (u_name, email, username, password, u_type, u_status) VALUES (:name, :email, :username, :hashed_password, :accType, :accStatus)");
-
-        $statement->bindValue(':name', $name);
-        $statement->bindValue(':email', $email);
-        $statement->bindValue(':username', $username);
-        $statement->bindValue(':hashed_password', $hashed_password);
-        $statement->bindValue(':accType', $accType);
-        $statement->bindValue(':accStatus', $accStatus);
-
-        $result = $statement->execute();
-
-        if ($result) {
-            $_SESSION['username'] = $username;
-            $_SESSION['name'] = $name; 
-            $_SESSION['email'] = $email;
-            $_SESSION['accType'] = $accType;
-            $_SESSION['accStatus'] = $accStatus;
-
-           
-            header("Location: login.php");  
-            die;
-        }
-    }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +12,8 @@ session_start();
     <link rel="stylesheet" href="css/accountLgin.css">
     <link rel="shortcut icon" href="image/vags-logo.png" type="image/x-icon">
 
-    <title>Worxist Register</title>
+</script>
+    <title>Worxist Login</title>
 </head>
 <body>
     <div class="wrapper" id="wrapper">
@@ -77,25 +36,15 @@ session_start();
             <img src="image/vags-logo.png" alt="Worxist Logo">
         </div>
 
-
         <!-- CREATE ACCOUNT -->
         <div class="form-container" id="form-container">
-        
-
+          
             <div class="to-login">
                 <p> <i id="left" class='bx bx-chevron-left'></i></p>
-                <p>Already a member? <a href="login.php" id="show-login">Sign in</a></p>
+                <p>Already a member? <a href="#" id="show-login">Sign in</a></p>
                 
             </div>
-
-
-            <?php if($result):?>
-                <div class="alert-sucess">
-                    <?php echo "Created Successfully" ?>
-                </div>
-
-            <?php endif ?>
-            <form action="" method="POST" name="register">
+            <form method="POST" name="register">
 
                 
                     <div class="create">
@@ -134,9 +83,55 @@ session_start();
 
             </div>
             </form>
+        </div>
+        
+       
+        <!-- LOGIN -->
+
+        <div class="container-login" id="login-container">
+            <div class="to-create">
+                <p> <i id="return" class='bx bx-chevron-left'></i></p>
+                <p>Not a member? <a href="" id="show-create">Sign up</a></p>
+                
+            </div>
+            <form method="POST" class="login-form" name="login">
+            
+                <div class="welcome">
+                      <h1>Welcome Back!</h1>
+                </div>
+    
+                <div class="login-withAccounts">
+                    <button><i class='bx bxl-google'></i>&nbsp;Sign up with Google</button>
+                    <button><i class='bx bxl-facebook-circle' ></i>&nbsp;with Facebook</button>
+                </div>
+              
+    <div class="fields">
+        <div class="input-form">   
+            <div class="separator">
+                <span></span>
+                <p>or</p>
+                <span></span>
+            </div>
+            
+                <label for="username">Username</label> <br>
+                <input type="text" id="username" name="username"  placeholder="Username" required> <br>
+
+                <label for="password">Password</label><br>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+               
+                <div class="terms">
+                    <input type="checkbox" id="terms" required>
+                    <label for="Remember">Remember me</label>
+                </div>
+                <br>
+                <button type="submit" class="signin-btn">Sign In</button>
 
         </div>
-         
+    </form>
+
+          
+       
         <!-- end of wrapper -->
     </div>
     <script src="js/script.js" ></script>
