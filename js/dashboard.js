@@ -40,14 +40,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const dashboardContainer = document.getElementById('dashboardContainer');
   const artworkContainer = document.getElementById('artworkContainer');
   const messageContainer = document.getElementById('messageContainer');
-  const notificationContainer = document.getElementById('notificationContainer');
   const exhibitContainer = document.getElementById('exhibitContainer');
   const settingContainer = document.getElementById('settingsContainer');
 
   //  show only the dashboard and hide others
   artworkContainer.style.display = 'none';
   messageContainer.style.display = 'none';
-  notificationContainer.style.display = 'none';
   exhibitContainer.style.display = 'none';
   settingContainer.style.display = 'none';
 
@@ -88,17 +86,6 @@ messageLink.addEventListener('click', function(e) {
 
 });
 
-// notification section
-notificationLink.addEventListener('click', function(e) {
-  e.preventDefault();
-     dashboardContainer.style.display = 'none';
-      artworkContainer.style.display = 'none';
-      messageContainer.style.display = 'none';
-      notificationContainer.style.display ='block';
-      exhibitContainer.style.display = 'none';
-      settingContainer.style.display = 'none';
-
-});
 
 
 // exhibit container
@@ -106,8 +93,7 @@ exhibitLink.addEventListener('click', function(e) {
   e.preventDefault();
   dashboardContainer.style.display = 'none';
       artworkContainer.style.display = 'none';
-      messageContainer.style.display = 'none';
-      notificationContainer.style.display = 'none';
+      messageContainer.style.display = 'none'
       exhibitContainer.style.display = 'block';
       settingContainer.style.display = 'none';
 
@@ -120,7 +106,6 @@ settingLink.addEventListener('click', function(e) {
   dashboardContainer.style.display = 'none';
       artworkContainer.style.display = 'none';
       messageContainer.style.display = 'none';
-      notificationContainer.style.display = 'none';
       exhibitContainer.style.display = 'none';
       settingContainer.style.display = 'block';
 
@@ -163,3 +148,18 @@ function toggleFavorite() {
   blur.classList.toggle('active'); 
   popup.classList.toggle('active');
 }
+
+function toggleEditProfile() {
+
+  const settingContainer = document.getElementById('settingsContainer');
+  
+  // hide section
+  dashboardContainer.style.display = 'none';
+  artworkContainer.style.display = 'none';
+  messageContainer.style.display = 'none';
+  exhibitContainer.style.display = 'none';
+  
+  //show
+  settingContainer.style.display = 'block';
+}
+

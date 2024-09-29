@@ -72,15 +72,6 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
                     </a>
                 </li>
 
-                <li class="nav-link">
-                <a href="" class="notifications">
-                    <i class='bx bxs-bell' ></i>
-                    <span class="text nav-text">
-                       Notification
-                    </span>
-                </a>
-            </li>
-
 
             <li class="nav-link">
                 <a href="" class="exhibit">
@@ -137,6 +128,9 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
 
             </div>
            
+            <div class="notification-icon">
+                <i class='bx bxs-bell' ></i>
+            </div>
             
             <div class="filter-container">
                 <i class='bx bx-filter filter-icon' onclick="toggleDropdown()"></i>
@@ -148,10 +142,10 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
             </div>
 
             <div class="profile">
-                <div class="profile-pic"> 
+                <div class="profile-pic"  onclick="toggleEditProfile()" > 
                  <img src="gallery/eyes.jpg" alt=""> 
                 </div>
-                <p><b><?php echo $username; ?> </b></p>
+                <p class="to-edit-profile-btn" onclick="toggleEditProfile()"><b><?php echo $username;?> </b></p>
             </div>
         </div>
 
@@ -201,7 +195,7 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
                                 
                         </div>
 
-                        <div class="input-comment">
+                        <div class="in  put-comment">
 
                             <textarea name="comment" id="comment" class="comment-area"></textarea>
                             <button class="comment-btn"><i class='bx bxs-send'></i></button>
@@ -307,12 +301,12 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
                 </div>
     
                 <div class="edit-profile-container">
-                    <button>Edit Profile</button>
+                    <button class="to-edit-profile-btn" onclick="toggleEditProfile()">Edit Profile</button>
     
                 </div>
         </div>
        <hr>
-    
+
     
     <div class="tabpanes">
     
@@ -402,17 +396,6 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
         </div>
 
 
-
-        <!-- Notification -->
-        <div class="notification-container" id="notificationContainer">
-            <h1>hello notification</h1>
-
-
-            <!-- end of notification container -->
-        </div>
-
-
-
         <!-- Exhbits -->
         <div class="exhibit-container" id="exhibitContainer">
             <h1>hello exhbit</h1>
@@ -426,7 +409,37 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
 
         <!-- Settings -->
         <div class="settings-container" id="settingsContainer">
-            <h1>hello settings</h1>
+            <h2>Account</h2>
+            <p>Real-time information and activities of your property</p>
+            <hr>
+            <div class="setting-profile-details">
+                <div class="image-profile-settings">
+                    <img src="gallery/eyes.jpg" alt="">
+                </div>
+                <p><b>Jamaica Anuba</b> </p>
+            </div>
+
+            <button class="change-image-profile">Change Photo</button>
+
+            <div class="account-details">
+                <h5>Full Name</h5>
+                <input type="text" name="name" id="name" value="Jamaica Anuba">
+                
+                <label for="username" class="username-setting">Username</label>
+                <input type="text" name="name" id="name" value="anobajai12">
+
+                <hr>
+                <h5>Contact Email</h5>
+                <label for="email">Email</label><br>
+                <input type="email" name="email" id="email" value="anobajamaica@gmail.com">
+
+                <h5>Password</h5>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" value="anobajamaica@gmail.com">
+                <button class="change-email-btn">Change Password</button>
+            </div>
+          
+
 
 
             <!-- end of settings container -->
