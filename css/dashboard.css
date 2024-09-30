@@ -665,14 +665,13 @@ body {
     }
 }
   /* Saved */
-.image-artwork {
-    margin-top: 10px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  .created {
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
     gap: 20px;
-    width: 100%;
+    width: 100%; 
+    padding: 10px; 
 }
-
 .image-artwork img {
     width: 100%;
     height: 350px;
@@ -681,6 +680,7 @@ body {
 }
 
 .box{
+
     font-size: .8rem;
     height: 350px;
     cursor: pointer;

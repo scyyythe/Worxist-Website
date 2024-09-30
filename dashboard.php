@@ -1,15 +1,26 @@
 <?php
 session_start();
+include("include/connection.php");
+
 
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     die;
 }
 
-// Access user data from session
+//  user data from session
 $username = $_SESSION['username'];
 $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User'; 
+$u_id = $_SESSION['u_id']; 
+$title=$_SESSION['title'];
+
+// fetch all image file paths 
+$statement = $conn->prepare("SELECT file FROM art_info WHERE u_id = :u_id");
+$statement->bindValue(':u_id', $u_id);
+$statement->execute();
+$images = $statement->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 
 <!DOCTYPE html>
@@ -319,24 +330,26 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
     <div class="tabcontent" id="Created" >
       <h3>My Creations</h3>
      
-        <div class="image-artwork" >
+      <div class="image-artwork created">
 
-        <button class="box-button" id="upload" onclick="window.location.href='uploadArt.php'"> 
-            <i class='bx bx-message-square-add'></i>
-        </button>
+            <button class="box-button" id="upload" onclick="window.location.href='uploadArt.php'"> 
+                <i class='bx bx-message-square-add'></i>
+            </button>
 
-                    <div class="box" onclick="toggleCreation()">
-                        <img src="gallery/rose.png" alt="Hands">
+            <?php if (!empty($images)) {
+                foreach ($images as $image) {
+                    echo '<div class="box" onclick="toggleCreation()">'; 
+                    echo '<img src="' . htmlspecialchars($image['file']) . '" alt="Uploaded Image">';
+                    echo '<div class="artist-name">';
+                    echo '<p><span><b>' . htmlspecialchars($name) . '</b></span><br>' . htmlspecialchars($title) . '</p>'; 
+                    echo '</div>'; // Closing artist-name div
+                    echo '</div>'; // Closing box div
+                    }
+                }
+            ?>
 
-                        <div class="artist-name">
-                            <p><span><b>Jamaica Anuba</b></span><br>
-                            The Caress</p>
-                        </div>
-                    </div>
-         </div>
-
-
-      
+</div>
+     
     </div>
     
     

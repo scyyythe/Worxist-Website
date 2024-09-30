@@ -1,3 +1,10 @@
+<?php
+
+include("include/connection.php");
+include("include/addArtwork.php");
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +24,7 @@
 
     <!-- input artwork details -->
     <div class="artwork-upload">
-        <form action="">
+        <form action="" method="POST" name="uploadArt" enctype="multipart/form-data">
             
             <label for="title"><b>Title</b></label><br>
             <input type="text" name="title" id="title"><br>
@@ -35,18 +42,19 @@
             </select>
             <br><br>
 
-            <button>Upload Artwork</button>
+            <div class="image-upload">
+        <div class="image-display">
+            <!-- <img src="gallery/eyes.jpg" alt=""> -->
+        </div>    
+        <input type="file" name="file">
+
+    </div>  
+            <button name="uploadArt">Upload Artwork</button>
         </form>
     </div>
     
     <!-- display image -->
-    <div class="image-upload">
-        <div class="image-display">
-            <img src="gallery/eyes.jpg" alt="">
-        </div>    
-        <input type="file">
-
-    </div>  
+ 
         
     </div>
 

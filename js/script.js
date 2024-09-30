@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const leftBtn = document.getElementById('left');
     if (leftBtn) {
       leftBtn.addEventListener('click', function() {
-        window.location.href = 'index.php';
+        window.location.href = 'home.php';
       });
     } else {
       console.error("Left button with id='left' not found.");
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const returnBtn = document.getElementById('return');
     if (returnBtn) {
       returnBtn.addEventListener('click', function() {
-        window.location.href = 'index.php';
+        window.location.href = 'home.html';
       });
     } else {
       console.error("Return button with id='return' not found.");
@@ -47,31 +47,31 @@ document.addEventListener('DOMContentLoaded', function() {
   
 
     const signIn = document.getElementById("show-login");
-     const signUp = document.getElementById("show-create");
-     const wrapper = document.getElementById("wrapper");
+    const signUp = document.getElementById("show-create");
+    const wrapper = document.getElementById("wrapper");
   
-     if (signIn && signUp && wrapper) {
-       signIn.addEventListener('click', (event) => {
-         event.preventDefault();  
-         wrapper.classList.add("right-panel-activate");
-       });
+    if (signIn && signUp && wrapper) {
+      signIn.addEventListener('click', (event) => {
+        event.preventDefault();  
+        wrapper.classList.add("right-panel-activate");
+      });
   
-       signUp.addEventListener('click', (event) => {
-         event.preventDefault();  
-         wrapper.classList.remove("right-panel-activate");
-       });
-     } else {
+      signUp.addEventListener('click', (event) => {
+        event.preventDefault();  
+        wrapper.classList.remove("right-panel-activate");
+      });
+    } else {
       console.error("Sign-in, Sign-up, or wrapper elements not found.");
-     }
+    }
   
 
-     const exploreBtn = document.getElementById('explore');
-     if (exploreBtn) {
-     exploreBtn.addEventListener('click', function() {
-       window.location.href = 'accounLogin.html';
-     });
+    const exploreBtn = document.getElementById('explore');
+    if (exploreBtn) {
+      exploreBtn.addEventListener('click', function() {
+        window.location.href = 'accounLogin.html';
+      });
     } else {
-    console.error("Explore button with id='explore' not found.");
+      console.error("Explore button with id='explore' not found.");
     }
   });
   
