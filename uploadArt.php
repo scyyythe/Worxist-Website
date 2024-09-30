@@ -42,13 +42,13 @@ include("include/addArtwork.php");
             </select>
             <br><br>
 
-            <div class="image-upload">
-        <div class="image-display">
-            <!-- <img src="gallery/eyes.jpg" alt=""> -->
-        </div>    
-        <input type="file" name="file">
+        <div class="image-upload">
+            <div class="image-display">
+                <!-- <img src="gallery/eyes.jpg" alt=""> -->
+            </div>    
+            <input type="file" name="file" class="choose">
 
-    </div>  
+         </div>  
             <button name="uploadArt">Upload Artwork</button>
         </form>
     </div>
