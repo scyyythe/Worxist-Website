@@ -10,6 +10,7 @@ if (!isset($_SESSION['username'])) {
 
 //  user data from session
 $username = $_SESSION['username'];
+$email = $_SESSION['email'];
 $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User'; 
 $u_id = $_SESSION['u_id']; 
 $title=$_SESSION['title'];
@@ -19,7 +20,17 @@ $statement = $conn->prepare("SELECT file FROM art_info WHERE u_id = :u_id");
 $statement->bindValue(':u_id', $u_id);
 $statement->execute();
 $images = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+$statement = $conn->prepare("
+    SELECT art_info.file, accounts.u_name, art_info.title 
+    FROM art_info 
+    JOIN accounts ON art_info.u_id = accounts.u_id
+");
+$statement->execute();
+$allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
+
 
 
 
@@ -214,17 +225,27 @@ $images = $statement->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
 
-         
-                <div class="image-artwork" id="blur">
-                    <div class="box" onclick="toggleImage()">
-                        <img src="gallery/hands.jpg" alt="Hands">
+    
+<div class="image-artwork" id="blur">
 
+            <?php 
+            if (!empty($images)) {
+                foreach ($allImages as $image) { 
+                    ?>
+                    <div class="box" onclick="toggleCreation()">
+                        <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Image">
                         <div class="artist-name">
-                            <p><span><b>Jamaica Anuba</b></span><br>
-                            The Caress</p>
+                            <p><span><b><?php echo htmlspecialchars($image['u_name']); ?></b></span><br>
+                            <?php echo htmlspecialchars($image['title']); ?></p>
                         </div>
                     </div>
-                </div>
+                    <?php 
+                }
+            } else {
+                echo "<p>No images found.</p>";
+            }
+            ?>
+</div>
 
          
      </div>
@@ -296,8 +317,8 @@ $images = $statement->fetchAll(PDO::FETCH_ASSOC);
                 </div>
     
                 <div class="name">
-                    <span>Jam Candia</span>
-                    <p>jamcadia23</p>
+                    <span><?php echo $name;?></span>
+                    <p><?php echo $username;?></p>
                     <br>
                     <div class="follow">
                         <p><span >10</span>
@@ -477,26 +498,26 @@ $images = $statement->fetchAll(PDO::FETCH_ASSOC);
                 <div class="image-profile-settings">
                     <img src="gallery/eyes.jpg" alt="">
                 </div>
-                <p><b>Jamaica Anuba</b> </p>
+                <p><b><?php echo $name;?></b> </p>
             </div>
 
             <button class="change-image-profile">Change Photo</button>
 
             <div class="account-details">
                 <h5>Full Name</h5>
-                <input type="text" name="name" id="name" value="Jamaica Anuba">
+                <input type="text" name="name" id="name" value="<?php echo $name;?>">
                 
                 <label for="username" class="username-setting">Username</label>
-                <input type="text" name="name" id="name" value="anobajai12">
+                <input type="text" name="name" id="name" value="<?php echo $username;?>">
 
                 <hr>
                 <h5>Contact Email</h5>
                 <label for="email">Email</label><br>
-                <input type="email" name="email" id="email" value="anobajamaica@gmail.com">
+                <input type="email" name="email" id="email" value="<?php echo $email;?>">
 
                 <h5>Password</h5>
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" value="anobajamaica@gmail.com">
+                <input type="password" name="password" id="password" value="<?php echo  $hashed_password;?>">
                 <button class="change-email-btn">Change Password</button>
             </div>
           

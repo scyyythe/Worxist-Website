@@ -6,30 +6,33 @@
     include("include/connection.php");
 
      // Handle Login
-     if (isset($_POST['login']))
-     {
+     if (isset($_POST['login'])) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $username = $_POST['username'];
             $password = $_POST['password'];
-        
-            // Fetch user from the database based on the username
-            $statement = $conn->prepare("SELECT u_id, u_name, username, password FROM accounts WHERE username = :username");
+    
+            // kwaon user based on the username
+            $statement = $conn->prepare("SELECT u_id, u_name, username, email, password FROM accounts WHERE username = :username");
             $statement->bindValue(':username', $username);
             $statement->execute();
             $user = $statement->fetch(PDO::FETCH_ASSOC);
-        
+    
             if ($user && password_verify($password, $user['password'])) {
-                // Set session variables on successful login
+                // set session variables
+                //para ma retrieve ang certain information
+
                 $_SESSION['u_id'] = $user['u_id'];
                 $_SESSION['username'] = $user['username'];
-                $_SESSION['name'] = $user['u_name'];  // Set the 'name' session variable
+                $_SESSION['name'] = $user['u_name']; 
+                $_SESSION['email'] = $user['email'];
                 header("Location: dashboard.php");
                 die;
             } else {
                 echo "Invalid credentials";
             }
         }
-  }
+    }
+    
   if (isset($_POST['register'])){
     $result = [];
   if ($_SERVER['REQUEST_METHOD'] == "POST") {
