@@ -225,7 +225,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
 
-    
+    <!-- dashboard artwork displays -->
 <div class="image-artwork" id="blur">
 
             <?php 
