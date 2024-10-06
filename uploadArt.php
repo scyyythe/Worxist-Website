@@ -1,9 +1,9 @@
-<!-- <?php
+<?php
 
 include("include/connection.php");
 include("include/addArtwork.php");
 
-?> -->
+?>
 
 <!DOCTYPE html>
 <html lang="en">

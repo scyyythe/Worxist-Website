@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <p><a href=""><</a></p>
+        <p><a href="dashboard.php"><</a></p>
     </header>
 
     <div class="wrapper">

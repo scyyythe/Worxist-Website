@@ -537,7 +537,10 @@ body {
     align-items: center;
     object-fit: cover
 }
-
+.profile-info img{
+    max-width: 100%;
+    max-height: 100%;
+}
 .image-profile{
    width: 150px;
    height: 150px;
