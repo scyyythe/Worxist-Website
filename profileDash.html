@@ -76,8 +76,126 @@
             </div>
         </div>
 
+
+        <!-- below folder section -->
+ 
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event, 'created')">Created</button>
+                    <button class="tablinks" onclick="openTab(event, 'saved')">Saved</button>
+                </div>
+                
+                <!-- Tab content -->
+                <div id="created" class="tabcontent">
+                    <div class="image-artwork" >
+                        <div class="box">
+                            <img src="gallery/girl.jpg" alt="Uploaded Image 1">
+                            <div class="artist-name">
+                                <p><span><b>Jamaica Anuba</b></span><br>
+                                The Curse</p>
+                            </div>
+                        </div>
+
+                        <div class="box" >
+                            <img src="gallery/lips.jpg" alt="Uploaded Image 1">
+                            <div class="artist-name">
+                                <p><span><b>Jamaica Anuba</b></span><br>
+                                Anxiety</p>
+                            </div>
+                        </div>
+
+                        <div class="box" >
+                            <img src="gallery/body.jpg" alt="Uploaded Image 1">
+                            <div class="artist-name">
+                                <p><span><b>Jamaica Anuba</b></span><br>
+                                   Human Body in All Its Glory</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                                      
+                </div>
+                
+                
+                <div id="saved" class="tabcontent">
+                    <div class="folder-container">
+
+                        <div class="folder-image">
+
+                            <div class="right-image">
+                                 <img src="gallery/prof.jpg" alt="">
+                                <img src="gallery/red.jpg" alt="">
+                            </div>
+                            
+
+                             <div class="left-image">
+                                 <img src="gallery/girl.jpg" alt="">
+                             </div>                           
+                             
+                        </div>
+
+                        <div class="folder-image">
+
+                            <div class="right-image">
+                                 <img src="gallery/prof.jpg" alt="">
+                                <img src="gallery/red.jpg" alt="">
+                            </div>
+                            
+
+                             <div class="left-image">
+                                 <img src="gallery/girl.jpg" alt="">
+                             </div>                           
+                             
+                        </div>
+
+                        <div class="folder-image">
+
+                            <div class="right-image">
+                                 <img src="gallery/prof.jpg" alt="">
+                                <img src="gallery/red.jpg" alt="">
+                            </div>
+                            
+
+                             <div class="left-image">
+                                 <img src="gallery/girl.jpg" alt="">
+                             </div>                           
+                             
+                        </div>
+                   
+                    </div>
+
+                    
+                </div>
+                
+         
     </div>
     
-    <script src="js/dashboard.js"></script>
+    <script src="js/dashboard.js"> </script>
+    <script>
+ function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none"; // Hide all tab content
+    }
+
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", ""); // Remove active class
+    }
+
+    document.getElementById(tabName).style.display = "block"; 
+    evt.currentTarget.className += " active"; 
+}
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    var firstTab = document.querySelector('.tablinks');
+    firstTab.click(); 
+});
+
+
+
+      </script>
 </body>
 </html>

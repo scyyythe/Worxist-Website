@@ -23,40 +23,36 @@ function toggleDropdown() {
   }
 }
 // FOLLOWERS AND FOLLOWING
-// Get modal element
 const modal = document.getElementById("followers-modal");
 const followersContent = document.getElementById("followers-content");
 const followingContent = document.getElementById("following-content");
 
-// Get buttons to open modal
+
 const viewFollowersButton = document.getElementById("openFollowers");
 const viewFollowingButton = document.getElementById("openFollowing");
 
-// Get close button
 const closeButton = document.getElementsByClassName("close-button")[0];
 
-// Open Followers modal
 viewFollowersButton.addEventListener("click", function(event) {
-    event.preventDefault(); // Prevent default link behavior
+    event.preventDefault(); 
     followersContent.style.display = "block";
     followingContent.style.display = "none";
     modal.style.display = "block";
 });
 
-// Open Following modal
+
+// following modal
 viewFollowingButton.addEventListener("click", function(event) {
-    event.preventDefault(); // Prevent default link behavior
+    event.preventDefault(); 
     followersContent.style.display = "none";
     followingContent.style.display = "block";
     modal.style.display = "block";
 });
 
-// Close modal when close button is clicked
 closeButton.addEventListener("click", function() {
     modal.style.display = "none"; 
 });
 
-// Close modal when clicking outside the modal content
 window.addEventListener("click", function(event) {
     if (event.target === modal) {
         modal.style.display = "none"; 
@@ -64,6 +60,10 @@ window.addEventListener("click", function(event) {
 });
 
 
+
+
+
+// e link mga side bar
 document.addEventListener('DOMContentLoaded', function() {
 
   // sidebar links
