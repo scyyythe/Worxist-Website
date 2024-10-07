@@ -11,6 +11,11 @@ sidebarItems.forEach(item => {
     });
 });
 
+//notification
+function toggleNotifications() {
+  var notificationCenter = document.getElementById("notificationCenter");
+  notificationCenter.classList.toggle("active");
+}
 
 
 // tabpane in Artwork Dashboard

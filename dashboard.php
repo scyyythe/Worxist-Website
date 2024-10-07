@@ -149,9 +149,23 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
             </div>
            
-            <div class="notification-icon">
-                <i class='bx bxs-bell' ></i>
+            <div class="notification-wrapper">
+                <div class="notification-icon" onclick="toggleNotifications()">
+                    <i class='bx bxs-bell'></i>
+                    <span class="badge">3</span> 
+                </div>
+
+            <div class="notification-center" id="notificationCenter">
+                <h5>Notifications</h5>
+                <ul>
+                    <li><a href="#">New comment on your post</a></li>
+                    <li><a href="#">You have a new follower</a></li>
+                    <li><a href="#">Jerald just posted an artwork</a></li>
+                </ul>
+                <a href="#" class="view-all">View all notifications</a>
             </div>
+</div>
+
             
             <div class="filter-container">
                 <i class='bx bx-filter filter-icon' onclick="toggleDropdown()"></i>
