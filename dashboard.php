@@ -1,4 +1,4 @@
-<!-- <?php
+ <?php
 session_start();
 include("include/connection.php");
 
@@ -13,10 +13,10 @@ $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User'; 
 $u_id = $_SESSION['u_id']; 
-$title=$_SESSION['title'];
+$title = isset($_SESSION['title']) ? $_SESSION['title'] : 'Default Title';
 
 // fetch all image file paths 
-$statement = $conn->prepare("SELECT file FROM art_info WHERE u_id = :u_id");
+$statement = $conn->prepare("SELECT file,title FROM art_info WHERE u_id = :u_id");
 $statement->bindValue(':u_id', $u_id);
 $statement->execute();
 $images = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -29,7 +29,7 @@ $statement = $conn->prepare("
 $statement->execute();
 $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-?> -->
+?> 
 
 
 
@@ -414,7 +414,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                     echo '<div class="box" onclick="toggleCreation()">'; 
                     echo '<img src="' . htmlspecialchars($image['file']) . '" alt="Uploaded Image">';
                     echo '<div class="artist-name">';
-                    echo '<p><span><b>' . htmlspecialchars($name) . '</b></span><br>' . htmlspecialchars($title) . '</p>'; 
+                    echo '<p><span><b>' . htmlspecialchars($name) . '</b></span><br>' . htmlspecialchars($image['title']). '</p>'; 
                     echo '</div>'; // Closing artist-name div
                     echo '</div>'; // Closing box div
                     }
@@ -475,18 +475,28 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
         <div class="messages-container" id="messageContainer">
             
             <div class="head-message">
-                 <h5>Messages </h5>
+                 <h5>Chats</h5>
                 
             </div>
            
             <div class="message-name">
 
-                <div class="message-name-box">
+                <div class="message-name-head">
+                        <div class="message-user-image"> 
+                             <img src="gallery/girl.jpg" alt=""> <br>
+                             <p>Jamaica Anuba</p><br>
+                             <input type="text" name="search-friend" id="search-friend" placeholder="Search">
+                        </div>
+                        
+                </div>
+
+                <div class="name-box-container">
+                     <div class="message-name-box">
                          <div class="profile-pic message-profile"> 
                              <img src="gallery/girl.jpg" alt=""> 
                         </div>
     
-                        <h5>Jamaica Anuba</h5>
+                        <h5>Jerald Aliviano</h5>
                 </div>
 
                 <div class="message-name-box">
@@ -495,7 +505,9 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                    </div>
 
                    <h5>Angel Canete</h5>
-           </div>
+                </div>
+                </div>
+               
                  
             </div>
 
