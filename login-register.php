@@ -11,13 +11,18 @@ include("include/loginregister.php");
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/accountLgin.css">
     <link rel="shortcut icon" href="image/vags-logo.png" type="image/x-icon">
-
-</script>
     <title>Worxist Login</title>
 </head>
 <body>
     <div class="wrapper" id="wrapper">
-   
+    <!-- Display success message -->
+
+    <div id="validationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modalMessage">Invalid credentials or missing fields.</p>
+        </div>
+    </div>
           <!-- Right Image -->
           <div class="overlay-container-c" id="overlay-container">
             
@@ -65,7 +70,7 @@ include("include/loginregister.php");
                     <input type="text" id="name" name="name" placeholder="Name" required><br>
 
                     <label for="email">Email or Phone no</label> <br>
-                    <input type="text" id="email" name="email"  placeholder="Email or Phone No." required> <br>
+                    <input type="email" id="email" name="email"  placeholder="Email or Phone No." required> <br>
 
                     <label for="username">Username</label> <br>
                     <input type="text" id="username" name="username"  placeholder="Username" required> <br>
@@ -136,5 +141,47 @@ include("include/loginregister.php");
     </div>
     <script src="js/script.js" ></script>
 
+    <script>
+         const errorMessage = "<?php echo $errorMessage; ?>";
+         
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById("validationModal");
+        const span = document.getElementsByClassName("close")[0];
+        const modalMessage = document.getElementById("modalMessage");
+
+        
+        span.onclick = function() {
+            modal.style.display = "none";
+        };
+
+   
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+
+        
+        if (errorMessage) {
+            modalMessage.innerText = errorMessage;
+            modal.style.display = "block"; // Show modal
+        }
+
+        // Form validation for login
+        const loginForm = document.forms["login"];
+        loginForm.addEventListener("submit", (e) => {
+            const username = loginForm["username"].value;
+            const password = loginForm["password"].value;
+
+            if (!username || !password) {
+                e.preventDefault(); // Prevent form submission
+                modalMessage.innerText = "Please enter both username and password.";
+                modal.style.display = "block"; // Show modal
+            }
+        });
+    });
+
+    </script>
 </body>
 </html>

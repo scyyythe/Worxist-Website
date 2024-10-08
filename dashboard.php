@@ -1,34 +1,33 @@
- <?php
+<?php
 session_start();
 include("include/connection.php");
-
 
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     die;
 }
 
-//  user data from session
+// User data from session
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User'; 
 $u_id = $_SESSION['u_id']; 
 $title = isset($_SESSION['title']) ? $_SESSION['title'] : 'Default Title';
 
-// fetch all image file paths 
-$statement = $conn->prepare("SELECT file,title FROM art_info WHERE u_id = :u_id");
+
+$statement = $conn->prepare("SELECT file, title, description, category FROM art_info WHERE u_id = :u_id");
 $statement->bindValue(':u_id', $u_id);
 $statement->execute();
 $images = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+
 $statement = $conn->prepare("
-    SELECT art_info.file, accounts.u_name, art_info.title 
+    SELECT art_info.file, accounts.u_name, art_info.title, art_info.description, art_info.category
     FROM art_info 
     JOIN accounts ON art_info.u_id = accounts.u_id
 ");
 $statement->execute();
 $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
-
 ?> 
 
 
@@ -185,85 +184,82 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
 
-                    <!-- pop-up -->
-                <div class="popup" id="popup" >
-                    <div class="box-pop">
-                        <img src="gallery/hands.jpg" alt="Hands">  
-                             
-                    </div>
-                    
-                       <!-- interction like save favorites -->
-                       <div class="social-interact-icons">
-                        <i class='bx bxs-heart'></i>
-                        <i class='bx bxs-bookmark-star bookmark' ></i>
-                        <i class='bx bxs-star' ></i>
-                     </div>
+          <!-- Pop-up -->
+<div class="popup" id="popup">
+    <div class="box-pop">
+        <img src="gallery/hands.jpg" alt="Hands">  
+    </div>
 
-                    <div class="art-details">
-                        <div class="top-details"> 
-                            <h3>The Caress</h3>
-                            <div class="close-popup" onclick="toggleImage()">
-                                <i class='bx bx-x'></i>
-                            </div>
-                        </div>
-    
-                        <div class="art-information">
-                            <p>Artist: <em><a href="">Jamaica Anuba</a></em> </p>
-                            <p>Category: Painting </p>
-                            <br>
-                            <p>&nbsp;&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-                        </div>
+    <!-- Interaction like save favorites -->
+    <div class="social-interact-icons">
+        <i class='bx bxs-heart'></i>
+        <i class='bx bxs-bookmark-star bookmark'></i>
+        <i class='bx bxs-star'></i>
+    </div>
 
-                        <div class="interaction">
-                            <h5>Comments</h5>
-            
-                            <div class="user-image">
-                                <div class="profile-pic"> 
-                                <img src="gallery/eyes.jpg" alt=""> 
-                                </div> 
-                                <h5>Angel Canete</h5>                             
-                             </div>
-                            
-                                <div class="comment">
-                                <p>Wow!</p>
-                                </div>                            
-                                
-                        </div>
+    <div class="art-details">
+        <div class="top-details"> 
+            <h3>The Caress</h3>
+            <div class="close-popup" onclick="toggleImage()">
+                <i class='bx bx-x'></i>
+            </div>
+        </div>
 
-                        <div class="in  put-comment">
+        <div class="art-information">
+            <p>Artist: <em><a href="#">Jamaica Anuba</a></em></p>
+            <p>Category: Painting</p>
+            <br>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
 
-                            <textarea name="comment" id="comment" class="comment-area"></textarea>
-                            <button class="comment-btn"><i class='bx bxs-send'></i></button>
-                        </div>
+        <div class="interaction">
+            <h5>Comments</h5>
+            <div class="user-image">
+                <div class="profile-pic"> 
+                    <img src="gallery/eyes.jpg" alt=""> 
+                </div> 
+                <h5>Angel Canete</h5>                             
+            </div>
+            <div class="comment">
+                <p>Wow!</p>
+            </div>                            
+        </div>
 
-                    </div>
-                </div>
-
-    <!-- dashboard artwork displays -->
-<div class="image-artwork" id="blur">
-
-            <?php 
-            if (!empty($images)) {
-                foreach ($allImages as $image) { 
-                    ?>
-                    <div class="box" onclick="toggleCreation()">
-                        <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Image">
-                        <div class="artist-name">
-                            <p><span><b><?php echo htmlspecialchars($image['u_name']); ?></b></span><br>
-                            <?php echo htmlspecialchars($image['title']); ?></p>
-                        </div>
-                    </div>
-                    <?php 
-                }
-            } else {
-                echo "<p>No images found.</p>";
-            }
-            ?>
+        <div class="input-comment">
+            <textarea name="comment" id="comment" class="comment-area"></textarea>
+            <button class="comment-btn"><i class='bx bxs-send'></i></button>
+        </div>
+    </div>
 </div>
 
-         
-     </div>
+<div class="image-artwork" id="blur">
+    <?php 
+    if (!empty($allImages)) {
+        foreach ($allImages as $image) { 
+            ?>
+            <div class="box" 
+                 onclick="showPopup(this)" 
+                 data-image="<?php echo htmlspecialchars($image['file']); ?>"
+                 data-title="<?php echo htmlspecialchars($image['title']); ?>"
+                 data-artist="<?php echo htmlspecialchars($image['u_name']); ?>"
+                 data-category="<?php echo htmlspecialchars($image['category']); ?>" 
+                 data-description="<?php echo htmlspecialchars($image['description']); ?>">
+                 
+                <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Image">
+                <div class="artist-name">
+                    <p><span><b><?php echo htmlspecialchars($image['u_name']); ?></b></span><br>
+                    <?php echo htmlspecialchars($image['title']); ?></p>
+                </div>
+            </div>
+            <?php 
+        }
+    } else {
+        echo "<p>No images found.</p>";
+    }
+    ?>
+</div>
 
+     </div>
 
      <!-- my artworks -->
         <!-- pop-up -->

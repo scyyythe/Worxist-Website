@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const leftBtn = document.getElementById('left');
     if (leftBtn) {
       leftBtn.addEventListener('click', function() {
-        window.location.href = 'home.php';
+        window.location.href = 'index.php';
       });
     } else {
       console.error("Left button with id='left' not found.");
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const returnBtn = document.getElementById('return');
     if (returnBtn) {
       returnBtn.addEventListener('click', function() {
-        window.location.href = 'home.html';
+        window.location.href = 'index.php';
       });
     } else {
       console.error("Return button with id='return' not found.");

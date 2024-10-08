@@ -28,7 +28,7 @@
                 header("Location: dashboard.php");
                 die;
             } else {
-                echo "Invalid credentials";
+                $errorMessage = "Failed to login account. Please try again.";
             }
         }
     }
@@ -66,8 +66,7 @@
           $_SESSION['email'] = $email;
           $_SESSION['accType'] = $accType;
           $_SESSION['accStatus'] = $accStatus;
-
-         
+          
           header("Location: login-register.php");  
           die;
       }

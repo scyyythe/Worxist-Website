@@ -393,7 +393,7 @@ body {
   
 }
 
-.popup,.popup-creation {
+.popup {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -408,13 +408,15 @@ body {
     opacity: 0;
     transition: transform 0.5s ease, visibility 0s 0.5s, opacity 0.5s ease;       
     background-color: white; 
-    z-index: 10;
+    z-index: 10;      
 }
 
 .box-pop {
-    width: 100%;
-    object-fit: contain;
-
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 80%; /* Adjust as needed */
 }
 
 .box-pop img {

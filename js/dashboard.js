@@ -171,14 +171,41 @@ settingLink.addEventListener('click', function(e) {
  
 });
 
-    // pop up image description
-    function toggleImage() {
-      var blur = document.getElementById('blur');
-      var popup = document.getElementById('popup');
-      
-      blur.classList.toggle('active'); 
-      popup.classList.toggle('active');
-  }
+//pop up image then mga descriotion
+function showPopup(element) {
+  // get popup container
+  const popup = document.getElementById('popup');
+
+  // get data sa image-awtrok na div container
+  const imageSrc = element.getAttribute('data-image');
+  const title = element.getAttribute('data-title');
+  const artist = element.getAttribute('data-artist');
+  const category = element.getAttribute('data-category');
+  const description = element.getAttribute('data-description');
+
+  document.querySelector('.box-pop img').src = imageSrc;
+  document.querySelector('.top-details h3').innerText = title;
+  document.querySelector('.art-information p em a').innerText = artist;
+  document.querySelector('.art-information p em a').href = 'profileDash.php'; 
+  document.querySelector('.art-information p:nth-of-type(2)').innerText = `Category: ${category}`;
+  document.querySelector('.art-information p:nth-of-type(3)').innerText = description;
+
+  // Show the popup
+  popup.style.display = 'flex';
+  setTimeout(() => {
+      popup.classList.add('active'); 
+  }, 0); 
+}
+
+
+function toggleImage() {
+  const popup = document.getElementById('popup');
+  popup.classList.remove('active'); 
+  setTimeout(() => {
+      popup.style.display = 'none'; 
+  }, 500); 
+}
+
 // created
   function toggleCreation() {
     var blur = document.getElementById('artworkContainer');
