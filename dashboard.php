@@ -49,7 +49,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
         <header>
             <div class="image-text">
                 <span class="image">
-                    <img src="image/vags-logo.png" alt="Logo">
+                    <img src="image/white logo.png" alt="Logo">
                     <div class="text header-text">
                     <span class="nameLogo">
                         Worxist
@@ -321,32 +321,6 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
         </div>
      <div class="artwork-section" id="artworkContainer">
     
-        <div class="profile-info">
-                <div class="image-profile">
-                    <img src="gallery/eyes.jpg" alt="">
-                </div>
-    
-                <div class="name">
-                    <span><?php echo $name;?></span>
-                    <p><?php echo $username;?></p>
-                    <br>
-                    <div class="follow">
-                        <p><span >10</span>
-                        <a href="" id="openFollowers">Followers</a>
-                        </p>
-    
-                        <p><span >1</span>
-                        <a href=""  id="openFollowing">Following</a>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="edit-profile-container">
-                    <button class="to-edit-profile-btn" onclick="toggleEditProfile()">Edit Profile</button>
-    
-                </div>
-        </div>
-       <hr>
 
                         <!-- Popup Modal -->
                     <div id="followers-modal" class="modal">
@@ -388,7 +362,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     
     <div class="tabpanes">
-    
+    <h3>Artworks</h3>
     <div class="tab">
       <a class="tablinks" onclick="myOption(event, 'Created')">Created <span></span></a>
       <a class="tablinks" onclick="myOption(event, 'Saved')">Saved <span></span></a>
@@ -426,7 +400,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
     <div id="Saved" class="tabcontent">
       <h3>Saved Artworks</h3>
      
-        <div class="image-artwork">
+        <div class="image-artwork saved-image">
             <div class="box" onclick="toggleSaved()">
                 <img src="gallery/eternity.jpg" alt="Hands">
                 <div class="artist-name">
@@ -444,15 +418,15 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
          <!-- Favorites -->
          <div id="Favorites" class="tabcontent">
             <h3>My Favorites</h3>
-            <div class="image-artwork">
-                <div class="box" onclick="toggleFavorite()">
-                    <img src="gallery/guitar.jpg" alt="Hands">
-                    <div class="artist-name">
-                        <p><span><b>Jerald Aliviano</b></span><br>
-                        The Eternity</p>
-                    </div>
-                    
+            <div class="image-artwork favorite-image">
+            <div class="box" onclick="toggleSaved()">
+                <img src="gallery/body.jpg" alt="Hands">
+                <div class="artist-name">
+                    <p><span><b>Jerald Aliviano</b></span><br>
+                    The Eternity</p>
                 </div>
+                
+            </div>
     
         </div>
         </div>
@@ -555,10 +529,12 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
 
+
+
         <!-- Exhbits -->
         <div class="exhibit-container" id="exhibitContainer">
-            <h1>hello exhbit</h1>
-    
+            
+                
 
             <!-- end of exhibit container -->
         </div>
@@ -568,34 +544,48 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- Settings -->
         <div class="settings-container" id="settingsContainer">
-            <h3>Account</h3>
-            <p>Real-time information and activities of your property</p>
-            <hr>
-            <div class="setting-profile-details">
-                <div class="image-profile-settings">
+
+              <div class="profile-info">
+                <div class="image-profile">
                     <img src="gallery/eyes.jpg" alt="">
                 </div>
-                <p><b><?php echo $name;?></b></p><br>
-            </div>
+    
+                <div class="name">
+                    <span><?php echo $name;?></span>
+                    <p><?php echo $username;?></p>
+                    <br>
+                    <div class="follow">
+                        <p><span >10</span>
+                        <a href="" id="openFollowers">Followers</a>
+                        </p>
+    
+                        <p><span >1</span>
+                        <a href=""  id="openFollowing">Following</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="edit-profile-container">
+                    <button class="to-edit-profile-btn" onclick="toggleEditProfile()">Edit Profile</button>
+    
+                </div>
+        </div>
+       <hr>
+            <p>Real-time information and activities of your property</p>
 
             <button class="change-image-profile">Change Photo</button>
 
             <div class="account-details">
-                <h5>Full Name</h5>
-                <input type="text" name="name" id="name" value="<?php echo $name;?>">
-                
-                <label for="username" class="username-setting"><b>Username</b></label>
-                <input type="text" name="name" id="name" value="<?php echo $username;?>">
 
-                <hr>
-                <h5>Contact Email</h5>
+    
+                <h5>Contact Information</h5>
                 <label for="email">Email</label><br>
                 <input type="email" name="email" id="email" value="<?php echo $email;?>">
 
-                <h5>Password</h5>
+                <!-- <h5>Password</h5>
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" value="<?php echo  $hashed_password;?>">
-                <button class="change-email-btn">Change Password</button>
+                <button class="change-email-btn">Change Password</button> -->
             </div>
           
 

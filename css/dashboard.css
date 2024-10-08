@@ -22,7 +22,7 @@
 body {
 
     height: 100vh;
-    background-color: var(--body-color);
+    background: #a20d0d;
 }
 
 
@@ -66,7 +66,9 @@ body {
     border-radius: 10px;
   
 }
-
+.sidebar li:hover i{
+    color: #9f1414;
+}
 .sidebar li.active i {
     color: #a20d0d;
     font-weight: bolder;
@@ -83,7 +85,6 @@ body {
 }
 .sidebar:hover .text {
     opacity: 1;
-    color: #9f1414;
 }
 
 .name{
@@ -107,10 +108,14 @@ body {
     padding: 0;
     margin: 0;
 }
-
+.sidebar li .active a{
+    background-color: white;
+    color: #9f1414;
+} 
 .sidebar li a:hover span {
-    color: white;
+    color: #9f1414;
 }
+
 
 .image-text {
     display: flex;
@@ -175,11 +180,12 @@ body {
 
 .wrapper {
     position: relative;
-    margin-left: 75px;
-    padding: 20px;
-    max-width: 1850px;
+    margin-left: 80px;
+    max-width: 2000px;
     height: 100vh;
-
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    background-color: var(--body-color);
 }
 
 .top-head{
@@ -199,7 +205,8 @@ body {
 .top-head p{
     position: relative;
     left: 10px;
-
+    padding-top: 20px;
+    margin-bottom: 20px;
 }
 .searchbar{
     width: 300px; 
@@ -370,29 +377,32 @@ body {
 /* container artwork css */
 
 .dashcontainer{
+
     position: relative;
     width: 100%;
     height: 100%;
     border-radius: 20px;
     padding: 20px;
-    padding-top: 50px;    box-sizing: border-box;
+    padding-top: 20px;    box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start; 
+    overflow: scroll;
+    overflow-x: hidden;
 }
 .image-artwork {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     width: 100%;
     position: relative;
-    margin-top: 20px;
+    margin-top: 50px;
 }
 
 
 .image-artwork img {
     width: 100%;
-    /* height: 350px; */
+    height: 350px; 
     object-fit: cover;
     border-radius: 20px;
   
@@ -587,6 +597,7 @@ body {
 }
 
 .artist-name {
+  
     height: 0; 
     width: 270px;
     position: relative;
@@ -620,150 +631,16 @@ body {
     float: right;
 }
 
-.profile-info{
-    width: 100%;
-    height: 30%;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    object-fit: cover
-}
-
-.image-profile{
-   width: 150px;
-   height: 150px;
-    border-radius: 80%;
-    border-style: solid;
-    border-width: 1px;
-    overflow: hidden;
-}
-
-
-.name{
-    width: 30%;
-    position: relative;
-    left: 50px;
-
-    span{
-        font-size: 2rem;
-        font-weight: 700;
-    }
-
-    p{
-        font-size: .8rem;
-    }
-}
-.follow{
-    width: 60%;
-    display: flex;
-    justify-content: space-between;
-}
-.follow a{
-    text-decoration: none;
-    color: black;
-
-   
-}
-
-.follow  a:hover{
-    color: #ec1111;
-    text-decoration: underline;
-}
-.follow span{
-    font-size: 1rem;
-}
-/* followers pop up mdoal */
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0, 0, 0, 0.24); }
-
-.modal-content {
-    background: rgba(255, 255, 255, 0.95); 
-    border-radius: 15px; 
-    margin: 15% auto; 
-    padding: 20px;
-    width: 30%; 
-}
-
-.close-button {
-    color: #aaa; 
-    float: right;
-    font-size: 25px;
-
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: black; 
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.followers-pop-up,.following-pop-up{
-    z-index: 1;
-    background-color: white;
-    position: absolute;
-    right: 500px;
-    border-radius: 20px;
-    padding: 20px;
-    top: 100px;
-    width: 25%;
-    height: 70%;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    
-    h5{
-        margin-bottom: 10px;
-    }
-}
-.follower-display,.following-display{
-    display: flex;
-    align-items: center;
-    font-size: 13px;
-    margin-bottom: 5%;
-    
-    a{
-        text-decoration: none;
-        color: #b10505;
-    }
-}
-.follower-name{
-    margin-left: 5%;
-}
-
-/* edit profile */
-.edit-profile-container{
-    height: 30%;
-    width: 15%;
-    position: relative;
-    left: 40%;
-    top: 50%;
-
-    button{
-        width: 200px;
-        height: 30px;
-        border-radius: 20px;
-        border-style: none;
-    }
-
-    button:hover{
-        color: #ec1111;
-        cursor: pointer;
-    }
-}
 /* tabpanes */
 .tabpanes{
-    padding: 20px;
-   
+   position: relative;
+   left: 2%;
+    max-width: 1900px;
+    height: 90vh;
+    overflow: hidden;
 }
 .tab {
-
+    
     overflow: hidden;
     width: 100%;
     display: flex;
@@ -808,6 +685,10 @@ body {
     animation: fadeEffect 1s; 
     display: none;
     padding: 6px 12px;
+    height: 100%;
+    position: relative; 
+    overflow: scroll;
+ 
   }
   @keyframes fadeEffect {
     from {opacity: 0;}
@@ -832,17 +713,22 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
     gap: 20px;
     width: 100%; 
-    padding: 10px; 
-}
-.image-artwork img {
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
-    border-radius: 20px;
-}
 
+   
+}
+.saved-image{
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    gap: 20px;
+    width: 100%; 
+}
+.favorite-image {
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    gap: 20px;
+    width: 100%; 
+}
 .box{
-
     font-size: .8rem;
     height: 350px;
     cursor: pointer;
@@ -1092,32 +978,181 @@ body {
 
 
 /* exhbit css */
-.exhibit-container{
+.exhibit-container {
     position: absolute;
     margin: 0 auto;
     padding: 20px;
-    width: 95%;
+    width: 1963px;
     height: 100vh;
     float: right;
+    background-image: url('../image/background-exhibit.png');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    overflow: hidden;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    
+    filter: brightness(1.1) contrast(1.1); /
 }
+
 
 
 /* settings css */
 .settings-container{
+
     font-size: 13px;
     position: absolute;
     margin: 0 auto;
     padding: 20px;
-    max-width: 1500px;
-    float: right;
+    width: 1500px;
 
     p{
        font-size: 13px;
         margin-bottom: 10px;
     }
 }
+/* seettings nani */
+.profile-info{
+    
+    width: 100%;
+    height: 30%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    object-fit: cover
+}
 
+.image-profile{
+   width: 150px;
+   height: 150px;
+    border-radius: 80%;
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+}
+
+
+.name{
+    width: 30%;
+    position: relative;
+    left: 50px;
+
+    span{
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    p{
+        font-size: .8rem;
+    }
+}
+.follow{
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+}
+.follow a{
+    text-decoration: none;
+    color: black;
+
+   
+}
+
+.follow  a:hover{
+    color: #ec1111;
+    text-decoration: underline;
+}
+.follow span{
+    font-size: 1rem;
+}
+/* followers pop up mdoal */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.24); }
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.95); 
+    border-radius: 15px; 
+    margin: 15% auto; 
+    padding: 20px;
+    width: 30%; 
+}
+
+.close-button {
+    color: #aaa; 
+    float: right;
+    font-size: 25px;
+
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black; 
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.followers-pop-up,.following-pop-up{
+    z-index: 1;
+    background-color: white;
+    position: absolute;
+    right: 500px;
+    border-radius: 20px;
+    padding: 20px;
+    top: 100px;
+    width: 25%;
+    height: 70%;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    
+    h5{
+        margin-bottom: 10px;
+    }
+}
+.follower-display,.following-display{
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 5%;
+    
+    a{
+        text-decoration: none;
+        color: #b10505;
+    }
+}
+.follower-name{
+    margin-left: 5%;
+}
+
+/* edit profile */
+.edit-profile-container{
+    height: 30%;
+    width: 15%;
+    position: relative;
+    left: 40%;
+    top: 50%;
+
+    button{
+        width: 200px;
+        height: 30px;
+        border-radius: 20px;
+        border-style: none;
+    }
+
+    button:hover{
+        color: #ec1111;
+        cursor: pointer;
+    }
+}
 .image-profile-settings{
+    
     width: 80px;
     height: 80px;
     border-radius: 80%;
@@ -1190,3 +1225,9 @@ body {
     cursor: pointer;
     color: red;
  }
+
+ @media (max-width: 768px) {
+    .exhibit-container {
+        width: 100%;
+    }
+}
