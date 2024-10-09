@@ -363,12 +363,12 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
     
     <div class="tabpanes">
     <h3>Artworks</h3>
-    <div class="tab">
-      <a class="tablinks" onclick="myOption(event, 'Created')">Created <span></span></a>
-      <a class="tablinks" onclick="myOption(event, 'Saved')">Saved <span></span></a>
-      <a class="tablinks" onclick="myOption(event, 'Favorites')">Favorites<span></span></a>
+        <div class="tab">
+        <a class="tablinks" onclick="myOption(event, 'Created')">Created <span></span></a>
+        <a class="tablinks" onclick="myOption(event, 'Saved')">Saved <span></span></a>
+        <a class="tablinks" onclick="myOption(event, 'Favorites')">Favorites<span></span></a>
 
-    </div>
+        </div>
     <!-- Created -->
     <div class="tabcontent" id="Created" >
       <h3>My Creations</h3>
@@ -540,14 +540,27 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- Solo Exhibit Request -->
         <div id="reqExhibit-con" class="reqExhibit-con">
+            <div class="top-req">
+                <i class='bx bx-chevron-left'></i>
+                <p>Schedule Your Exhibition Now</p>
+            </div>
 
-        <div class="solo-head">
-                <div class="return"><</div>
-                    <p><b>Schedule Your Exhibition Now</b></p>
-                </div>
-              
+            <div class="tab-btn">
+                <button class="requestLink" onclick="openPage('Solo')">Solo</button>
+                <button class="requestLink" onclick="openPage('Collaborative')" id="defaultOpen">Collaborate</button>
+            </div>
+            
 
-        </div>
+            <div id="Solo" class="requestTab">
+                <h3>Home</h3>
+                <p>Home is where the heart is..</p>
+            </div>
+
+            <div id="Collaborative" class="requestTab">
+                <h3>About</h3>
+                <p>Who we are and what we do.</p>
+            </div>
+
         </div>
 
 

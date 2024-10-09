@@ -39,6 +39,7 @@ body {
 }
 
 .text {
+
     font-size: 16px;
     font-weight: 500;
     transition: var(--tran-03);
@@ -57,14 +58,13 @@ body {
     transition: width 0.3s ease;
 }
 .sidebar:hover {
-    width: 250px; /* Full width when hovered */
+    width: 250px; 
 }
 .sidebar li i {
     padding: 5px;
     font-size: 2rem;
     color: white;
     border-radius: 10px;
-  
 }
 .sidebar li:hover i{
     color: #9f1414;
@@ -996,7 +996,50 @@ body {
     filter: brightness(1.1) contrast(1.1); /
 }
 
+/* REQUEST EXHIBIT */
+.reqExhibit-con{
+    padding: 50px;
+    
+    button{
+        margin-inline: auto;
+    }
+}
+.tab-btn{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 50px;
+}
+.top-req{
+    display: flex;
+    align-items: center;
+    justify-content: left;
 
+    i{
+        font-size: 2rem;
+    }
+}
+.requestLink {
+    background-color: transparent;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 15%;
+}
+
+.requestLink:hover {
+   color: #9f1414;
+}
+
+  .requestTab {
+    display: none;
+    padding: 100px 20px;
+    height: 100%;
+  }
+  
 
 /* settings css */
 .settings-container{
