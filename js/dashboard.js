@@ -96,6 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const exhibitLink=document.querySelector('.exhibit');
   const settingLink=document.querySelector('.settings');
 
+  //exhibit
+  const reqContainer=document.getElementById('reqExhibit-con');
   
   // containers
   const dashboardContainer = document.getElementById('dashboardContainer');
@@ -109,6 +111,8 @@ document.addEventListener('DOMContentLoaded', function() {
   messageContainer.style.display = 'none';
   exhibitContainer.style.display = 'none';
   settingContainer.style.display = 'none';
+  reqContainer.style.display='none';
+
 
 
   // Dashboard
@@ -119,6 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
       messageContainer.style.display = 'none';
       exhibitContainer.style.display = 'none';
       settingContainer.style.display = 'none';
+      reqContainer.style.display='none';
+
 
   });
 
@@ -130,6 +136,8 @@ document.addEventListener('DOMContentLoaded', function() {
       messageContainer.style.display = 'none';
       exhibitContainer.style.display = 'none';
       settingContainer.style.display = 'none';
+      reqContainer.style.display='none';
+
 
   });
 
@@ -141,6 +149,8 @@ messageLink.addEventListener('click', function(e) {
     messageContainer.style.display = 'block';
     exhibitContainer.style.display = 'none';
     settingContainer.style.display = 'none';
+    reqContainer.style.display='none';
+
 
 });
 
@@ -154,6 +164,8 @@ exhibitLink.addEventListener('click', function(e) {
       messageContainer.style.display = 'none'
       exhibitContainer.style.display = 'block';
       settingContainer.style.display = 'none';
+      reqContainer.style.display='none';
+
 
 });
 
@@ -162,12 +174,14 @@ exhibitLink.addEventListener('click', function(e) {
 settingLink.addEventListener('click', function(e) {
   e.preventDefault();
   dashboardContainer.style.display = 'none';
-      artworkContainer.style.display = 'none';
-      messageContainer.style.display = 'none';
-      exhibitContainer.style.display = 'none';
-      settingContainer.style.display = 'block';
+  artworkContainer.style.display = 'none';
+  messageContainer.style.display = 'none';
+  exhibitContainer.style.display = 'none';
+  reqContainer.style.display = 'none';
 
+  settingContainer.style.display = 'block';  
 });
+
  
 });
 
@@ -241,15 +255,36 @@ function toggleEditProfile() {
   const messageContainer = document.getElementById('messageContainer');
   const exhibitContainer = document.getElementById('exhibitContainer');
   const settingContainer = document.getElementById('settingsContainer');
-  
+  const reqContainer=document.getElementById('reqExhibit-con');
+
   // Hide all sections
   dashboardContainer.style.display = 'none';
   artworkContainer.style.display = 'none';
   messageContainer.style.display = 'none';
   exhibitContainer.style.display = 'none';
+  reqContainer.style.display='none';
   
   // Show the settings container
   settingContainer.style.display = 'block';
+}
+function toggleExhibit() {
+  // Access the sections that need to be hidden/shown
+  const dashboardContainer = document.getElementById('dashboardContainer');
+  const artworkContainer = document.getElementById('artworkContainer');
+  const messageContainer = document.getElementById('messageContainer');
+  const exhibitContainer = document.getElementById('exhibitContainer');
+  const settingContainer = document.getElementById('settingsContainer');
+  const reqContainer=document.getElementById('reqExhibit-con');
+
+  // Hide all sections
+  dashboardContainer.style.display = 'none';
+  artworkContainer.style.display = 'none';
+  messageContainer.style.display = 'none';
+  exhibitContainer.style.display = 'none';
+  settingContainer.style.display = 'none';
+ 
+  reqContainer.style.display='block';
+
 }
 
 

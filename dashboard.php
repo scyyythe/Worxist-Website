@@ -533,12 +533,22 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- Exhbits -->
         <div class="exhibit-container" id="exhibitContainer">
-            
-                
-
+            <button onclick="toggleExhibit()">Schedule Now</button>
             <!-- end of exhibit container -->
         </div>
 
+
+        <!-- Solo Exhibit Request -->
+        <div id="reqExhibit-con" class="reqExhibit-con">
+
+        <div class="solo-head">
+                <div class="return"><</div>
+                    <p><b>Schedule Your Exhibition Now</b></p>
+                </div>
+              
+
+        </div>
+        </div>
 
 
 
