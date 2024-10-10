@@ -47,9 +47,9 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 <body>
    <nav class="sidebar close " id="sidebar">
         <header>
-            <div class="image-text">
-                <span class="image">
-                    <img src="image/white logo.png" alt="Logo">
+            <div class="image-text" >
+                <span class="image" >
+                <img src="image/white logo.png" alt="Logo" onclick="toggleSidebar()">
                     <div class="text header-text">
                     <span class="nameLogo">
                         Worxist
@@ -546,19 +546,83 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <div class="tab-btn">
-                <button class="requestLink" onclick="openPage('Solo')">Solo</button>
-                <button class="requestLink" onclick="openPage('Collaborative')" id="defaultOpen">Collaborate</button>
+                <button class="requestLink" onclick="openPage('Solo')" id="defaultOpen">Solo</button>
+                <button class="requestLink" onclick="openPage('Collaborative')" >Collaborate</button>
             </div>
             
 
             <div id="Solo" class="requestTab">
-                <h3>Home</h3>
-                <p>Home is where the heart is..</p>
-            </div>
 
+            <div class="exhibit-inputs">
+                <form action="" name="soloExhibit" >
+                    <label for="exhibit-title">Exhibit Title</label><br>
+                    <input type="text" placeholder="Enter the title of your exhibit"><br>
+
+                    <label for="exhibit-description">Exhibit Description</label><br>
+                    <textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit"></textarea><br>
+
+                    <label for="exhibit-date">Exhibit Date</label><br>
+                    <input type="date" id="exhibit-date" name="exhibit-date">
+
+                </form>
+                <div class="image-exhibit">
+                    <img src="image/solo-image.png" alt="Painting Graphics">
+                </div>
+            </div>
+                
+                    <div class="select-art">
+                        <p>Selected Artworks (Maximum of 10)</p>
+
+                        <div class="display-creations">
+                        <img src="gallery/girl.jpg " alt="">
+                        <img src="gallery/eyes.jpg" alt="">
+                        <img src="gallery/body.jpg" alt="">
+                        <img src="gallery/eternity.jpg" alt="">
+                        </div>
+                    </div>
+
+                <div class="confrim-solo">
+                    <button class="solo-btn">Confirm Schedule</button>
+                </div>
+            </div>
+<!-- collab request -->
             <div id="Collaborative" class="requestTab">
-                <h3>About</h3>
-                <p>Who we are and what we do.</p>
+            <div class="exhibit-inputs">
+                <form action="" name="soloExhibit" >
+                    <label for="exhibit-title">Exhibit Title</label><br>
+                    <input type="text" placeholder="Enter the title of your exhibit"><br>
+
+                    <label for="exhibit-description">Exhibit Description</label><br>
+                    <textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit"></textarea><br>
+
+                    <label for="exhibit-date">Exhibit Date</label><br>
+                    <input type="date" id="exhibit-date" name="exhibit-date">
+
+                </form>
+                <div class="add-collab">
+                    <label for="">Add Collaborators</label><br>
+                   <input type="text" name="" id="" placeholder="Search">
+
+                   <div class="display-collab">
+
+                   </div>
+                </div>
+            </div>
+                
+                    <div class="select-art">
+                        <p>Selected Artworks (Maximum of 10)</p>
+
+                        <div class="display-creations">
+                        <img src="gallery/girl.jpg " alt="">
+                        <img src="gallery/eyes.jpg" alt="">
+                        <img src="gallery/body.jpg" alt="">
+                        <img src="gallery/eternity.jpg" alt="">
+                        </div>
+                    </div>
+
+                <div class="confrim-solo">
+                    <button class="collab-btn">Confirm Schedule</button>
+                </div>
             </div>
 
         </div>

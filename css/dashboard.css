@@ -20,7 +20,7 @@
 }
 
 body {
-
+    overflow: hidden;
     height: 100vh;
     background: #a20d0d;
 }
@@ -1009,6 +1009,8 @@ body {
     align-items: center;
     justify-content: space-around;
     height: 50px;
+    position: relative;
+    bottom: 50px;
 }
 .top-req{
     display: flex;
@@ -1032,15 +1034,121 @@ body {
 
 .requestLink:hover {
    color: #9f1414;
+   font-weight: bold;
+}
+.requestLink.active{
+    font-weight: bold;
 }
 
-  .requestTab {
+.requestTab {
     display: none;
     padding: 100px 20px;
-    height: 100%;
+    height: 1000px;
+    position: relative;
+    bottom: 20px;
+}
+  #Solo{
+    display: flex;
   }
-  
+/* solo exibit */
+.exhibit-inputs{
+    position: relative;
+    bottom: 100px;
+    width: 40%;
+    z-index: 2;
+    form{
+        line-height: 1;
+        padding: 20px;
+    }
 
+    label{
+        font-size: 1rem;
+        font-weight: bold;
+    }
+    input{
+        z-index: 2;
+        margin-top: 10px;
+        margin-bottom: 50px;
+        padding: 10px;
+        width: 50%;
+        border-radius: 20px;
+        border: none;
+        background-color: #f8f8f8;
+        
+    }
+
+    
+    textarea{
+        margin-top: 10px;
+        margin-bottom: 50px;
+        padding: 10px;
+        resize: none;
+        width: 100%;
+        height: 100px;
+        border-radius: 20px;
+        border: none;
+        background-color: #f8f8f8;
+    }
+}
+
+.image-exhibit{
+    position: relative;
+    bottom: 90px;
+
+ 
+}
+.image-exhibit img{
+    z-index: 1;
+    width: 100%;
+    height: 400px;
+    filter: contrast(1);
+}
+.select-art{    
+    width: 50%;
+    position: absolute;
+    top: 0%;
+    right: 5%;
+}
+.display-creations {
+    padding: 1rem;
+    height: 650px;
+    background-color: #f8f8f8;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    overflow-y: auto; 
+}
+
+.display-creations img {
+    width: 100%;
+    cursor: pointer; 
+    border: 2px solid transparent;
+    transition: border 0.3s ease;
+    border-radius: 20px;
+    height: 350px;
+}
+
+.display-creations img.selected {
+    border: 5px solid #a70b0b; 
+    border-radius: 20px;
+}
+.solo-btn{
+    width: 200px;
+    border: none;
+    background-color: #a70b0b;
+    position: relative;
+    bottom: 270px;
+    left: 830px;
+    padding: 10px;
+    border-radius: 20px;
+    color: white;
+}
+.solo-btn:hover{
+    cursor: pointer;
+    background-color: #e40f0f;
+
+}
 /* settings css */
 .settings-container{
 

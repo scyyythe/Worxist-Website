@@ -1,4 +1,11 @@
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('close');
+}
+
+
 //sidebar active
+
 const sidebarItems = document.querySelectorAll('.sidebar li');
 
 
@@ -297,3 +304,16 @@ function openPage(pageName) {
 }
 
 document.getElementById("defaultOpen").click();
+
+
+//image selection in exhibit
+document.querySelectorAll('.display-creations img').forEach((img) => {
+  img.addEventListener('click', function() {
+     
+      if (document.querySelectorAll('.selected').length < 10 || img.classList.contains('selected')) {
+          img.classList.toggle('selected');
+      } else {
+          alert('You can only select up to 10 artworks.');
+      }
+  });
+});
