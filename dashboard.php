@@ -48,8 +48,8 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
    <nav class="sidebar close " id="sidebar">
         <header>
             <div class="image-text" >
-                <span class="image" >
-                <img src="image/white logo.png" alt="Logo" onclick="toggleSidebar()">
+                <span class="image" onclick="toggleSidebar()">
+                <img src="image/white logo.png" alt="Logo" >
                     <div class="text header-text">
                     <span class="nameLogo">
                         Worxist
@@ -629,57 +629,63 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 
 
-        <!-- Settings -->
-        <div class="settings-container" id="settingsContainer">
 
-              <div class="profile-info">
-                <div class="image-profile">
-                    <img src="gallery/eyes.jpg" alt="">
-                </div>
-    
-                <div class="name">
-                    <span><?php echo $name;?></span>
-                    <p><?php echo $username;?></p>
-                    <br>
-                    <div class="follow">
-                        <p><span >10</span>
-                        <a href="" id="openFollowers">Followers</a>
-                        </p>
-    
-                        <p><span >1</span>
-                        <a href=""  id="openFollowing">Following</a>
-                        </p>
+<div class="settings-container" id="settingsContainer">
+<h2>Settings</h2>
+
+<div class="tab-container">
+<div class="tab-settings">
+        <button class="setlinks" onclick="openSettings(event, 'myProfile')" id="defaultOpen">My Profile</button>
+        <button class="setlinks" onclick="openSettings(event, 'accSetting')">Account Setting</button>
+        <button class="setlinks" onclick="openSettings(event, 'notifSetting')">Notification</button>
+    </div>
+               
+            <div id="myProfile" class="tabInformation"> <!-- Corrected spelling -->
+                <h3>My Profile</h3>
+                <div class="top-myprofile">
+                    <div class="profile-picture">
+                        <div class="image-prof">
+                            <img src="" alt="">
+                        </div>
+
+                        <div class="text-image">
+                            <p>Upload new image</p>
+                            <p>Max file size - 10mb</p>
+                        </div>
                     </div>
+
+                    <div class="upload-image-btn">
+                        <button>Upload</button>
+                        <button>Remove image</button>
+                    </div>
+
                 </div>
 
-                <div class="edit-profile-container">
-                    <button class="to-edit-profile-btn" onclick="toggleEditProfile()">Edit Profile</button>
-    
+                <div class="form-below">
+                    <label for="edit-username">Edit Username</label><br>
+                    <input type="text" value="angel123"><br>
+
+                   
+
+                    <button>Save Changes</button>
                 </div>
-        </div>
-       <hr>
-            <p>Real-time information and activities of your property</p>
-
-            <button class="change-image-profile">Change Photo</button>
-
-            <div class="account-details">
-
-    
-                <h5>Contact Information</h5>
-                <label for="email">Email</label><br>
-                <input type="email" name="email" id="email" value="<?php echo $email;?>">
-
-                <!-- <h5>Password</h5>
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" value="<?php echo  $hashed_password;?>">
-                <button class="change-email-btn">Change Password</button> -->
             </div>
-          
 
+            <div id="accSetting" class="tabInformation"> <!-- Corrected spelling -->
+                <h3>Paris</h3>
+                <p>Paris is the capital of France.</p> 
+            </div>
 
+            <div id="notifSetting" class="tabInformation"> <!-- Corrected spelling -->
+                <h3>Tokyo</h3>
+                <p>Tokyo is the capital of Japan.</p>
+            </div>      
 
-            <!-- end of settings container -->
-        </div>
+</div>
+  
+
+    <!-- end of settings container -->
+</div>
 
 
 

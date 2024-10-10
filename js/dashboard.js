@@ -1,7 +1,8 @@
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
-  sidebar.classList.toggle('close');
+  sidebar.classList.toggle('open');
 }
+
 
 
 //sidebar active
@@ -52,42 +53,42 @@ function toggleDropdown() {
       dropdown.style.display = "block";
   }
 }
-// FOLLOWERS AND FOLLOWING
-const modal = document.getElementById("followers-modal");
-const followersContent = document.getElementById("followers-content");
-const followingContent = document.getElementById("following-content");
+// // FOLLOWERS AND FOLLOWING
+// const modal = document.getElementById("followers-modal");
+// const followersContent = document.getElementById("followers-content");
+// const followingContent = document.getElementById("following-content");
 
 
-const viewFollowersButton = document.getElementById("openFollowers");
-const viewFollowingButton = document.getElementById("openFollowing");
+// const viewFollowersButton = document.getElementById("openFollowers");
+// const viewFollowingButton = document.getElementById("openFollowing");
 
-const closeButton = document.getElementsByClassName("close-button")[0];
+// const closeButton = document.getElementsByClassName("close-button")[0];
 
-viewFollowersButton.addEventListener("click", function(event) {
-    event.preventDefault(); 
-    followersContent.style.display = "block";
-    followingContent.style.display = "none";
-    modal.style.display = "block";
-});
+// viewFollowersButton.addEventListener("click", function(event) {
+//     event.preventDefault(); 
+//     followersContent.style.display = "block";
+//     followingContent.style.display = "none";
+//     modal.style.display = "block";
+// });
 
 
-// following modal
-viewFollowingButton.addEventListener("click", function(event) {
-    event.preventDefault(); 
-    followersContent.style.display = "none";
-    followingContent.style.display = "block";
-    modal.style.display = "block";
-});
+// // following modal
+// viewFollowingButton.addEventListener("click", function(event) {
+//     event.preventDefault(); 
+//     followersContent.style.display = "none";
+//     followingContent.style.display = "block";
+//     modal.style.display = "block";
+// });
 
-closeButton.addEventListener("click", function() {
-    modal.style.display = "none"; 
-});
+// closeButton.addEventListener("click", function() {
+//     modal.style.display = "none"; 
+// });
 
-window.addEventListener("click", function(event) {
-    if (event.target === modal) {
-        modal.style.display = "none"; 
-    }
-});
+// window.addEventListener("click", function(event) {
+//     if (event.target === modal) {
+//         modal.style.display = "none"; 
+//     }
+// });
 
 
 
@@ -255,25 +256,25 @@ function toggleFavorite() {
   popup.classList.toggle('active');
 }
 
-function toggleEditProfile() {
-  // Access the sections that need to be hidden/shown
-  const dashboardContainer = document.getElementById('dashboardContainer');
-  const artworkContainer = document.getElementById('artworkContainer');
-  const messageContainer = document.getElementById('messageContainer');
-  const exhibitContainer = document.getElementById('exhibitContainer');
-  const settingContainer = document.getElementById('settingsContainer');
-  const reqContainer=document.getElementById('reqExhibit-con');
+// function toggleEditProfile() {
+//   // Access the sections that need to be hidden/shown
+//   const dashboardContainer = document.getElementById('dashboardContainer');
+//   const artworkContainer = document.getElementById('artworkContainer');
+//   const messageContainer = document.getElementById('messageContainer');
+//   const exhibitContainer = document.getElementById('exhibitContainer');
+//   const settingContainer = document.getElementById('settingsContainer');
+//   const reqContainer=document.getElementById('reqExhibit-con');
 
-  // Hide all sections
-  dashboardContainer.style.display = 'none';
-  artworkContainer.style.display = 'none';
-  messageContainer.style.display = 'none';
-  exhibitContainer.style.display = 'none';
-  reqContainer.style.display='none';
+//   // Hide all sections
+//   dashboardContainer.style.display = 'none';
+//   artworkContainer.style.display = 'none';
+//   messageContainer.style.display = 'none';
+//   exhibitContainer.style.display = 'none';
+//   reqContainer.style.display='none';
   
-  // Show the settings container
-  settingContainer.style.display = 'block';
-}
+//   // Show the settings container
+//   settingContainer.style.display = 'block';
+// }
 function toggleExhibit() {
   // Access the sections that need to be hidden/shown
   const dashboardContainer = document.getElementById('dashboardContainer');
@@ -317,3 +318,36 @@ document.querySelectorAll('.display-creations img').forEach((img) => {
       }
   });
 });
+
+
+//settings tab
+// Settings tabs
+function openSettings(evt, settingTab) {
+  var i, tabcontent, setlinks;
+
+  // Get all tab content elements and hide them
+  tabcontent = document.getElementsByClassName("tabInformation"); 
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none"; 
+  }
+
+  // Get all tab buttons and remove the "active" class
+  setlinks = document.getElementsByClassName("setlinks");
+  for (i = 0; i < setlinks.length; i++) {
+    setlinks[i].className = setlinks[i].className.replace(" active", ""); 
+  }
+
+  // Show the selected tab content
+  document.getElementById(settingTab).style.display = "block"; 
+  evt.currentTarget.className += " active"; 
+}
+
+// Function to open the default tab
+function openDefaultTab() {
+  // Get the first tab button and its corresponding content
+  var defaultTabButton = document.getElementById("defaultOpen");
+  openSettings({ currentTarget: defaultTabButton }, defaultTabButton.getAttribute('onclick').split("'")[1]);
+}
+
+// Call the openDefaultTab function when the page loads
+window.onload = openDefaultTab;
