@@ -195,6 +195,7 @@ settingLink.addEventListener('click', function(e) {
 
 //pop up image then mga descriotion
 function showPopup(element) {
+  var blur = document.getElementById('blur');
   // get popup container
   const popup = document.getElementById('popup');
 
@@ -207,34 +208,61 @@ function showPopup(element) {
 
   document.querySelector('.box-pop img').src = imageSrc;
   document.querySelector('.top-details h3').innerText = title;
-  document.querySelector('.art-information p em a').innerText = artist;
+  document.querySelector('.artist').innerText = artist;
   document.querySelector('.art-information p em a').href = 'profileDash.php'; 
-  document.querySelector('.art-information p:nth-of-type(2)').innerText = `Category: ${category}`;
-  document.querySelector('.art-information p:nth-of-type(3)').innerText = description;
+  document.querySelector('.category').innerText = `${category}`;
+  document.querySelector('.description-of-art').innerText = description;
 
   // Show the popup
   popup.style.display = 'flex';
   setTimeout(() => {
       popup.classList.add('active'); 
   }, 0); 
+
+  blur.classList.add('active');
+  popup.classList.add('active');
 }
 
 
 function toggleImage() {
   const popup = document.getElementById('popup');
-  popup.classList.remove('active'); 
-  setTimeout(() => {
-      popup.style.display = 'none'; 
-  }, 500); 
-}
+  const blur = document.getElementById('blur');
 
+  // Remove the active class from the popup and blur
+  popup.classList.remove('active'); 
+  blur.classList.remove('active'); 
+ 
+}
 // created
-  function toggleCreation() {
+function toggleCreation(element = null) {
     var blur = document.getElementById('artworkContainer');
     var popup = document.getElementById('popup-creation');
-    
-    blur.classList.toggle('active'); 
-    popup.classList.toggle('active');
+
+    if (element) {
+        // If an element is passed, open the popup and update details
+
+        const imageSrc = element.getAttribute("data-image");
+        const title = element.getAttribute("data-title");
+        const artist = element.getAttribute("data-artist");
+        const description = element.getAttribute("data-description");
+
+        const popupImage = popup.querySelector(".box-pop img");
+        const popupTitle = popup.querySelector(".top-details h3");
+        const popupArtist = popup.querySelector(".art-information em a");
+        const popupDescription = popup.querySelector(".art-information p:nth-of-type(3)");
+
+        popupImage.src = imageSrc;
+        popupTitle.textContent = title;
+        popupArtist.textContent = artist;
+        popupDescription.textContent = description;
+
+        blur.classList.add('active');
+        popup.classList.add('active');
+    } else {
+        // If no element, assume it's a close action
+        blur.classList.remove('active');
+        popup.classList.remove('active');
+    }
 }
 
 
@@ -256,25 +284,25 @@ function toggleFavorite() {
   popup.classList.toggle('active');
 }
 
-// function toggleEditProfile() {
-//   // Access the sections that need to be hidden/shown
-//   const dashboardContainer = document.getElementById('dashboardContainer');
-//   const artworkContainer = document.getElementById('artworkContainer');
-//   const messageContainer = document.getElementById('messageContainer');
-//   const exhibitContainer = document.getElementById('exhibitContainer');
-//   const settingContainer = document.getElementById('settingsContainer');
-//   const reqContainer=document.getElementById('reqExhibit-con');
+function toggleEditProfile() {
+  // Access the sections that need to be hidden/shown
+  const dashboardContainer = document.getElementById('dashboardContainer');
+  const artworkContainer = document.getElementById('artworkContainer');
+  const messageContainer = document.getElementById('messageContainer');
+  const exhibitContainer = document.getElementById('exhibitContainer');
+  const settingContainer = document.getElementById('settingsContainer');
+  const reqContainer=document.getElementById('reqExhibit-con');
 
-//   // Hide all sections
-//   dashboardContainer.style.display = 'none';
-//   artworkContainer.style.display = 'none';
-//   messageContainer.style.display = 'none';
-//   exhibitContainer.style.display = 'none';
-//   reqContainer.style.display='none';
+  // Hide all sections
+  dashboardContainer.style.display = 'none';
+  artworkContainer.style.display = 'none';
+  messageContainer.style.display = 'none';
+  exhibitContainer.style.display = 'none';
+  reqContainer.style.display='none';
   
-//   // Show the settings container
-//   settingContainer.style.display = 'block';
-// }
+  // Show the settings container
+  settingContainer.style.display = 'block';
+}
 function toggleExhibit() {
   // Access the sections that need to be hidden/shown
   const dashboardContainer = document.getElementById('dashboardContainer');
@@ -321,33 +349,34 @@ document.querySelectorAll('.display-creations img').forEach((img) => {
 
 
 //settings tab
-// Settings tabs
+
 function openSettings(evt, settingTab) {
   var i, tabcontent, setlinks;
 
-  // Get all tab content elements and hide them
+
   tabcontent = document.getElementsByClassName("tabInformation"); 
   for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none"; 
   }
 
-  // Get all tab buttons and remove the "active" class
+  
   setlinks = document.getElementsByClassName("setlinks");
   for (i = 0; i < setlinks.length; i++) {
     setlinks[i].className = setlinks[i].className.replace(" active", ""); 
   }
 
-  // Show the selected tab content
+
   document.getElementById(settingTab).style.display = "block"; 
   evt.currentTarget.className += " active"; 
 }
 
-// Function to open the default tab
+
 function openDefaultTab() {
-  // Get the first tab button and its corresponding content
+  
   var defaultTabButton = document.getElementById("defaultOpen");
   openSettings({ currentTarget: defaultTabButton }, defaultTabButton.getAttribute('onclick').split("'")[1]);
 }
 
-// Call the openDefaultTab function when the page loads
+
 window.onload = openDefaultTab;
+

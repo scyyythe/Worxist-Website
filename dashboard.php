@@ -31,8 +31,6 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 ?> 
 
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -206,10 +204,10 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <div class="art-information">
-            <p>Artist: <em><a href="#">Jamaica Anuba</a></em></p>
-            <p>Category: Painting</p>
+            <p><b>Artist:</b> <em><a href="#" class="artist"></a></em></p>
+            <p>Catgeory: <span class="category">Paintin</span>g</p>
             <br>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p class="description-of-art">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         </div>
 
         <div class="interaction">
@@ -283,16 +281,16 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <div class="art-details">
                         <div class="top-details"> 
                             <h3>The Caress</h3>
-                            <div class="close-popup" onclick="toggleCreation()">
+                            <div class="close-popup-creations" onclick="toggleCreation()">
                                 <i class='bx bx-x'></i>
-                            </div>
+                             </div>
                         </div>
     
                         <div class="art-information">
-                            <p>Artist: <em><a href="">Jamaica Anuba</a></em> </p>
+                            <p>Artist: <em><a href="" class="artist-name">Jamaica Anuba</a></em> </p>
                             <p>Category: Painting </p>
                             <br>
-                            <p>&nbsp;&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                            <p class="art-description">&nbsp;&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
                         </div>
 
                         <div class="interaction">
@@ -319,11 +317,10 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>
         </div>
+
+
+        <!-- artwork section -->
      <div class="artwork-section" id="artworkContainer">
-    
-
-                   
-
     
     <div class="tabpanes">
     <h3>Artworks</h3>
@@ -344,16 +341,21 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
             </button>
 
             <?php if (!empty($images)) {
-                foreach ($images as $image) {
-                    echo '<div class="box" onclick="toggleCreation()">'; 
-                    echo '<img src="' . htmlspecialchars($image['file']) . '" alt="Uploaded Image">';
-                    echo '<div class="artist-name">';
-                    echo '<p><span><b>' . htmlspecialchars($name) . '</b></span><br>' . htmlspecialchars($image['title']). '</p>'; 
-                    echo '</div>'; // Closing artist-name div
-                    echo '</div>'; // Closing box div
-                    }
-                }
-            ?>
+            foreach ($images as $image) {
+                echo '<div class="box" onclick="toggleCreation(this)"'; 
+                echo ' data-image="' . htmlspecialchars($image['file']) . '"';
+                echo ' data-title="' . htmlspecialchars($image['title']) . '"';
+                echo ' data-artist="' . htmlspecialchars($name) . '"';
+                echo ' data-description="' . htmlspecialchars($image['description']) . '">'; 
+                echo '<img src="' . htmlspecialchars($image['file']) . '" alt="Uploaded Image">';
+                echo '<div class="artist-name">';
+                echo '<p><span><b>' . htmlspecialchars($name) . '</b></span><br>' . htmlspecialchars($image['title']). '</p>'; 
+                echo '</div>'; 
+                echo '</div>'; 
+            }
+} ?>
+
+
 
 </div>
      
@@ -497,7 +499,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- Exhbits -->
         <div class="exhibit-container" id="exhibitContainer">
-            <button onclick="toggleExhibit()">Schedule Now</button>
+            <button onclick="toggleExhibit()" class="schedule-now">Schedule Now</button>
             <!-- end of exhibit container -->
         </div>
 
@@ -505,7 +507,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
         <!-- Solo Exhibit Request -->
         <div id="reqExhibit-con" class="reqExhibit-con">
             <div class="top-req">
-                <i class='bx bx-chevron-left'></i>
+                <i class='bx bx-chevron-left' onclick="toggleExhibit()"></i>
                 <p>Schedule Your Exhibition Now</p>
             </div>
 
@@ -639,37 +641,51 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                 
                 <!-- edit username -->
                     <label for="edit-username">Edit Username</label><br>
-                    <input type="text" value="angel123"><br><br>
+                    <input type="text" value="<?php echo $username;?>"><br><br>
 
                     <button>Save Changes</button>
                 </div>
             </div>
 
             <div id="accSetting" class="tabInformation">
-                <h3>Account Setting</h3>
+                <h2>Account Setting</h2>
                 
                 <div class="name-display">
-                    <label for="name">Name</label><br>
-                    <input type="text" value="Jamaica Anoba?">
+
+                <div class="myname">
+                    <h3>Name</h3>
+                    <input type="text" value="<?php echo $name;?>">
+                </div>
+                    
                     <button>Change</button>
                 </div>
 
                 <hr>
+                <br>
                 <h3>Email Address</h3>
-                <p>Your email is <span>jaiarpilang@gmail.com</span></p>
-
+                <p>Your email is <span><em><?php echo $email;?></em></span></p>
+                <br>
                 <hr>
 
                 <div class="password-container">
-                    <h3>Password</h3>
+
+                <div class="mypassword">
+                     <h3>Password</h3>
                     <label for="password">Password</label>
                     <input type="password" value="secretbastapasswordni">
+                </div>
+                   
                     <button>Change</button>
                 </div>
                 
                 <div class="delete-container">
+                    
+                <div class="confirm-delete">
+                    <h3>Delete Account</h3>
                     <p>Would you like to delete your account?
                     Deleting your account will remove all the content associated with it.</p>
+                </div>
+                    
 
                     <button>I want to delete my account</button>
                 </div>

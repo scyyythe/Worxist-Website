@@ -423,7 +423,7 @@ body {
     position: fixed;
     top: 50%;
     left: 50%;
-    width: 65%;
+    width: 60%;
     height: 70%;
     border-radius: 20px;
     display: flex;
@@ -434,7 +434,9 @@ body {
     opacity: 0;
     transition: transform 0.5s ease, visibility 0s 0.5s, opacity 0.5s ease;       
     background-color: white; 
-    z-index: 10;      
+    z-index: 10;   
+
+   
 }
 
 .box-pop {
@@ -446,6 +448,7 @@ body {
 }
 
 .box-pop img {
+    border-radius: 20px;
     width: 100%; 
     height: 100%;
 }
@@ -465,13 +468,14 @@ body {
 
 .image-artwork#blur.active {
     filter: blur(2px);    
+ 
 }
 .artwork-section#artworkContainer.active {
     filter: blur(2px);    
 }
 .close-popup{
     height: 25px;
-
+    z-index: 1100; 
     i{
         font-size:1rem;
     }
@@ -480,21 +484,23 @@ body {
     cursor: pointer;
 }
 .art-details{
+
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     padding: 10px;
     background-color: rgb(255, 255, 255);
 }
 .top-details{
     position: relative;
+    margin-block: 1rem;
     right: 15px;
     display: flex;
     justify-content: space-between;
 }
 .art-information{
+    width: 90%;
     position: relative;
     right: 15px;
     text-align: justify;
@@ -512,15 +518,22 @@ body {
 }
 .social-interact-icons{
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     top: 40%;
-    right: 3.1%;
+    right: 5%;
     padding: 3px;
     width: 50px;
-    height: 100px;
+    height: 150px;
     border-radius: 10px;
     font-size: 1.2rem;
     color: white;
     backdrop-filter: blur(10px); 
+
+    i{
+        font-size: 1.5rem;
+    }
 }
 /* .bookmark{
     height: 20px;
@@ -532,10 +545,13 @@ body {
 .social-interact-icons i:hover{
     cursor: pointer;
 }
-.interaction{
-    padding: 2px;
-    overflow-y: scroll;
-    height: 33%;
+.interaction{   
+    position: relative;
+    right: 3%;
+    margin-block: 1rem;
+    overflow-y: auto;
+    height: 53%;
+
 }
 .user-image{
     display: flex;
@@ -560,6 +576,8 @@ body {
 
 }
 .input-comment{
+    position: relative;
+    bottom: 1rem;
     width: 100%;
     height: 30px;
     display: flex;
@@ -567,22 +585,27 @@ body {
     align-items: center;
 }
 .comment-area{
+    display: flex;
+    align-items: center;
     width: 85%;
-    height: 30px;
+    height: 40px;
     border-radius: 50px;
-    padding-top: 5px;
     border-style: none;
     background-color: #c0bcbc70;
     resize: none;
     padding-left: 5px;
+    padding-top: 5px;
     font-size: 13px;
 }
 .comment-btn{
+    position: relative;
+    right: 5%;
     border-radius: 20px;
     border-style: none;
     width: 50px;
     height: 30px;
     background-color: white;
+
 
     i{
         color: rgb(136, 136, 250);
@@ -1005,8 +1028,24 @@ body {
     border-bottom-left-radius: 30px;
     
     filter: brightness(1.1) contrast(1.1); /
-}
 
+   
+}
+.schedule-now{
+    border-style: solid;
+    padding-block: 5px;
+    padding-inline: 10px;
+    position: relative;
+    left: 1800px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.342);
+    backdrop-filter: blur(10px);
+    cursor: pointer; 
+    color: white;
+}
+.schedule-now:hover {
+    background-color: rgba(255, 255, 255, 0.562); 
+}
 /* REQUEST EXHIBIT */
 .reqExhibit-con{
     padding: 50px;
@@ -1204,7 +1243,7 @@ body {
     flex-direction: column; 
     width: 15%;
     height: 80vh;
-    border-right:solid 1px gray ;
+    border-right:solid 1px rgba(128, 128, 128, 0.548) ;
     
 }
 
@@ -1261,13 +1300,18 @@ body {
     
 }
 .upload-image-btn{
-    width: 280px;
+    width: 300px;
     display: flex;
     justify-content: space-between;
 
     button{
         padding: 5px;
         border-radius: 10px;
+    }
+
+    button:hover{
+        cursor: pointer;
+        
     }
 }
 .upload-image-btn button:nth-child(1){
@@ -1276,10 +1320,14 @@ body {
     border: none;
     width: 130px;
 }
+.upload-image-btn button:nth-child(1):hover{
+    background-color: #c70909;
+    cursor: pointer;    
+}
 .upload-image-btn button:nth-child(2){
-    color: red;
-    font-weight: bold;
-    border: 1px solid black;
+    width: 150px;
+    color: #a70b0b;
+    border: 1px solid rgba(128, 128, 128, 0.336);
 }
 /* form below my account settings */
 .form-below label{
@@ -1300,6 +1348,10 @@ body {
     color: white;
     border-style: none;
 }
+.form-below button:hover{
+    background-color: #c70909;
+    cursor: pointer;
+}
 .follow{
     width: 30%;
     display: flex;
@@ -1319,6 +1371,8 @@ body {
     font-size: 1rem;
     font-weight: bolder;
 }
+
+
 /* followers pop up mdoal */
 .modal {
     display: none; 
@@ -1384,6 +1438,75 @@ body {
     margin-left: 5%;
 }
 
+/* account setting */
+.name-display,.password-container{
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    margin-block: 1rem;
+    align-items: center;
+
+    button{
+        border: none;
+        background-color: transparent;
+        text-decoration: underline;
+        color: #c70909;
+    }
+
+    input{
+
+        border: 1px solid rgba(128, 128, 128, 0.336);
+        width: 100%;
+        padding: 5px;
+        border-radius: 10px;
+        background-color: transparent;
+    }
+}
+
+#accSetting{
+    line-height: 2.5;
+    hr {
+        border: none;
+        border-top: 1px solid rgba(128, 128, 128, 0.336);
+        margin: 10px 0;
+    }
+    
+    p{
+        font-size: 1rem;
+    }
+    h3{
+        margin-bottom: 5px;
+    }
+    span{
+        font-weight: bold;
+        color: #c70909;
+    }
+
+    button:hover{
+        font-weight: bold;
+        cursor: pointer;
+    }
+}
+
+.delete-container{
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+   
+    p{
+        width: 100%;
+    }
+    button{
+        border: none;
+        background-color: transparent;
+        text-decoration: underline;
+        color: #c70909;
+        width: 500px;
+        text-align: right;
+      
+    }
+}
 
  @media (max-width: 768px) {
     .exhibit-container {
