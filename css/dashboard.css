@@ -1240,31 +1240,75 @@ body {
     height: 80vh;
     display: none; 
 }
-
-.name{
-    width: 30%;
-    position: relative;
-    left: 50px;
-
-    span{
-        font-size: 2rem;
-        font-weight: 700;
-    }
-
-    p{
-        font-size: .8rem;
-    }
+/* myaccount setting */
+.top-myprofile{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
-.follow{
-    width: 60%;
+.profile-picture{
+    width: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.image-profile img{
+
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    object-fit: cover;
+    
+}
+.upload-image-btn{
+    width: 280px;
     display: flex;
     justify-content: space-between;
+
+    button{
+        padding: 5px;
+        border-radius: 10px;
+    }
+}
+.upload-image-btn button:nth-child(1){
+    background-color: #9f1414;
+    color: white;
+    border: none;
+    width: 130px;
+}
+.upload-image-btn button:nth-child(2){
+    color: red;
+    font-weight: bold;
+    border: 1px solid black;
+}
+/* form below my account settings */
+.form-below label{
+    font-weight: bold;
+    font-size: 1rem;
+}
+.form-below input{
+    width: 40%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    margin-block: 5px;
+}
+.form-below button{
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #a20d0d;
+    color: white;
+    border-style: none;
+}
+.follow{
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    margin-block: 20px;
 }
 .follow a{
     text-decoration: none;
     color: black;
-
-   
 }
 
 .follow  a:hover{
@@ -1273,6 +1317,7 @@ body {
 }
 .follow span{
     font-size: 1rem;
+    font-weight: bolder;
 }
 /* followers pop up mdoal */
 .modal {

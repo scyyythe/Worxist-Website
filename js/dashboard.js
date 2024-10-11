@@ -53,42 +53,42 @@ function toggleDropdown() {
       dropdown.style.display = "block";
   }
 }
-// // FOLLOWERS AND FOLLOWING
-// const modal = document.getElementById("followers-modal");
-// const followersContent = document.getElementById("followers-content");
-// const followingContent = document.getElementById("following-content");
+// FOLLOWERS AND FOLLOWING
+const modal = document.getElementById("followers-modal");
+const followersContent = document.getElementById("followers-content");
+const followingContent = document.getElementById("following-content");
 
 
-// const viewFollowersButton = document.getElementById("openFollowers");
-// const viewFollowingButton = document.getElementById("openFollowing");
+const viewFollowersButton = document.getElementById("openFollowers");
+const viewFollowingButton = document.getElementById("openFollowing");
 
-// const closeButton = document.getElementsByClassName("close-button")[0];
+const closeButton = document.getElementsByClassName("close-button")[0];
 
-// viewFollowersButton.addEventListener("click", function(event) {
-//     event.preventDefault(); 
-//     followersContent.style.display = "block";
-//     followingContent.style.display = "none";
-//     modal.style.display = "block";
-// });
+viewFollowersButton.addEventListener("click", function(event) {
+    event.preventDefault(); 
+    followersContent.style.display = "block";
+    followingContent.style.display = "none";
+    modal.style.display = "block";
+});
 
 
-// // following modal
-// viewFollowingButton.addEventListener("click", function(event) {
-//     event.preventDefault(); 
-//     followersContent.style.display = "none";
-//     followingContent.style.display = "block";
-//     modal.style.display = "block";
-// });
+// following modal
+viewFollowingButton.addEventListener("click", function(event) {
+    event.preventDefault(); 
+    followersContent.style.display = "none";
+    followingContent.style.display = "block";
+    modal.style.display = "block";
+});
 
-// closeButton.addEventListener("click", function() {
-//     modal.style.display = "none"; 
-// });
+closeButton.addEventListener("click", function() {
+    modal.style.display = "none"; 
+});
 
-// window.addEventListener("click", function(event) {
-//     if (event.target === modal) {
-//         modal.style.display = "none"; 
-//     }
-// });
+window.addEventListener("click", function(event) {
+    if (event.target === modal) {
+        modal.style.display = "none"; 
+    }
+});
 
 
 

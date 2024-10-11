@@ -322,43 +322,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
      <div class="artwork-section" id="artworkContainer">
     
 
-                        <!-- Popup Modal -->
-                    <div id="followers-modal" class="modal">
-                        <div class="modal-content">
-                            <span class="close-button">&times;</span>
-                            
-                            <div id="followers-content">
-                                <h5>Followers</h5>
-                                <div class="follower-display">
-                                    <div class="profile-pic">
-                                        <img src="gallery/eyes.jpg" alt="">
-                                    </div>
-                                    <div class="follower-name">
-                                        <h5>Angel Canete <br>
-                                            <span><a href="profileDash.php"><span>@</span>scyy</a></span>
-                                        </h5>
-                                    </div>
-                                </div>
-                            
-                                
-                            </div>
-
-                            <div id="following-content" style="display: none;">
-                                <h5>Following</h5>
-                                <div class="following-display">
-                                    <div class="profile-pic">
-                                        <img src="gallery/girl.jpg" alt="">
-                                    </div>
-                                    <div class="follower-name">
-                                        <h5>Angel Canete <br>
-                                            <span><a href="profileDash.php"><span>@</span>scyy</a></span>
-                                        </h5>
-                                    </div>
-                                </div>
-                            
-                            </div>
-                        </div>
-                    </div>
+                   
 
     
     <div class="tabpanes">
@@ -644,12 +608,12 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                 <h3>My Profile</h3>
                 <div class="top-myprofile">
                     <div class="profile-picture">
-                        <div class="image-prof">
-                            <img src="" alt="">
-                        </div>
+                    <div class="image-profile">
+                            <img src="gallery/girl.jpg" alt="">
+                    </div>
 
                         <div class="text-image">
-                            <p>Upload new image</p>
+                            <h3>Upload new image</h3>
                             <p>Max file size - 10mb</p>
                         </div>
                     </div>
@@ -662,27 +626,136 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="form-below">
-                    <label for="edit-username">Edit Username</label><br>
-                    <input type="text" value="angel123"><br>
 
-                   
+                <div class="follow">
+                    <p><span >10</span>
+                    <a href="#" id="openFollowers">Followers</a>
+                    </p>
+
+                    <p><span >1</span>
+                    <a href="#"  id="openFollowing">Following</a>
+                    </p>
+                </div>
+                
+                <!-- edit username -->
+                    <label for="edit-username">Edit Username</label><br>
+                    <input type="text" value="angel123"><br><br>
 
                     <button>Save Changes</button>
                 </div>
             </div>
 
-            <div id="accSetting" class="tabInformation"> <!-- Corrected spelling -->
-                <h3>Paris</h3>
-                <p>Paris is the capital of France.</p> 
+            <div id="accSetting" class="tabInformation">
+                <h3>Account Setting</h3>
+                
+                <div class="name-display">
+                    <label for="name">Name</label><br>
+                    <input type="text" value="Jamaica Anoba?">
+                    <button>Change</button>
+                </div>
+
+                <hr>
+                <h3>Email Address</h3>
+                <p>Your email is <span>jaiarpilang@gmail.com</span></p>
+
+                <hr>
+
+                <div class="password-container">
+                    <h3>Password</h3>
+                    <label for="password">Password</label>
+                    <input type="password" value="secretbastapasswordni">
+                    <button>Change</button>
+                </div>
+                
+                <div class="delete-container">
+                    <p>Would you like to delete your account?
+                    Deleting your account will remove all the content associated with it.</p>
+
+                    <button>I want to delete my account</button>
+                </div>
+
             </div>
 
-            <div id="notifSetting" class="tabInformation"> <!-- Corrected spelling -->
+            <div id="notifSetting" class="tabInformation"> 
                 <h3>Tokyo</h3>
                 <p>Tokyo is the capital of Japan.</p>
             </div>      
 
 </div>
   
+         <!-- Popup Modal -->
+         <div id="followers-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-button">&times;</span>
+                            
+                            <div id="followers-content">
+                                <h5>Followers</h5>
+                                <div class="follower-display">
+                                    <div class="profile-pic">
+                                        <img src="gallery/eyes.jpg" alt="">
+                                    </div>
+                                    <div class="follower-name">
+                                        <h5>Angel Canete <br>
+                                            <span><a href="profileDash.php"><span>@</span>scyy</a></span>
+                                        </h5>
+                                    </div>
+                                </div>
+                            
+                                
+                            </div>
+
+                            <div id="following-content" style="display: none;">
+                                <h5>Following</h5>
+                                <div class="following-display">
+                                    <div class="profile-pic">
+                                        <img src="gallery/girl.jpg" alt="">
+                                    </div>
+                                    <div class="follower-name">
+                                        <h5>Angel Canete <br>
+                                            <span><a href="profileDash.php"><span>@</span>scyy</a></span>
+                                        </h5>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                
+                <div id="followers-content">
+                    <h5>Followers</h5>
+                    <div class="follower-display">
+                        <div class="profile-pic">
+                            <img src="gallery/eyes.jpg" alt="">
+                        </div>
+                        <div class="follower-name">
+                            <h5>Angel Canete <br>
+                                <span><a href=""><span>@</span>scyy</a></span>
+                            </h5>
+                        </div>
+                    </div>
+                
+                    
+                </div>
+
+                <div id="following-content" style="display: none;">
+                    <h5>Following</h5>
+                    <div class="following-display">
+                        <div class="profile-pic">
+                            <img src="gallery/eyes.jpg" alt="">
+                        </div>
+                        <div class="follower-name">
+                            <h5>Angel Canete <br>
+                                <span><a href="profileDash.html"><span>@</span>scyy</a></span>
+                            </h5>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
 
     <!-- end of settings container -->
 </div>
