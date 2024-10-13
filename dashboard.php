@@ -1,6 +1,8 @@
 <?php
 session_start();
+
 include("include/connection.php");
+include("include/requestexhibit.php");
 
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
@@ -28,6 +30,8 @@ $statement = $conn->prepare("
 ");
 $statement->execute();
 $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?> 
 
 
@@ -166,11 +170,11 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
             
             <div class="filter-container">
                 <i class='bx bx-filter filter-icon' onclick="toggleDropdown()"></i>
-                                <div class="dropdown-content" id="dropdown">
-                                    <a href="#">Sketches</a>
-                                    <a href="#">Sculpture</a>
-                                    <a href="#">Painting    </a>
-                                </div>
+                    <div class="dropdown-content" id="dropdown">
+                        <a href="#">Sketches</a>
+                        <a href="#">Sculpture</a>
+                        <a href="#">Painting    </a>
+                    </div>
             </div>
 
             <div class="profile">
@@ -195,6 +199,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
         <i class='bx bxs-star'></i>
     </div>
 
+    
     <div class="art-details">
         <div class="top-details"> 
             <h3>The Caress</h3>
@@ -522,9 +527,9 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
             <div id="Solo" class="requestTab">
 
             <div class="exhibit-inputs">
-                <form action="" name="soloExhibit" >
+                <form action="" name="soloExhibit" method="POST">
                     <label for="exhibit-title">Exhibit Title</label><br>
-                    <input type="text" placeholder="Enter the title of your exhibit"><br>
+                    <input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit"><br>
 
                     <label for="exhibit-description">Exhibit Description</label><br>
                     <textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit"></textarea><br>
@@ -532,6 +537,9 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <label for="exhibit-date">Exhibit Date</label><br>
                     <input type="date" id="exhibit-date" name="exhibit-date">
 
+                    <div class="confrim-solo">
+                    <button class="solo-btn" name="requestSolo">Confirm Schedule</button>
+                </div>
                 </form>
                 <div class="image-exhibit">
                     <img src="image/solo-image.png" alt="Painting Graphics">
@@ -554,16 +562,14 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>
 
-                <div class="confrim-solo">
-                    <button class="solo-btn">Confirm Schedule</button>
-                </div>
+                
             </div>
 <!-- collab request -->
             <div id="Collaborative" class="requestTab">
             <div class="exhibit-inputs">
-                <form action="" name="soloExhibit" >
+                <form action="" name="collabExhibit" method="POST" >
                     <label for="exhibit-title">Exhibit Title</label><br>
-                    <input type="text" placeholder="Enter the title of your exhibit"><br>
+                    <input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit"><br>
 
                     <label for="exhibit-description">Exhibit Description</label><br>
                     <textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit"></textarea><br>
@@ -571,6 +577,9 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <label for="exhibit-date">Exhibit Date</label><br>
                     <input type="date" id="exhibit-date" name="exhibit-date">
 
+                    <div class="confrim-solo">
+                     <button class="collab-btn" name="requestCollab">Confirm Schedule</button>
+                    </div>
                 </form>
                 <div class="add-collab">
                     <label for="">Add Collaborators</label><br>
@@ -599,9 +608,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
                     </div>
 
-                <div class="confrim-solo">
-                    <button class="collab-btn">Confirm Schedule</button>
-                </div>
+              
             </div>
 
         </div>
@@ -841,7 +848,32 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
    </div>
   
    <script src="js/dashboard.js"></script>
-            
-   
+   <script>
+function handleInteraction(icon) {
+    const action = icon.getAttribute('data-action');
+    const artId = icon.getAttribute('data-art-id');
+
+    // Send the AJAX request
+    fetch('your_php_file.php', { // replace with the PHP file that processes the request
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `art_id=${artId}&action=${action}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log(`${action} successful!`);
+            // You can also update the UI here if needed
+        } else {
+            console.error(`Error: ${data.message}`);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+
+                                    
 </body>
 </html>
