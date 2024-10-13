@@ -235,34 +235,37 @@ function toggleImage() {
 }
 // created
 function toggleCreation(element = null) {
-    var blur = document.getElementById('artworkContainer');
-    var popup = document.getElementById('popup-creation');
+  var blur = document.getElementById('artworkContainer');
+  var popup = document.getElementById('popup-creation');
 
-    if (element) {
-        // If an element is passed, open the popup and update details
+  if (element) {
 
-        const imageSrc = element.getAttribute("data-image");
-        const title = element.getAttribute("data-title");
-        const artist = element.getAttribute("data-artist");
-        const description = element.getAttribute("data-description");
 
-        const popupImage = popup.querySelector(".box-pop img");
-        const popupTitle = popup.querySelector(".top-details h3");
-        const popupArtist = popup.querySelector(".art-information em a");
-        const popupDescription = popup.querySelector(".art-information p:nth-of-type(3)");
+      const imageSrc = element.getAttribute("data-image");
+      const title = element.getAttribute("data-title");
+      const artist = element.getAttribute("data-artist");
+      const description = element.getAttribute("data-description");
+      const category = element.getAttribute("data-category"); 
 
-        popupImage.src = imageSrc;
-        popupTitle.textContent = title;
-        popupArtist.textContent = artist;
-        popupDescription.textContent = description;
+      const popupImage = popup.querySelector(".box-pop img");
+      const popupTitle = popup.querySelector(".top-details h3");
+      const popupArtist = popup.querySelector(".art-information em a");
+      const popupCategory = popup.querySelector(".art-category"); 
+      const popupDescription = popup.querySelector(".art-information p:nth-of-type(3)");
 
-        blur.classList.add('active');
-        popup.classList.add('active');
-    } else {
-        // If no element, assume it's a close action
-        blur.classList.remove('active');
-        popup.classList.remove('active');
-    }
+      popupImage.src = imageSrc;
+      popupTitle.textContent = title;
+      popupArtist.textContent = artist;
+      popupCategory.textContent = category; 
+      popupDescription.textContent = description;
+
+      blur.classList.add('active');
+      popup.classList.add('active');
+  } else {
+      
+      blur.classList.remove('active');
+      popup.classList.remove('active');
+  }
 }
 
 
@@ -354,29 +357,29 @@ function openSettings(evt, settingTab) {
   var i, tabcontent, setlinks;
 
 
-  tabcontent = document.getElementsByClassName("tabInformation"); 
+  tabcontent = document.getElementsByClassName("tabInformation");
   for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none"; 
+    tabcontent[i].style.display = "none";
   }
 
-  
   setlinks = document.getElementsByClassName("setlinks");
   for (i = 0; i < setlinks.length; i++) {
-    setlinks[i].className = setlinks[i].className.replace(" active", ""); 
+    setlinks[i].className = setlinks[i].className.replace(" active", "");
   }
 
 
-  document.getElementById(settingTab).style.display = "block"; 
-  evt.currentTarget.className += " active"; 
+  document.getElementById(settingTab).style.display = "block";
+  evt.currentTarget.className += " active";
 }
-
 
 function openDefaultTab() {
-  
   var defaultTabButton = document.getElementById("defaultOpen");
-  openSettings({ currentTarget: defaultTabButton }, defaultTabButton.getAttribute('onclick').split("'")[1]);
+  
+  
+  openSettings({ currentTarget: defaultTabButton }, 'myProfile');
 }
 
-
-window.onload = openDefaultTab;
+window.onload = function() {
+  openDefaultTab();
+};
 

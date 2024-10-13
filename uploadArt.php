@@ -45,10 +45,10 @@ include("include/addArtwork.php");
             
             <label for="title"><b>Category</b></label><br>
             <select name="category" id="category">
-                <option value="sculpture">Sculpture</option>
-                <option value="painting">Painting</option>
-                <option value="">Sketches</option>
-                <option value="painting">Expressionism</option>
+                <option value="Sculpture">Sculpture</option>
+                <option value="Painting">Painting</option>
+                <option value="Sketches">Sketches</option>
+                <option value="Expressionism">Expressionism</option>
             </select>
             <br><br>
 

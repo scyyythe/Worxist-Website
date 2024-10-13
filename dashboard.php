@@ -205,9 +205,9 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         <div class="art-information">
             <p><b>Artist:</b> <em><a href="#" class="artist"></a></em></p>
-            <p>Catgeory: <span class="category">Paintin</span>g</p>
+            <p>Catgeory: <span class="category"></span></p>
             <br>
-            <p class="description-of-art">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p class="description-of-art"></p>
         </div>
 
         <div class="interaction">
@@ -244,6 +244,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                  data-description="<?php echo htmlspecialchars($image['description']); ?>">
                  
                 <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Image">
+
                 <div class="artist-name">
                     <p><span><b><?php echo htmlspecialchars($image['u_name']); ?></b></span><br>
                     <?php echo htmlspecialchars($image['title']); ?></p>
@@ -287,10 +288,10 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                         </div>
     
                         <div class="art-information">
-                            <p>Artist: <em><a href="" class="artist-name">Jamaica Anuba</a></em> </p>
-                            <p>Category: Painting </p>
+                            <p>Artist: <em><a href="" class="artist-name"></a></em> </p>
+                            <p>Category:<span class="art-category"></span></p>
                             <br>
-                            <p class="art-description">&nbsp;&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                            <p class="art-description">&nbsp;&nbsp;&nbsp;</p>
                         </div>
 
                         <div class="interaction">
@@ -341,18 +342,19 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
             </button>
 
             <?php if (!empty($images)) {
-            foreach ($images as $image) {
-                echo '<div class="box" onclick="toggleCreation(this)"'; 
-                echo ' data-image="' . htmlspecialchars($image['file']) . '"';
-                echo ' data-title="' . htmlspecialchars($image['title']) . '"';
-                echo ' data-artist="' . htmlspecialchars($name) . '"';
-                echo ' data-description="' . htmlspecialchars($image['description']) . '">'; 
-                echo '<img src="' . htmlspecialchars($image['file']) . '" alt="Uploaded Image">';
-                echo '<div class="artist-name">';
-                echo '<p><span><b>' . htmlspecialchars($name) . '</b></span><br>' . htmlspecialchars($image['title']). '</p>'; 
-                echo '</div>'; 
-                echo '</div>'; 
-            }
+                foreach ($images as $image) {
+                    echo '<div class="box" onclick="toggleCreation(this)"'; 
+                    echo ' data-image="' .htmlspecialchars($image['file']) . '"';
+                    echo ' data-title="' .htmlspecialchars($image['title']) . '"';
+                    echo ' data-artist="' .htmlspecialchars($name) .'"';
+                    echo ' data-category="' .htmlspecialchars($image['category']) . '"'; 
+                    echo ' data-description="' .htmlspecialchars($image['description']) . '">'; 
+                    echo '<img src="' .htmlspecialchars($image['file']) . '" alt="Uploaded Image">';
+                    echo '<div class="artist-name">';
+                    echo '<p><span><b>' . htmlspecialchars($name) . '</b></span><br>' . htmlspecialchars($image['title']). '</p>'; 
+                    echo '</div>'; 
+                    echo '</div>'; 
+                }
 } ?>
 
 
@@ -540,10 +542,15 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                         <p>Selected Artworks (Maximum of 10)</p>
 
                         <div class="display-creations">
-                        <img src="gallery/girl.jpg " alt="">
-                        <img src="gallery/eyes.jpg" alt="">
-                        <img src="gallery/body.jpg" alt="">
-                        <img src="gallery/eternity.jpg" alt="">
+                                <?php if (!empty($images)): ?>
+                                    <?php foreach ($images as $image): ?>
+                                        <div class="image-item">
+                                            <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Artwork"">
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p>No artworks found for this user.</p>
+                                <?php endif; ?>
                         </div>
                     </div>
 
@@ -579,11 +586,17 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                         <p>Selected Artworks (Maximum of 10)</p>
 
                         <div class="display-creations">
-                        <img src="gallery/girl.jpg " alt="">
-                        <img src="gallery/eyes.jpg" alt="">
-                        <img src="gallery/body.jpg" alt="">
-                        <img src="gallery/eternity.jpg" alt="">
+                                <?php if (!empty($images)): ?>
+                                    <?php foreach ($images as $image): ?>
+                                        <div class="image-item">
+                                            <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Artwork"">
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p>No artworks found for this user.</p>
+                                <?php endif; ?>
                         </div>
+
                     </div>
 
                 <div class="confrim-solo">
@@ -646,7 +659,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <button>Save Changes</button>
                 </div>
             </div>
-
+<!-- account setting -->
             <div id="accSetting" class="tabInformation">
                 <h2>Account Setting</h2>
                 
@@ -664,6 +677,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                 <br>
                 <h3>Email Address</h3>
                 <p>Your email is <span><em><?php echo $email;?></em></span></p>
+            
                 <br>
                 <hr>
 
@@ -692,9 +706,53 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
             </div>
 
+<!-- notifications -->
             <div id="notifSetting" class="tabInformation"> 
-                <h3>Tokyo</h3>
-                <p>Tokyo is the capital of Japan.</p>
+                <h3>Notification</h3>
+                
+                <div class="enable-desktop-con">
+                    <div class="descrip-notif">
+                        <h5>Enable Desktop Notification</h5>
+                        <p>Receive notification all of the messages, updates, documents</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="switch1" class="switch-input">
+                        <label for="switch1" class="switch-label"></label>
+                    </div>
+                </div>
+
+                <div class="enable-desktop-con">
+                    <div class="descrip-notif">
+                        <h5>Enable Unread Notification</h5>
+                        <p>Shows a red badge when you have an unread message</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="switch2" class="switch-input">
+                        <label for="switch2" class="switch-label"></label>
+                    </div>
+                </div>
+                <h3>Email Notification</h3>
+                <div class="enable-desktop-con">
+                    <div class="descrip-notif">
+                        <h5>Communication Emails</h5>
+                        <p>Receive emails for messages, contracts, documents</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="switch3" class="switch-input">
+                        <label for="switch3" class="switch-label"></label>
+                    </div>
+                </div>
+
+                <div class="enable-desktop-con">
+                    <div class="descrip-notif">
+                        <h5>Announcements & Updates</h5>
+                        <p>Receive notification all of the messages, updates, documents</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="switch4" class="switch-input">
+                        <label for="switch4" class="switch-label"></label>
+                    </div>
+                </div>
             </div>      
 
 </div>

@@ -400,23 +400,25 @@ body {
     align-items: flex-start; 
     overflow: scroll;
     overflow-x: hidden;
+
 }
 .image-artwork {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
     gap: 20px;
-    width: 100%;
+    width: 100%; 
     position: relative;
     margin-top: 50px;
 }
 
 
 .image-artwork img {
+   
     width: 100%;
     height: 350px; 
     object-fit: cover;
     border-radius: 20px;
-  
+
 }
 
 .popup {
@@ -448,6 +450,7 @@ body {
 }
 
 .box-pop img {
+ 
     border-radius: 20px;
     width: 100%; 
     height: 100%;
@@ -747,7 +750,6 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
     gap: 20px;
     width: 100%; 
-
    
 }
 .saved-image{
@@ -1507,7 +1509,73 @@ body {
       
     }
 }
+/* notifcation settings */
+#notifSetting{
+    h3{
+        font-size: 1.2rem;
+    }
+}
+.enable-desktop-con{
+    margin-block: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.descrip-notif{
+    
+    line-height: 1.5;
+   
+    h5{
+        font-size: 1rem;
+    }
 
+    p{
+        font-size: 1rem;
+    }
+}
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+    margin: 20px 0;
+  }
+  
+  .switch-input {
+    display: none;
+  }
+  
+  .switch-label {
+    position: absolute;
+    cursor: pointer;
+    background-color: gray; 
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    transition: 0.3s;
+  }
+  
+  .switch-label::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+  }
+  
+  .switch-input:checked + .switch-label {
+    background-color: #9f1414; 
+  }
+  
+  .switch-input:checked + .switch-label::before {
+    transform: translate(14px, -50%);
+  }
+  
  @media (max-width: 768px) {
     .exhibit-container {
         width: 100%;
