@@ -9,7 +9,6 @@ if (!isset($_SESSION['username'])) {
     die;
 }
 
-// User data from session
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User'; 
@@ -194,10 +193,11 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Interaction like save favorites -->
     <div class="social-interact-icons">
-        <i class='bx bxs-heart'></i>
-        <i class='bx bxs-bookmark-star bookmark'></i>
-        <i class='bx bxs-star'></i>
-    </div>
+    <i class='bx bxs-heart like-icon' data-action="like" data-artwork-id="123"></i>
+    <i class='bx bxs-bookmark-star bookmark-icon' data-action="save" data-artwork-id="123"></i>
+    <i class='bx bxs-star favorite-icon' data-action="favorite" data-artwork-id="123"></i>
+</div>
+
 
     
     <div class="art-details">
@@ -848,6 +848,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
    </div>
   
    <script src="js/dashboard.js"></script>
+   <script src="js/interaction.js"> </script>
    <script>
 function handleInteraction(icon) {
     const action = icon.getAttribute('data-action');

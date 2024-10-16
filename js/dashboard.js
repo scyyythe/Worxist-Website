@@ -383,23 +383,3 @@ window.onload = function() {
   openDefaultTab();
 };
 
-// // interactions
-// function handleInteraction(action, userId, artworkId) {
-//   // Prepare the data to send
-//   const formData = new FormData();
-//   formData.append('action', action);
-//   formData.append('u_id', userId);
-//   formData.append('a_id', artworkId);
-
-//   // Send the data using AJAX (XMLHttpRequest)
-//   const xhr = new XMLHttpRequest();
-//   xhr.open('POST', 'interaction.php', true); // Assume you use interactionHandler.php to process the request
-//   xhr.onload = function() {
-//       if (xhr.status === 200) {
-//           document.getElementById('interactionMessage').innerHTML = xhr.responseText; // Display success message
-//       } else {
-//           document.getElementById('interactionMessage').innerHTML = 'Something went wrong!';
-//       }
-//   };
-//   xhr.send(formData); // Send the form data
-// }
