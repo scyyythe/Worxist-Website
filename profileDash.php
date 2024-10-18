@@ -1,3 +1,11 @@
+<?php
+
+include("include/connection.php");
+
+$u_id = isset($_GET['u_id']) ? intval($_GET['u_id']) : 0;
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -350,6 +350,37 @@ document.querySelectorAll('.display-creations img').forEach((img) => {
   });
 });
 
+let currentSlide = 1;
+const images = document.querySelectorAll('.carousel img');
+
+function updateCarousel() {
+    images.forEach((img, i) => {
+        img.classList.remove('left', 'center', 'right');
+
+        if (i === currentSlide) {
+            img.classList.add('center');
+        } else if (i === (currentSlide - 1 + images.length) % images.length) {
+            img.classList.add('left');
+        } else {
+            img.classList.add('right');
+        }
+    });
+}
+
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % images.length;
+    updateCarousel();
+}
+
+function prevSlide() {
+    currentSlide = (currentSlide - 1 + images.length) % images.length;
+    updateCarousel();
+}
+
+// Initialize carousel
+updateCarousel();
+
+
 
 //settings tab
 

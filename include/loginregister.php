@@ -5,7 +5,7 @@
 
     include("include/connection.php");
 
-     // Handle Login
+ 
      if (isset($_POST['login'])) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $username = $_POST['username'];
@@ -48,7 +48,6 @@
                   
       $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-      // Insert user data into the database
       $statement = $conn->prepare("INSERT INTO accounts (u_name, email, username, password, u_type, u_status) VALUES (:name, :email, :username, :hashed_password, :accType, :accStatus)");
 
       $statement->bindValue(':name', $name);

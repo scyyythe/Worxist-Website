@@ -507,6 +507,44 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
         <!-- Exhbits -->
         <div class="exhibit-container" id="exhibitContainer">
             <button onclick="toggleExhibit()" class="schedule-now">Schedule Now</button>
+            
+            <div class="gallery-container">
+                <div class="top-gallery">
+                    <h3>Title of the Exhibit</h3>
+                </div>
+                <div class="nav-icons">
+                    <div class="prev-icon">&#10094;</div>
+                    <div class="next-icon">&#10095;</div>
+                </div>
+                <div class="carousel">
+
+                    <div class="carousel-img right-img">
+                        <img src="gallery/hands.jpg" alt="Left Image" class="side-image">
+                    </div>
+                    
+                    <div class="carousel-img ">
+                         <div class="center-container">
+                            <img src="gallery/body.jpg" alt="Center Image" class="center-image">
+                            <div class="center-description">
+                                <h3>The Starry Night</h3>
+                                <p>"I look at the stars and with all my being feel that I am a part of one of these stars."</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   <div class="carousel-img left-img">                       
+                        <img src="gallery/girl.jpg" alt="Right Image" class="side-image">
+                   </div>
+                
+                </div>
+
+
+                <div class="info-exhibit">
+                    <p><span>Jamaica Anuba</span><br>Artist</p>
+                </div>
+            </div>
+
+            
             <!-- end of exhibit container -->
         </div>
 

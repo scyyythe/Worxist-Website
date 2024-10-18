@@ -165,7 +165,7 @@ include("include/loginregister.php");
         
         if (errorMessage) {
             modalMessage.innerText = errorMessage;
-            modal.style.display = "block"; // Show modal
+            modal.style.display = "block"; 
         }
 
         // Form validation for login
@@ -175,9 +175,9 @@ include("include/loginregister.php");
             const password = loginForm["password"].value;
 
             if (!username || !password) {
-                e.preventDefault(); // Prevent form submission
+                e.preventDefault(); 
                 modalMessage.innerText = "Please enter both username and password.";
-                modal.style.display = "block"; // Show modal
+                modal.style.display = "block"; 
             }
         });
     });
