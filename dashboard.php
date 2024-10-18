@@ -209,8 +209,16 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <div class="art-information">
-            <p><b>Artist:</b> <em><a href="#" class="artist"></a></em></p>
-            <p>Catgeory: <span class="category"></span></p>
+        <p>
+            <b>Artist:</b> 
+            <em>
+                <a href="profileDash.php?id=<?php echo htmlspecialchars($image['u_id']); ?>" class="artist">
+                    <?php echo htmlspecialchars($image['u_name']); ?>
+                </a>
+            </em>
+        </p>
+
+                    <p>Catgeory: <span class="category"></span></p>
             <br>
             <p class="description-of-art"></p>
         </div>
@@ -249,7 +257,6 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                  data-description="<?php echo htmlspecialchars($image['description']); ?>">
                  
                 <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Image">
-
                 <div class="artist-name">
                     <p><span><b><?php echo htmlspecialchars($image['u_name']); ?></b></span><br>
                     <?php echo htmlspecialchars($image['title']); ?></p>

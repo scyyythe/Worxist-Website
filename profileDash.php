@@ -1,10 +1,22 @@
 <?php
-
 include("include/connection.php");
+
 
 $u_id = isset($_GET['u_id']) ? intval($_GET['u_id']) : 0;
 
+
+$query = "SELECT * FROM accounts WHERE u_id = 34"; 
+$stmt = $conn->prepare($query);
+$stmt->execute(['u_id' => $u_id]);
+$user = $stmt->fetch(); 
+
+
+if (!$user) {
+    echo "User not found!";
+    exit; 
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,8 +39,8 @@ $u_id = isset($_GET['u_id']) ? intval($_GET['u_id']) : 0;
             </div>
 
             <div class="user-information">
-                <h5>Jamaica Anuba</h5>
-                <p><span>@</span>jaijai</p>
+            <h5><?php echo htmlspecialchars($user['name']); ?></h5>
+            <p><span>@</span><?php echo htmlspecialchars($user['username']); ?></p>
 
                 <div class="follow">
                     <p><span >10</span>
