@@ -205,6 +205,7 @@ function showPopup(element) {
   const artist = element.getAttribute('data-artist');
   const category = element.getAttribute('data-category');
   const description = element.getAttribute('data-description');
+  
 
   document.querySelector('.box-pop img').src = imageSrc;
   document.querySelector('.top-details h3').innerText = title;
@@ -288,7 +289,7 @@ function toggleFavorite() {
 }
 
 function toggleEditProfile() {
-  // Access the sections that need to be hidden/shown
+
   const dashboardContainer = document.getElementById('dashboardContainer');
   const artworkContainer = document.getElementById('artworkContainer');
   const messageContainer = document.getElementById('messageContainer');
@@ -296,18 +297,18 @@ function toggleEditProfile() {
   const settingContainer = document.getElementById('settingsContainer');
   const reqContainer=document.getElementById('reqExhibit-con');
 
-  // Hide all sections
+
   dashboardContainer.style.display = 'none';
   artworkContainer.style.display = 'none';
   messageContainer.style.display = 'none';
   exhibitContainer.style.display = 'none';
   reqContainer.style.display='none';
   
-  // Show the settings container
+
   settingContainer.style.display = 'block';
 }
 function toggleExhibit() {
-  // Access the sections that need to be hidden/shown
+
   const dashboardContainer = document.getElementById('dashboardContainer');
   const artworkContainer = document.getElementById('artworkContainer');
   const messageContainer = document.getElementById('messageContainer');
@@ -315,7 +316,7 @@ function toggleExhibit() {
   const settingContainer = document.getElementById('settingsContainer');
   const reqContainer=document.getElementById('reqExhibit-con');
 
-  // Hide all sections
+
   dashboardContainer.style.display = 'none';
   artworkContainer.style.display = 'none';
   messageContainer.style.display = 'none';
@@ -349,38 +350,6 @@ document.querySelectorAll('.display-creations img').forEach((img) => {
       }
   });
 });
-
-let currentSlide = 1;
-const images = document.querySelectorAll('.carousel img');
-
-function updateCarousel() {
-    images.forEach((img, i) => {
-        img.classList.remove('left', 'center', 'right');
-
-        if (i === currentSlide) {
-            img.classList.add('center');
-        } else if (i === (currentSlide - 1 + images.length) % images.length) {
-            img.classList.add('left');
-        } else {
-            img.classList.add('right');
-        }
-    });
-}
-
-function nextSlide() {
-    currentSlide = (currentSlide + 1) % images.length;
-    updateCarousel();
-}
-
-function prevSlide() {
-    currentSlide = (currentSlide - 1 + images.length) % images.length;
-    updateCarousel();
-}
-
-// Initialize carousel
-updateCarousel();
-
-
 
 //settings tab
 

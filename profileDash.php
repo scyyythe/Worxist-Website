@@ -1,22 +1,22 @@
 <?php
-include("include/connection.php");
+$u_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
+if ($u_id === 0) {
+    echo "Invalid User ID!";
+    exit;
+}
 
-$u_id = isset($_GET['u_id']) ? intval($_GET['u_id']) : 0;
-
-
-$query = "SELECT * FROM accounts WHERE u_id = 34"; 
+$query = "SELECT * FROM accounts WHERE u_id = :u_id"; 
 $stmt = $conn->prepare($query);
-$stmt->execute(['u_id' => $u_id]);
-$user = $stmt->fetch(); 
-
+$stmt->execute([':u_id' => $u_id]);  
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
     echo "User not found!";
     exit; 
 }
-?>
 
+?>
 
 <!DOCTYPE html>
 <html lang="en">

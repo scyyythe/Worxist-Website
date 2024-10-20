@@ -191,12 +191,13 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
         <img src="gallery/hands.jpg" alt="Hands">  
     </div>
 
-    <!-- Interaction like save favorites -->
-    <div class="social-interact-icons">
-    <i class='bx bxs-heart like-icon' data-action="like" data-artwork-id="123"></i>
-    <i class='bx bxs-bookmark-star bookmark-icon' data-action="save" data-artwork-id="123"></i>
-    <i class='bx bxs-star favorite-icon' data-action="favorite" data-artwork-id="123"></i>
-</div>
+   <!-- Interaction like save favorites -->
+   <div class="social-interact-icons">
+        <i class='bx bxs-heart like-icon' ></i>
+        <i class='bx bxs-bookmark-star bookmark-icon' ></i>
+        <i class='bx bxs-star favorite-icon' ></i>
+    </div>
+
 
 
     
@@ -210,13 +211,18 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         <div class="art-information">
         <p>
-            <b>Artist:</b> 
-            <em>
-                <a href="profileDash.php?id=<?php echo htmlspecialchars($image['u_id']); ?>" class="artist">
-                    <?php echo htmlspecialchars($image['u_name']); ?>
-                </a>
-            </em>
-        </p>
+    <b>Artist:</b> 
+    <em>
+  
+    <a href="profileDash.php?id=<?php echo htmlspecialchars($image['u_id']); ?>" class="artist">
+    <?php echo htmlspecialchars($image['u_name']); ?>
+</a>
+
+
+    </em>
+</p>
+
+
 
                     <p>Catgeory: <span class="category"></span></p>
             <br>
@@ -893,32 +899,7 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
    </div>
   
    <script src="js/dashboard.js"></script>
-   <script src="js/interaction.js"> </script>
-   <script>
-function handleInteraction(icon) {
-    const action = icon.getAttribute('data-action');
-    const artId = icon.getAttribute('data-art-id');
-
-    // Send the AJAX request
-    fetch('your_php_file.php', { // replace with the PHP file that processes the request
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `art_id=${artId}&action=${action}`
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log(`${action} successful!`);
-            // You can also update the UI here if needed
-        } else {
-            console.error(`Error: ${data.message}`);
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
-</script>
+   <script src="js/api.js"> </script>
 
                                     
 </body>
