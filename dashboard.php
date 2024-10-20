@@ -30,6 +30,16 @@ $statement = $conn->prepare("
 $statement->execute();
 $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+// get exhibit
+$statement = $conn->prepare("
+SELECT exhibit_tbl.exbt_title, exhibit_tbl.exbt_descrip, art_info.title , art_info.description, art_info.file, art_info.u_id 
+FROM exhibit_tbl 
+INNER JOIN art_info ON exhibit_tbl.a_id = art_info.a_id
+WHERE exhibit_tbl.exbt_status = 'Accepted'
+");
+
+$statement ->execute();
+$exhibit=$statement ->fetchAll(PDO::FETCH_ASSOC);
 
 ?> 
 
@@ -514,42 +524,60 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
         <!-- Exhbits -->
         <div class="exhibit-container" id="exhibitContainer">
             <button onclick="toggleExhibit()" class="schedule-now">Schedule Now</button>
-            
             <div class="gallery-container">
-                <div class="top-gallery">
-                    <h3>Title of the Exhibit</h3>
-                </div>
-                <div class="nav-icons">
-                    <div class="prev-icon">&#10094;</div>
-                    <div class="next-icon">&#10095;</div>
-                </div>
-                <div class="carousel">
+    <div class="top-gallery">
+        <h3>
+            <?php 
+                echo isset($exhibit[0]['exbt_title']) ? htmlspecialchars($exhibit[0]['exbt_title']) : 'Exhibit Title'; 
+            ?>
+        </h3>
+    </div>
+    
+    <div class="nav-icons">
+        <div class="prev-icon">&#10094;</div>
+        <div class="next-icon">&#10095;</div>
+    </div>
+    
+    <div class="carousel">
+        <div class="carousel-img left-img">
+            <img src="gallery/hands.jpg" alt="Left Image" class="side-image">
+        </div>
 
-                    <div class="carousel-img right-img">
-                        <img src="gallery/hands.jpg" alt="Left Image" class="side-image">
-                    </div>
-                    
-                    <div class="carousel-img ">
-                         <div class="center-container">
-                            <img src="gallery/body.jpg" alt="Center Image" class="center-image">
-                            <div class="center-description">
-                                <h3>The Starry Night</h3>
-                                <p>"I look at the stars and with all my being feel that I am a part of one of these stars."</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                   <div class="carousel-img left-img">                       
-                        <img src="gallery/girl.jpg" alt="Right Image" class="side-image">
-                   </div>
-                
-                </div>
-
-
-                <div class="info-exhibit">
-                    <p><span>Jamaica Anuba</span><br>Artist</p>
+        <div class="carousel-img center-img">
+            <div class="center-container">
+                <img src="gallery/body.jpg" alt="Center Image" class="center-image">
+                <div class="center-description">
+                    <h3>
+                        <?php 
+                            echo isset($exhibit[1]['title']) ? htmlspecialchars($exhibit[1]['title']) : 'Artwork Title'; 
+                        ?>
+                    </h3>
+                    <p>
+                        <?php 
+                            echo isset($exhibit[1]['description']) ? htmlspecialchars($exhibit[1]['description']) : 'Artwork Description'; 
+                        ?>
+                    </p>
                 </div>
             </div>
+        </div>
+
+        <div class="carousel-img right-img">
+            <img src="gallery/girl.jpg" alt="Right Image" class="side-image">
+        </div>
+    </div>
+
+    <div class="info-exhibit">
+        <p>
+            <span>
+                <?php 
+                    echo isset($exhibit[1]['u_id']) ? htmlspecialchars($exhibit[1]['u_id']) : 'Unknown Artist'; 
+                ?>
+            </span><br>Artist
+        </p>
+    </div>
+</div>
+
+
 
             
             <!-- end of exhibit container -->
