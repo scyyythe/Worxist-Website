@@ -16,7 +16,7 @@ $u_id = $_SESSION['u_id'];
 $title = isset($_SESSION['title']) ? $_SESSION['title'] : 'Default Title';
 
 
-$statement = $conn->prepare("SELECT file, title, description, category FROM art_info WHERE u_id = :u_id");
+$statement = $conn->prepare("SELECT a_id,file, title, description, category FROM art_info WHERE u_id = :u_id");
 $statement->bindValue(':u_id', $u_id);
 $statement->execute();
 $images = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -201,29 +201,23 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 
     
-    <div class="art-details">
-        <div class="top-details"> 
-            <h3>The Caress</h3>
-            <div class="close-popup" onclick="toggleImage()">
-                <i class='bx bx-x'></i>
-            </div>
-        </div>
+                    <div class="art-details">
+                        <div class="top-details"> 
+                            <h3>The Caress</h3>
+                            <div class="close-popup" onclick="toggleImage()">
+                                <i class='bx bx-x'></i>
+                            </div>
+                        </div>
 
-        <div class="art-information">
-        <p>
-    <b>Artist:</b> 
-    <em>
-  
-    <a href="profileDash.php?id=<?php echo htmlspecialchars($image['u_id']); ?>" class="artist">
-    <?php echo htmlspecialchars($image['u_name']); ?>
-</a>
-
-
-    </em>
-</p>
-
-
-
+                        <div class="art-information">
+                        <p>
+                    <b>Artist:</b> 
+                        <em>             
+                            <a href="profileDash.php?id=<?php echo htmlspecialchars($image['u_id']); ?>" class="artist">
+                            <?php echo htmlspecialchars($image['u_name']); ?>
+                            </a>
+                        </em>
+                    </p>
                     <p>Catgeory: <span class="category"></span></p>
             <br>
             <p class="description-of-art"></p>
@@ -574,47 +568,55 @@ $allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
                 <button class="requestLink" onclick="openPage('Collaborative')" >Collaborate</button>
             </div>
             
-
             <div id="Solo" class="requestTab">
+    <div class="exhibit-inputs">
+        <form action="" name="soloExhibit" method="POST" id="soloExhibitForm">
+            <label for="exhibit-title">Exhibit Title</label><br>
+            <input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit" required><br>
 
-            <div class="exhibit-inputs">
-                <form action="" name="soloExhibit" method="POST">
-                    <label for="exhibit-title">Exhibit Title</label><br>
-                    <input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit"><br>
+            <label for="exhibit-description">Exhibit Description</label><br>
+            <textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit" required></textarea><br>
 
-                    <label for="exhibit-description">Exhibit Description</label><br>
-                    <textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit"></textarea><br>
+            <label for="exhibit-date">Exhibit Date</label><br>
+            <input type="date" id="exhibit-date" name="exhibit-date" required><br>
 
-                    <label for="exhibit-date">Exhibit Date</label><br>
-                    <input type="date" id="exhibit-date" name="exhibit-date">
+            <!-- Hidden input to store selected artwork IDs -->
+            <input type="hidden" name="selected_artworks" id="selectedArtworks">
 
-                    <div class="confrim-solo">
-                    <button class="solo-btn" name="requestSolo">Confirm Schedule</button>
-                </div>
-                </form>
-                <div class="image-exhibit">
-                    <img src="image/solo-image.png" alt="Painting Graphics">
-                </div>
+            <div class="confirm-solo">
+                <button class="solo-btn" id="solo-btn" name="requestSolo">Confirm Schedule</button>
             </div>
-                
-                    <div class="select-art">
-                        <p>Selected Artworks (Maximum of 10)</p>
+        </form>
+        <div class="image-exhibit">
+            <img src="image/solo-image.png" alt="Painting Graphics">
+        </div>
+    </div>
 
-                        <div class="display-creations">
-                                <?php if (!empty($images)): ?>
-                                    <?php foreach ($images as $image): ?>
-                                        <div class="image-item">
-                                            <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Artwork"">
-                                        </div>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <p>No artworks found for this user.</p>
-                                <?php endif; ?>
-                        </div>
-                    </div>
+    <div class="select-art">
+    <p>Selected Artworks (Maximum of 10)</p>
+    <div class="display-creations">
+        <?php if (!empty($images)): ?>
+            <?php foreach ($images as $image): ?>
+                <div class="image-item">
+                    <?php
+                    // Debugging output
+                    error_log("Image path: " . htmlspecialchars($image['file']));
+                    error_log("Artwork ID: " . htmlspecialchars($image['a_id']));
+                    ?>
+                    <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Artwork" data-id="<?php echo htmlspecialchars($image['a_id']); ?>">
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No artworks found for this user.</p>
+        <?php endif; ?>
+    </div>
+</div>
 
-                
-            </div>
+</div>
+
+
+
+
 <!-- collab request -->
             <div id="Collaborative" class="requestTab">
             <div class="exhibit-inputs">

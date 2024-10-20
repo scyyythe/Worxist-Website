@@ -1,8 +1,8 @@
 <?php
 
- 
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 if (isset($_POST['requestSolo'])) {
-    
     $u_id = $_SESSION['u_id'];
     $exbt_title = $_POST['exhibit-title'];
     $exbt_descrip = $_POST['exhibit-description'];
@@ -11,30 +11,37 @@ if (isset($_POST['requestSolo'])) {
     $exbt_status = 'Pending'; 
 
    
-    $statement = $conn->prepare("INSERT INTO exhibit_tbl (u_id, exbt_title, exbt_descrip, exbt_date, exbt_type, exbt_status) VALUES (:u_id, :exbt_title, :exbt_descrip, :exbt_date, :exbt_type, :exbt_status)");
-    $statement->bindValue(':u_id', $u_id);
-    $statement->bindValue(':exbt_title', $exbt_title);
-    $statement->bindValue(':exbt_descrip', $exbt_descrip);
-    $statement->bindValue(':exbt_date', $exbt_date);
-    $statement->bindValue(':exbt_type', $exbt_type);
-    $statement->bindValue(':exbt_status', $exbt_status);
-    $statement->execute();
-
-  
-    $exbt_id = $conn->lastInsertId();
-
-    
     if (!empty($_POST['selected_artworks'])) {
-        foreach ($_POST['selected_artworks'] as $a_id) {
+        $selectedArtworks = json_decode($_POST['selected_artworks'], true);
+        error_log("Selected Artworks: " . json_encode($selectedArtworks));
+        
+        foreach ($selectedArtworks as $a_id) {
             
-            $linkStatement = $conn->prepare("INSERT INTO art_exhibit (exbt_id, a_id) VALUES (:exbt_id, :a_id)");
-            $linkStatement->bindValue(':exbt_id', $exbt_id);
-            $linkStatement->bindValue(':a_id', $a_id);
-            $linkStatement->execute();
+            $checkStmt = $conn->prepare("SELECT COUNT(*) FROM art_info WHERE a_id = :a_id");
+            $checkStmt->bindValue(':a_id', $a_id);
+            $checkStmt->execute();
+            $exists = $checkStmt->fetchColumn();
+
+            if ($exists) {
+               
+                $statement = $conn->prepare("INSERT INTO exhibit_tbl (u_id, exbt_title, exbt_descrip, exbt_date, exbt_type, exbt_status, a_id) VALUES (:u_id, :exbt_title, :exbt_descrip, :exbt_date, :exbt_type, :exbt_status, :a_id)");
+                $statement->bindValue(':u_id', $u_id);
+                $statement->bindValue(':exbt_title', $exbt_title);
+                $statement->bindValue(':exbt_descrip', $exbt_descrip);
+                $statement->bindValue(':exbt_date', $exbt_date);
+                $statement->bindValue(':exbt_type', $exbt_type);
+                $statement->bindValue(':exbt_status', $exbt_status);
+                $statement->bindValue(':a_id', $a_id); 
+                $statement->execute();
+            } else {
+                error_log("Invalid a_id: " . $a_id); 
+            }
         }
+    } else {
+        error_log("No artworks selected."); 
     }
 
-   
+    // Redirect to the dashboard
     header("Location: dashboard.php");
     exit;
 }

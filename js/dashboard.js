@@ -339,17 +339,29 @@ function openPage(pageName) {
 document.getElementById("defaultOpen").click();
 
 
-//image selection in exhibit
+// select artwork for exhibit
 document.querySelectorAll('.display-creations img').forEach((img) => {
-  img.addEventListener('click', function() {
-     
-      if (document.querySelectorAll('.selected').length < 10 || img.classList.contains('selected')) {
-          img.classList.toggle('selected');
+  img.addEventListener('click', function () {
+   
+      if (img.classList.contains('selected')) {
+          img.classList.remove('selected');
       } else {
-          alert('You can only select up to 10 artworks.');
+      
+          if (document.querySelectorAll('.selected').length < 10) {
+              img.classList.add('selected');
+          } else {
+              alert('You can only select up to 10 artworks.');
+              return; 
+          }
       }
+
+     
+      const selectedIds = Array.from(document.querySelectorAll('.display-creations img.selected'))
+          .map(selectedImg => selectedImg.getAttribute('data-id'));
+      document.getElementById('selectedArtworks').value = JSON.stringify(selectedIds);
   });
 });
+
 
 //settings tab
 
