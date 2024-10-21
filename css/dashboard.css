@@ -801,9 +801,10 @@ body {
 
 /* messages */
 .messages-container {
+  
     position: absolute;
     margin: 0 auto;
-    padding: 10px;
+    padding: 20px;
     width: 95%;
     height: 100vh;
 }
@@ -813,6 +814,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    left: 10px;
 }
 
 .head-message i {
@@ -820,10 +823,13 @@ body {
 }
 
 .message-name {
-    max-width:18%;
-    gap: 10px;
+    max-width:20%;
+    gap: 20px;
     flex-wrap: wrap;
-    height: 90vh;
+    height: 92vh;
+    background-color: whitesmoke;
+    padding: 20px;
+    border-radius: 20px;
 }
 .message-name-head{
     margin-bottom: 10px;
@@ -897,20 +903,22 @@ body {
 }
 
 .message-display {
+    background-color: whitesmoke;
     border-radius: 20px;
-    max-width: 70%;
+    max-width: 80%;
     position: relative;
-    bottom: 95%;
-    left: 20%;
-    height:90vh;
+    bottom: 96%;
+    left: 22%;
+    height:92vh;
     box-shadow: 0 4px 15px rgba(0, 0, 0, .1);
     padding: 20px;
     font-size: 13px;
 }
 .header-chat{
     background-color: transparent;
-
-    h4{
+    position: relative;
+    bottom: 20px;
+    h2{
         margin-left: 20px;
     }
 }
@@ -967,7 +975,7 @@ body {
 .messages-footer {
     position: relative;
     border-radius: 20px;
-    top:45%;
+    top:52%;
     display: flex;
     border-top: 1px solid #ccc;
     background-color: white;
@@ -1738,6 +1746,87 @@ body {
     transform: translate(14px, -50%);
   }
   
+
+
+  /* Change.php na code css */
+
+ .update-container{
+    background-color: white;
+    max-width: 2000px;
+    margin-inline: auto;
+    overflow: hidden;
+    height: 100vh;
+    padding: 5rem;
+    
+   
+    form{
+       
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    label{
+        font-weight: bold;
+
+    }
+
+    input{
+        border-radius: 10px;
+        border: 1px solid gray;
+        padding: 5px;
+        width: 500px;
+        height: 2.5rem;
+    }
+
+    button{
+        padding: .5rem;
+        font-weight: bold;
+        border: none;
+        position: relative;
+        left: 10%;
+        background-color: transparent;
+        color: #b10505;
+    }
+    button:hover{
+        cursor: pointer;
+        text-decoration: underline;
+    }
+    p{
+        display: flex;
+        flex-wrap: wrap;
+        width: 500px;
+        text-align: center;
+    }
+
+    
+ }
+ #delete-acc{
+
+    background-color: #9f1414;
+    color: white;
+    border-radius: 20px;
+    width: 500px;
+    position: relative;
+    left: 0;
+    margin-top: 1rem;
+    border: none;
+    height: 40px;
+ }
+ #delete-acc:hover{
+    text-decoration: none;
+    background-color: #b10505;
+ }
+.image-text{
+
+    height: 70px;
+
+    img{
+        position: relative;
+        left: 20px;
+    }
+}
+
  @media (max-width: 768px) {
     .exhibit-container {
         width: 100%;

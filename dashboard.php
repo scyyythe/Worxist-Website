@@ -435,18 +435,19 @@ $exhibit=$statement ->fetchAll(PDO::FETCH_ASSOC);
         <div class="messages-container" id="messageContainer">
             
             <div class="head-message">
-                 <h5>Chats</h5>
+                 <h2>Chats</h2>
                 
             </div>
            
             <div class="message-name">
-
+                
                 <div class="message-name-head">
                         <div class="message-user-image"> 
                              <img src="gallery/girl.jpg" alt=""> <br>
                              <p>Jamaica Anuba</p><br>
                              <input type="text" name="search-friend" id="search-friend" placeholder="Search">
-                        </div>
+                        </div><br>
+                        <h3>Messages</h3>
                         
                 </div>
 
@@ -478,7 +479,8 @@ $exhibit=$statement ->fetchAll(PDO::FETCH_ASSOC);
                         <img src="gallery/eyes.jpg" alt=""> 
                    </div>
 
-                   <h4>Angel Canete</h4>
+                   <h2>Angel Canete</h2>
+                
                 </div>
 
                 <div class="messages-body">
@@ -758,7 +760,9 @@ $exhibit=$statement ->fetchAll(PDO::FETCH_ASSOC);
                     <input type="text" value="<?php echo $name;?>">
                 </div>
                     
-                    <button>Change</button>
+                <form action="change.php" method="POST">
+                    <button type="submit">Change</button>
+                </form>
                 </div>
 
                 <hr>
@@ -777,7 +781,9 @@ $exhibit=$statement ->fetchAll(PDO::FETCH_ASSOC);
                     <input type="password" value="secretbastapasswordni">
                 </div>
                    
-                    <button>Change</button>
+                <form action="change.php" method="POST">
+                    <button type="submit">Change</button>
+                </form>
                 </div>
                 
                 <div class="delete-container">
@@ -789,7 +795,9 @@ $exhibit=$statement ->fetchAll(PDO::FETCH_ASSOC);
                 </div>
                     
 
-                    <button>I want to delete my account</button>
+                <form action="change.php" method="POST">
+                    <button type="submit">I want to delete my account</button>
+                </form>
                 </div>
 
             </div>
