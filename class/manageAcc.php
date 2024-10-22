@@ -87,6 +87,14 @@ class AccountManager
         return $stmt->execute();
     }
 
+    public function changeUsername($u_id, $new_username) {
+        $sql = "UPDATE accounts SET username = :new_username WHERE u_id = :u_id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':new_username', $new_username, PDO::PARAM_STR);
+        $stmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    
 
     public function deleteAccount($u_id)
     {

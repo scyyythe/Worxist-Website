@@ -366,7 +366,6 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
                     echo '<div class="box" onclick="toggleCreation(this)"'; 
                     echo ' data-image="' .htmlspecialchars($image['file']) . '"';
                     echo ' data-title="' .htmlspecialchars($image['title']) . '"';
-                    echo ' data-artist="' .htmlspecialchars($name) .'"';
                     echo ' data-category="' .htmlspecialchars($image['category']) . '"'; 
                     echo ' data-description="' .htmlspecialchars($image['description']) . '">'; 
                     echo '<img src="' .htmlspecialchars($image['file']) . '" alt="Uploaded Image">';
@@ -619,7 +618,7 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
             <?php foreach ($images as $image): ?>
                 <div class="image-item">
                     <?php
-                    // Debugging output
+                    
                     error_log("Image path: " . htmlspecialchars($image['file']));
                     error_log("Artwork ID: " . htmlspecialchars($image['a_id']));
                     ?>
@@ -733,10 +732,12 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
                 </div>
                 
                 <!-- edit username -->
+                <form action="change.php" method="POST">
                     <label for="edit-username">Edit Username</label><br>
-                    <input type="text" value="<?php echo $username;?>"><br><br>
-
-                    <button>Save Changes</button>
+                    <input type="text" id="edit-username" name="new_username" value="<?php echo htmlspecialchars($username); ?>" required><br><br>
+                    <input type="hidden" name="action" value="change_username">
+                    <button type="submit">Save Changes</button>
+                </form>
                 </div>
             </div>
 <!-- account setting -->
@@ -746,13 +747,15 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
                 <div class="name-display">
 
                 <div class="myname">
-                    <h3>Name</h3>
-                    <input type="text" value="<?php echo $name;?>">
+                <h3>Name</h3>
+                    <form action="change.php" method="POST">
+                        <input type="text" name="new_name" value="<?php echo htmlspecialchars($name); ?>" required>
+                        <input type="hidden" name="action" value="change_name">
+                        <button type="submit">Change</button>
+                    </form>
                 </div>
                     
-                <form action="change.php" method="POST">
-                    <button type="submit">Change</button>
-                </form>
+                
                 </div>
 
                 <hr>
@@ -766,28 +769,27 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
                 <div class="password-container">
 
                 <div class="mypassword">
-                     <h3>Password</h3>
-                    <label for="password">Password</label>
-                    <input type="password" value="secretbastapasswordni">
+                    <h3>Password</h3>
+                    <form action="change.php" method="POST">
+                        
+                        <input type="password" id="new_password" name="new_password" required>
+                        <input type="hidden" name="action" value="change_password">
+                        <button type="submit">Change</button>
+                    </form>
                 </div>
-                   
-                <form action="change.php" method="POST">
-                    <button type="submit">Change</button>
-                </form>
+
                 </div>
                 
-                <div class="delete-container">
-                    
-                <div class="confirm-delete">
-                    <h3>Delete Account</h3>
-                    <p>Would you like to delete your account?
-                    Deleting your account will remove all the content associated with it.</p>
-                </div>
-                    
+            <div class="delete-container">
+                    <div class="confirm-delete">
+                        <h3>Delete Account</h3>
+                        <p>Would you like to delete your account? Deleting your account will remove all the content associated with it.</p>
+                    </div>
 
-                <form action="change.php" method="POST">
-                    <button type="submit">I want to delete my account</button>
-                </form>
+                    <form action="change.php" method="POST">
+                        <input type="hidden" name="action" value="delete_account">
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">I want to delete my account</button>
+                    </form>
                 </div>
 
             </div>

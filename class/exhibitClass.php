@@ -85,15 +85,12 @@ class ExhibitManager
     public function getAcceptedExhibits()
     {
         $statement = $this->conn->prepare("
-            SELECT exhibit_tbl.exbt_title, exhibit_tbl.exbt_descrip, art_info.title, art_info.description, art_info.file, accounts.u_name 
-            FROM exhibit_tbl 
-            INNER JOIN art_info ON exhibit_tbl.a_id = art_info.a_id
-            INNER JOIN accounts ON art_info.u_id = accounts.u_id
-            WHERE exhibit_tbl.exbt_status = 'Accepted'
-        ");
+        SELECT exhibit_tbl.exbt_title, exhibit_tbl.exbt_descrip, art_info.title, art_info.description, art_info.file, art_info.u_id 
+        FROM exhibit_tbl 
+        INNER JOIN art_info ON exhibit_tbl.a_id = art_info.a_id
+        WHERE exhibit_tbl.exbt_status = 'Accepted'");
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-    
 }
 ?>

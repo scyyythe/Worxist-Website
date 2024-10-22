@@ -13,7 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($action == 'change_name' && isset($_POST['new_name']) && !empty($_POST['new_name'])) {
             $new_name = $_POST['new_name'];
             if ($accountManager->changeName($u_id, $new_name)) {
-               
+                $_SESSION['name'] = $new_name; 
+                header("Location: dashboard.php");
+                exit(); 
             } else {
                 echo "Error updating name.";
             }
@@ -21,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } elseif ($action == 'change_password' && isset($_POST['new_password']) && !empty($_POST['new_password'])) {
             $new_password = $_POST['new_password'];
             if ($accountManager->changePassword($u_id, $new_password)) {
-               
+                header("Location: dashboard.php");
+                exit();
             } else {
                 echo "Error updating password.";
             }
@@ -29,9 +32,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } elseif ($action == 'change_email' && isset($_POST['new_email']) && !empty($_POST['new_email'])) {
             $new_email = $_POST['new_email'];
             if ($accountManager->changeEmail($u_id, $new_email)) {
-               
+                $_SESSION['email'] = $new_email; 
+                header("Location: dashboard.php");
+                exit();
             } else {
                 echo "Error updating email.";
+            }
+
+        } elseif ($action == 'change_username' && isset($_POST['new_username']) && !empty($_POST['new_username'])) {
+            $new_username = $_POST['new_username'];
+            if ($accountManager->changeUsername($u_id, $new_username)) {
+                $_SESSION['username'] = $new_username; 
+                header("Location: dashboard.php");
+                exit();
+            } else {
+                echo "Error updating username.";
             }
 
         } elseif ($action == 'delete_account') {
@@ -44,11 +59,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo "Error deleting account.";
             }
         }
+    } else {
+        echo "Invalid action!";
     }
 } else {
     echo "Invalid request!";
 }
-?> 
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,18 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Account Details</title>
 </head>
 <body>
-    <div class="image-text " >
-      
-        <img src="image/white logo.png" alt="Logo" >
-            <div class="text header-text">
-            <span class="nameLogo">
-                Worxist
-            </span>        
-        </div>
-        
-        
-        
-    </div>
+
     <div class="update-container">
        
          <form action="change.php" method="POST">
