@@ -2,7 +2,8 @@
 session_start();
 
 include("include/connection.php");
-include("include/requestexhibit.php");
+include 'class/exhibitClass.php'; 
+ 
 
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
@@ -16,30 +17,30 @@ $u_id = $_SESSION['u_id'];
 $title = isset($_SESSION['title']) ? $_SESSION['title'] : 'Default Title';
 
 
-$statement = $conn->prepare("SELECT a_id,file, title, description, category FROM art_info WHERE u_id = :u_id");
-$statement->bindValue(':u_id', $u_id);
-$statement->execute();
-$images = $statement->fetchAll(PDO::FETCH_ASSOC);
+$exhibitManager = new ExhibitManager($conn);
+$images = $exhibitManager->getUserArtworks();
+$allImages = $exhibitManager->getAllArtworks();
+$exhibit = $exhibitManager->getAcceptedExhibits();
 
 
-$statement = $conn->prepare("
-    SELECT art_info.file, accounts.u_name, art_info.title, art_info.description, art_info.category
-    FROM art_info 
-    JOIN accounts ON art_info.u_id = accounts.u_id
-");
-$statement->execute();
-$allImages = $statement->fetchAll(PDO::FETCH_ASSOC);
+// request exhibit
+        if (isset($_POST['requestSolo'])) {
+            $exhibitManager = new ExhibitManager($conn);
+            $exhibit_title = $_POST['exhibit-title'];
+            $exhibit_description = $_POST['exhibit-description'];
+            $exhibit_date = $_POST['exhibit-date'];
+            $selected_artworks = $_POST['selected_artworks']; 
+            $exhibitManager->requestSoloExhibit($exhibit_title, $exhibit_description, $exhibit_date, $selected_artworks);
+        }
 
-// get exhibit
-$statement = $conn->prepare("
-SELECT exhibit_tbl.exbt_title, exhibit_tbl.exbt_descrip, art_info.title , art_info.description, art_info.file, art_info.u_id 
-FROM exhibit_tbl 
-INNER JOIN art_info ON exhibit_tbl.a_id = art_info.a_id
-WHERE exhibit_tbl.exbt_status = 'Accepted'
-");
+        if (isset($_POST['requestCollab'])) {
+            $exhibitManager = new ExhibitManager($conn);
+            $exhibit_title = $_POST['exhibit-title'];
+            $exhibit_description = $_POST['exhibit-description'];
+            $exhibit_date = $_POST['exhibit-date'];
+            $exhibitManager->requestCollabExhibit($exhibit_title, $exhibit_description, $exhibit_date);
+        }
 
-$statement ->execute();
-$exhibit=$statement ->fetchAll(PDO::FETCH_ASSOC);
 
 ?> 
 
@@ -207,9 +208,6 @@ $exhibit=$statement ->fetchAll(PDO::FETCH_ASSOC);
         <i class='bx bxs-bookmark-star bookmark-icon' ></i>
         <i class='bx bxs-star favorite-icon' ></i>
     </div>
-
-
-
     
                     <div class="art-details">
                         <div class="top-details"> 
@@ -536,51 +534,43 @@ $exhibit=$statement ->fetchAll(PDO::FETCH_ASSOC);
     </div>
     
     <div class="nav-icons">
-        <div class="prev-icon">&#10094;</div>
-        <div class="next-icon">&#10095;</div>
-    </div>
-    
-    <div class="carousel">
-        <div class="carousel-img left-img">
-            <img src="gallery/hands.jpg" alt="Left Image" class="side-image">
-        </div>
+    <div class="prev-icon">&#10094;</div>
+    <div class="next-icon">&#10095;</div>
+</div>
 
-        <div class="carousel-img center-img">
-            <div class="center-container">
-                <img src="gallery/body.jpg" alt="Center Image" class="center-image">
-                <div class="center-description">
-                    <h3>
-                        <?php 
-                            echo isset($exhibit[1]['title']) ? htmlspecialchars($exhibit[1]['title']) : 'Artwork Title'; 
-                        ?>
-                    </h3>
-                    <p>
-                        <?php 
-                            echo isset($exhibit[1]['description']) ? htmlspecialchars($exhibit[1]['description']) : 'Artwork Description'; 
-                        ?>
-                    </p>
-                </div>
+<div class="carousel">
+    <div class="carousel-img left-img">
+        <img src="gallery/default_image.jpg" alt="Left Image" class="side-image">
+    </div>
+
+    <div class="carousel-img center-img">
+        <div class="center-container">
+            <img src="gallery/default_image.jpg" alt="Center Image" class="center-image">
+            <div class="center-description">
+                <h3>Artwork Title</h3>
+                <p>Artwork Description</p>
             </div>
         </div>
-
-        <div class="carousel-img right-img">
-            <img src="gallery/girl.jpg" alt="Right Image" class="side-image">
-        </div>
     </div>
 
-    <div class="info-exhibit">
-        <p>
-            <span>
-                <?php 
-                    echo isset($exhibit[1]['u_id']) ? htmlspecialchars($exhibit[1]['u_id']) : 'Unknown Artist'; 
-                ?>
-            </span><br>Artist
-        </p>
+    <div class="carousel-img right-img">
+        <img src="gallery/default_image.jpg" alt="Right Image" class="side-image">
     </div>
 </div>
 
 
 
+    <div class="info-exhibit">
+    <p>
+        <span>
+            <?php 
+                echo isset($exhibit[1]['u_name']) ? htmlspecialchars($exhibit[1]['u_name']) : 'Unknown Artist'; 
+            ?>
+        </span><br>Artist
+    </p>
+
+    </div>
+</div>
             
             <!-- end of exhibit container -->
         </div>
@@ -935,10 +925,63 @@ $exhibit=$statement ->fetchAll(PDO::FETCH_ASSOC);
         
     <!-- end of wrapper -->
    </div>
-  
+   <script>
+const images = [
+    <?php for ($i = 0; $i < count($exhibit); $i++): ?>
+    {
+        src: "<?php echo isset($exhibit[$i]['file']) ? htmlspecialchars($exhibit[$i]['file']) : 'gallery/default_image.jpg'; ?>",
+        title: "<?php echo isset($exhibit[$i]['title']) ? htmlspecialchars($exhibit[$i]['title']) : 'Artwork Title'; ?>",
+        description: "<?php echo isset($exhibit[$i]['description']) ? htmlspecialchars($exhibit[$i]['description']) : 'Artwork Description'; ?>"
+    }<?php if ($i < count($exhibit) - 1) echo ','; ?>
+    <?php endfor; ?>
+];
+
+let currentIndex = 0; // Start with the first image
+
+// Event listeners for navigation buttons
+document.querySelector('.next-icon').addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % images.length; // Move to the next index
+    updateCarousel();
+});
+
+document.querySelector('.prev-icon').addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + images.length) % images.length; // Move to the previous index
+    updateCarousel();
+});
+
+// Function to update the carousel images and descriptions
+function updateCarousel() {
+    const leftImg = document.querySelector('.left-img img');
+    const centerImg = document.querySelector('.center-img img');
+    const centerTitle = document.querySelector('.center-description h3');
+    const centerDesc = document.querySelector('.center-description p');
+    const rightImg = document.querySelector('.right-img img');
+
+    // Calculate indices for left, center, and right images
+    const leftIndex = (currentIndex - 1 + images.length) % images.length;
+    const centerIndex = currentIndex;
+    const rightIndex = (currentIndex + 1) % images.length;
+
+    // Update image sources and texts from the database
+    leftImg.src = images[leftIndex].src;
+    leftImg.alt = images[leftIndex].title;
+
+    centerImg.src = images[centerIndex].src;
+    centerImg.alt = images[centerIndex].title;
+    centerTitle.textContent = images[centerIndex].title;
+    centerDesc.textContent = images[centerIndex].description;
+
+    rightImg.src = images[rightIndex].src;
+    rightImg.alt = images[rightIndex].title;
+}
+
+// Initial update to set the first image
+updateCarousel();
+</script>
+
    <script src="js/dashboard.js"></script>
    <script src="js/api.js"> </script>
-
+                                    
                                     
 </body>
 </html>

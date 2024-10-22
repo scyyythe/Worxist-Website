@@ -2,12 +2,61 @@
 class AccountManager
 {
     private $conn;
-
-    // Constructor to initialize the connection
+    
     public function __construct($db_conn)
     {
         $this->conn = $db_conn;
+      
     }
+
+  
+    public function login($username, $password)
+    {
+        $statement = $this->conn->prepare("SELECT u_id, u_name, username, email, password FROM accounts WHERE username = :username");
+        $statement->bindValue(':username', $username);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['u_id'] = $user['u_id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['name'] = $user['u_name'];
+            $_SESSION['email'] = $user['email'];
+            header("Location: dashboard.php");
+            die;
+        } else {
+            return "Failed to login. Please try again.";
+        }
+    }
+
+   
+    public function register($name, $email, $username, $password)
+    {
+        $accType = 'User';
+        $accStatus = 'Pending';
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        $statement = $this->conn->prepare("INSERT INTO accounts (u_name, email, username, password, u_type, u_status) 
+                                           VALUES (:name, :email, :username, :hashed_password, :accType, :accStatus)");
+        $statement->bindValue(':name', $name);
+        $statement->bindValue(':email', $email);
+        $statement->bindValue(':username', $username);
+        $statement->bindValue(':hashed_password', $hashed_password);
+        $statement->bindValue(':accType', $accType);
+        $statement->bindValue(':accStatus', $accStatus);
+
+        if ($statement->execute()) {
+            $_SESSION['username'] = $username;
+            $_SESSION['name'] = $name;
+            $_SESSION['email'] = $email;
+            $_SESSION['accType'] = $accType;
+            $_SESSION['accStatus'] = $accStatus;
+            header("Location: login-register.php");
+            die;
+        }
+        return false;
+    }
+
 
     public function changeName($u_id, $new_name)
     {
@@ -18,6 +67,7 @@ class AccountManager
         return $stmt->execute();
     }
 
+   
     public function changePassword($u_id, $new_password)
     {
         $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
@@ -37,6 +87,7 @@ class AccountManager
         return $stmt->execute();
     }
 
+
     public function deleteAccount($u_id)
     {
         $sql = "DELETE FROM accounts WHERE u_id = :u_id";
@@ -45,4 +96,3 @@ class AccountManager
         return $stmt->execute();
     }
 }
-?>

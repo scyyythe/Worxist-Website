@@ -1817,15 +1817,7 @@ body {
     text-decoration: none;
     background-color: #b10505;
  }
-.image-text{
 
-    height: 70px;
-
-    img{
-        position: relative;
-        left: 20px;
-    }
-}
 
  @media (max-width: 768px) {
     .exhibit-container {

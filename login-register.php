@@ -1,8 +1,33 @@
 <?php
-
-include("include/connection.php");
-include("include/loginregister.php");
+    session_start();
+    include("include/connection.php");
+    include 'class/manageAcc.php'; 
+    
+    
+    if (isset($_POST['login'])) {
+        $accountManager = new AccountManager($conn);
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $result = $accountManager->login($username, $password);
+        if ($result) {
+            echo $result;
+        }
+    }
+    
+    
+    if (isset($_POST['register'])) {
+        $accountManager = new AccountManager($conn);
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $accountManager->register($name, $email, $username, $password);
+    }
+    
+  
+      
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

@@ -342,69 +342,6 @@ function openPage(pageName) {
 document.getElementById("defaultOpen").click();
 
 
-//carousel exhibi artwork
-
-const images = [
-  {
-      src: "gallery/hands.jpg",
-      title: "The Hands",
-      description: "A depiction of hands showing creativity."
-  },
-  {
-      src: "gallery/body.jpg",
-      title: "The Body",
-      description: "Exploring the form of the human body."
-  },
-  {
-      src: "gallery/girl.jpg",
-      title: "The Girl",
-      description: "A portrait of a girl in deep thought."
-  }
-];
-
-let currentIndex = 1; // Starting with the second image as the center
-
-document.querySelector('.next-icon').addEventListener('click', () => {
-  currentIndex = (currentIndex + 1) % images.length;
-  updateCarousel();
-});
-
-document.querySelector('.prev-icon').addEventListener('click', () => {
-  currentIndex = (currentIndex - 1 + images.length) % images.length;
-  updateCarousel();
-});
-
-function updateCarousel() {
-  const carouselImages = document.querySelectorAll('.carousel-img');
-
-  carouselImages.forEach((img, index) => {
-      const newIndex = (currentIndex + index - 1 + images.length) % images.length;
-      const imageData = images[newIndex];
-
-      img.querySelector('img').src = imageData.src;
-      img.querySelector('img').alt = imageData.title;
-      
-      if (img.classList.contains('center-img')) {
-          img.querySelector('.center-description h3').textContent = imageData.title;
-          img.querySelector('.center-description p').textContent = imageData.description;
-      }
-  });
-
-
-  carouselImages.forEach((img, index) => {
-      img.classList.remove('center-img');
-      img.classList.remove('left-img');
-      img.classList.remove('right-img');
-
-      if (index === 1) {
-          img.classList.add('center-img');
-      } else if (index === 0) {
-          img.classList.add('left-img');
-      } else {
-          img.classList.add('right-img');
-      }
-  });
-}
 
 // select artwork for exhibit
 document.querySelectorAll('.display-creations img').forEach((img) => {
