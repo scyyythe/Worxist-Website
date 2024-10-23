@@ -10,8 +10,7 @@ class ExhibitManager
         $this->u_id = $_SESSION['u_id'];
     }
 
-    public function requestSoloExhibit($exbt_title, $exbt_descrip, $exbt_date, $selected_artworks)
-    {
+    public function requestSoloExhibit($exbt_title, $exbt_descrip, $exbt_date, $selected_artworks){
         $exbt_type = 'Solo';
         $exbt_status = 'Pending';
 
@@ -45,8 +44,7 @@ class ExhibitManager
         exit;
     }
 
-    public function requestCollabExhibit($exbt_title, $exbt_descrip, $exbt_date)
-    {
+    public function requestCollabExhibit($exbt_title, $exbt_descrip, $exbt_date){
         $exbt_type = 'Collab';
         $exbt_status = 'Pending';
 
@@ -63,24 +61,21 @@ class ExhibitManager
         exit;
     }
 
-    public function getUserArtworks()
-    {
+    public function getUserArtworks(){
         $statement = $this->conn->prepare("SELECT a_id, file, title, description, category FROM art_info WHERE u_id = :u_id");
         $statement->bindValue(':u_id', $this->u_id);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    public function visitArtworks($userId)
-    {
+
+    public function visitArtworks($userId){
         $statement = $this->conn->prepare("SELECT a_id, file, title, description, category FROM art_info WHERE u_id = :u_id");
         $statement->bindValue(':u_id', $userId); 
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAllArtworks()
-    {
+    public function getAllArtworks(){
         $statement = $this->conn->prepare("
             SELECT accounts.u_id,art_info.file, accounts.u_name, art_info.title, art_info.description, art_info.category
             FROM art_info 
@@ -90,8 +85,7 @@ class ExhibitManager
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAcceptedExhibits()
-    {
+    public function getAcceptedExhibits(){
         $statement = $this->conn->prepare("
         SELECT exhibit_tbl.exbt_title, exhibit_tbl.exbt_descrip, art_info.title, art_info.description, art_info.file, art_info.u_id, accounts.u_name 
         FROM exhibit_tbl 

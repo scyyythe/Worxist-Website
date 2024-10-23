@@ -165,7 +165,7 @@
        
         <!-- end of wrapper -->
     </div>
-    <script src="js/script.js" ></script>
+    <script src="js/dashboard.js" ></script>
     <script>
          const errorMessage = "<?php echo $errorMessage; ?>";
          

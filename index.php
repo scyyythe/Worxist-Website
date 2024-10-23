@@ -198,6 +198,6 @@
 
         <!-- end of wrapper -->
     </div>
-    <script src="script.js " ></script>
+    <script src="js/dashboard.js " ></script>
 </body>
 </html>
