@@ -192,36 +192,36 @@ settingLink.addEventListener('click', function(e) {
 
  
 });
-
-//pop up image then mga descriotion
 function showPopup(element) {
-  var blur = document.getElementById('blur');
-  // get popup container
-  const popup = document.getElementById('popup');
+    var blur = document.getElementById('blur');
+    const popup = document.getElementById('popup');
 
-  // get data sa image-awtrok na div container
-  const imageSrc = element.getAttribute('data-image');
-  const title = element.getAttribute('data-title');
-  const artist = element.getAttribute('data-artist');
-  const category = element.getAttribute('data-category');
-  const description = element.getAttribute('data-description');
+ 
+    const imageSrc = element.getAttribute('data-image');
+    const title = element.getAttribute('data-title');
+    const artist = element.getAttribute('data-artist');
+    const artistId = element.getAttribute("data-artist-id"); 
+    const category = element.getAttribute('data-category');
+    const description = element.getAttribute('data-description');
+    
+
+    document.querySelector('.box-pop img').src = imageSrc;
+    document.querySelector('.top-details h3').innerText = title;
   
+    const dataIdLink = document.querySelector('.data-id');
+    dataIdLink.href = `profileDash.php?id=${artistId}`; 
+    dataIdLink.innerText = artist; 
 
-  document.querySelector('.box-pop img').src = imageSrc;
-  document.querySelector('.top-details h3').innerText = title;
-  document.querySelector('.artist').innerText = artist;
-  document.querySelector('.art-information p em a').href = 'profileDash.php'; 
-  document.querySelector('.category').innerText = `${category}`;
-  document.querySelector('.description-of-art').innerText = description;
+    document.querySelector('.category').innerText = category;
+    document.querySelector('.description-of-art').innerText = description;
 
-  // Show the popup
-  popup.style.display = 'flex';
-  setTimeout(() => {
-      popup.classList.add('active'); 
-  }, 0); 
 
-  blur.classList.add('active');
-  popup.classList.add('active');
+    popup.style.display = 'flex';
+    setTimeout(() => {
+        popup.classList.add('active'); 
+    }, 0); 
+
+    blur.classList.add('active');
 }
 
 
@@ -257,6 +257,7 @@ function toggleCreation(element = null) {
       popupImage.src = imageSrc;
       popupTitle.textContent = title;
       popupArtist.textContent = artist;
+      popupArtistId.textContent=artistId;
       popupCategory.textContent = category; 
       popupDescription.textContent = description;
 

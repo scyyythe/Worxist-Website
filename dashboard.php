@@ -221,11 +221,12 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
                         <p>
                     <b>Artist:</b> 
                         <em>             
-                            <a href="profileDash.php?id=<?php echo htmlspecialchars($image['u_id']); ?>" class="artist">
-                            <?php echo htmlspecialchars($image['u_name']); ?>
-                            </a>
+                        <a href="profileDash.php?id=<?php echo htmlspecialchars($image['u_id']); ?>" class="data-id" >
+                        </a>
                         </em>
                     </p>
+
+
                     <p>Catgeory: <span class="category"></span></p>
             <br>
             <p class="description-of-art"></p>
@@ -261,6 +262,7 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
                  data-image="<?php echo htmlspecialchars($image['file']); ?>"
                  data-title="<?php echo htmlspecialchars($image['title']); ?>"
                  data-artist="<?php echo htmlspecialchars($image['u_name']); ?>"
+                data-artist-id="<?php echo htmlspecialchars($image['u_id']); ?>"
                  data-category="<?php echo htmlspecialchars($image['category']); ?>" 
                  data-description="<?php echo htmlspecialchars($image['description']); ?>">
                  
@@ -522,57 +524,67 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
 
         <!-- Exhbits -->
         <div class="exhibit-container" id="exhibitContainer">
-            <button onclick="toggleExhibit()" class="schedule-now">Schedule Now</button>
-            <div class="gallery-container">
-    <div class="top-gallery">
-        <h3>
-            <?php 
-                echo isset($exhibit[0]['exbt_title']) ? htmlspecialchars($exhibit[0]['exbt_title']) : 'Exhibit Title'; 
-            ?>
-        </h3>
-    </div>
+    <button onclick="toggleExhibit()" class="schedule-now">Schedule Now</button>
     
-    <div class="nav-icons">
-    <div class="prev-icon">&#10094;</div>
-    <div class="next-icon">&#10095;</div>
-</div>
+    <!-- Top gallery section with title -->
+    <div class="gallery-container">
+        <div class="top-gallery">
+            <h3>
+                <?php 
+                    echo isset($exhibit[0]['exbt_title']) ? htmlspecialchars($exhibit[0]['exbt_title']) : 'Exhibit Title'; 
+                ?>
+            </h3>
+        </div>
 
-<div class="carousel">
-    <div class="carousel-img left-img">
-        <img src="gallery/default_image.jpg" alt="Left Image" class="side-image">
-    </div>
+        <!-- Carousel navigation icons -->
+        <div class="nav-icons">
+            <div class="prev-icon">&#10094;</div>
+            <div class="next-icon">&#10095;</div>
+        </div>
 
-    <div class="carousel-img center-img">
-        <div class="center-container">
-            <img src="gallery/default_image.jpg" alt="Center Image" class="center-image">
-            <div class="center-description">
-                <h3>Artwork Title</h3>
-                <p>Artwork Description</p>
+    
+        <div class="carousel">
+            <div class="carousel-img left-img">
+                <img src="gallery/empty.png" alt="Left Image" class="side-image">
+            </div>
+
+            <div class="carousel-img center-img">
+                <div class="center-container">
+                    <img src="gallery/empty.png" alt="Center Image" class="center-image">
+                    <div class="center-description">
+                        <h3>Artwork Title</h3>
+                        <p>Description</p>      
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-img right-img">
+                <img src="gallery/empty.png" alt="Right Image" class="side-image">
             </div>
         </div>
-    </div>
 
-    <div class="carousel-img right-img">
-        <img src="gallery/default_image.jpg" alt="Right Image" class="side-image">
-    </div>
-</div>
-
-
-
-    <div class="info-exhibit">
-    <p>
-        <span>
-            <?php 
-                echo isset($exhibit[1]['u_name']) ? htmlspecialchars($exhibit[1]['u_name']) : 'Unknown Artist'; 
-            ?>
-        </span><br>Artist
-    </p>
-
-    </div>
-</div>
-            
-            <!-- end of exhibit container -->
+       
+        <div class="info-exhibit">
+        <div class="nav-icons2">
+            <div class="prev-icon2">&#10094;</div>
+            <div class="next-icon2">&#10095;</div>
+         </div>
+            <div class="artist-info">
+                <img src="gallery/eyes.jpg" alt="Artist Profile Image" class="artist-img">
+                <p>
+                    <span>
+                        <?php 
+                            echo isset($exhibit[1]['u_name']) ? htmlspecialchars($exhibit[1]['u_name']) : 'Artist Name'; 
+                        ?>
+                    </span><br>Cebu, Philippines
+                </p>
+            </div>
         </div>
+
+        
+    </div>
+</div>
+
 
 
         <!-- Solo Exhibit Request -->
@@ -599,7 +611,7 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
             <label for="exhibit-date">Exhibit Date</label><br>
             <input type="date" id="exhibit-date" name="exhibit-date" required><br>
 
-            <!-- Hidden input to store selected artwork IDs -->
+            
             <input type="hidden" name="selected_artworks" id="selectedArtworks">
 
             <div class="confirm-solo">
@@ -929,29 +941,31 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
    </div>
    <script>
 const images = [
-    <?php for ($i = 0; $i < count($exhibit); $i++): ?>
+    <?php for ($i = 0; $i < count($exhibit); $i++):?>
     {
         src: "<?php echo isset($exhibit[$i]['file']) ? htmlspecialchars($exhibit[$i]['file']) : 'gallery/default_image.jpg'; ?>",
-        title: "<?php echo isset($exhibit[$i]['title']) ? htmlspecialchars($exhibit[$i]['title']) : 'Artwork Title'; ?>",
-        description: "<?php echo isset($exhibit[$i]['description']) ? htmlspecialchars($exhibit[$i]['description']) : 'Artwork Description'; ?>"
+        title: "<?php echo isset($exhibit[$i]['title']) ? html_entity_decode(htmlspecialchars($exhibit[$i]['title'])) : 'Artwork Title'; ?>",
+        description: "<?php echo isset($exhibit[$i]['description']) ? html_entity_decode(htmlspecialchars($exhibit[$i]['description'])) : 'Artwork Description'; ?>"
     }<?php if ($i < count($exhibit) - 1) echo ','; ?>
     <?php endfor; ?>
 ];
 
-let currentIndex = 0; // Start with the first image
 
-// Event listeners for navigation buttons
+
+let currentIndex = 0; 
+
+
 document.querySelector('.next-icon').addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % images.length; // Move to the next index
+    currentIndex = (currentIndex + 1) % images.length; // move sa next index
     updateCarousel();
 });
 
 document.querySelector('.prev-icon').addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + images.length) % images.length; // Move to the previous index
+    currentIndex = (currentIndex - 1 + images.length) % images.length; // move sa previous index
     updateCarousel();
 });
 
-// Function to update the carousel images and descriptions
+
 function updateCarousel() {
     const leftImg = document.querySelector('.left-img img');
     const centerImg = document.querySelector('.center-img img');
@@ -959,12 +973,11 @@ function updateCarousel() {
     const centerDesc = document.querySelector('.center-description p');
     const rightImg = document.querySelector('.right-img img');
 
-    // Calculate indices for left, center, and right images
+
     const leftIndex = (currentIndex - 1 + images.length) % images.length;
     const centerIndex = currentIndex;
     const rightIndex = (currentIndex + 1) % images.length;
 
-    // Update image sources and texts from the database
     leftImg.src = images[leftIndex].src;
     leftImg.alt = images[leftIndex].title;
 
@@ -977,7 +990,7 @@ function updateCarousel() {
     rightImg.alt = images[rightIndex].title;
 }
 
-// Initial update to set the first image
+
 updateCarousel();
 </script>
 

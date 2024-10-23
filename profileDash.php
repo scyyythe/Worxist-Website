@@ -1,22 +1,27 @@
 <?php
-$u_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+session_start();
 
-if ($u_id === 0) {
+include("include/connection.php");
+include 'class/manageAcc.php'; 
+include 'class/exhibitClass.php'; 
+
+
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $u_id = intval($_GET['id']); // Convert to integer
+} else {
     echo "Invalid User ID!";
-    exit;
-}
-
-$query = "SELECT * FROM accounts WHERE u_id = :u_id"; 
-$stmt = $conn->prepare($query);
-$stmt->execute([':u_id' => $u_id]);  
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$user) {
-    echo "User not found!";
     exit; 
 }
 
+$accountManager = new AccountManager($conn); 
+$accountInfo = $accountManager->getAccountInfo($u_id);
+
+$exhibitManager = new ExhibitManager($conn);
+$artwork=$exhibitManager->getUserArtworks($u_id);
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,8 +44,8 @@ if (!$user) {
             </div>
 
             <div class="user-information">
-            <h5><?php echo htmlspecialchars($user['name']); ?></h5>
-            <p><span>@</span><?php echo htmlspecialchars($user['username']); ?></p>
+            <h5><?php echo htmlspecialchars($accountInfo['u_name']); ?></h5>
+            <p><span>@</span><?php echo htmlspecialchars($accountInfo['username']); ?></p>
 
                 <div class="follow">
                     <p><span >10</span>
@@ -104,36 +109,29 @@ if (!$user) {
                     <button class="tablinks" onclick="openTab(event, 'saved')">Saved</button>
                 </div>
                 
-                <!-- Tab content -->
+
                 <div id="created" class="tabcontent">
-                    <div class="image-artwork" >
-                        <div class="box">
-                            <img src="gallery/girl.jpg" alt="Uploaded Image 1">
-                            <div class="artist-name">
-                                <p><span><b>Jamaica Anuba</b></span><br>
-                                The Curse</p>
-                            </div>
-                        </div>
-
-                        <div class="box" >
-                            <img src="gallery/lips.jpg" alt="Uploaded Image 1">
-                            <div class="artist-name">
-                                <p><span><b>Jamaica Anuba</b></span><br>
-                                Anxiety</p>
-                            </div>
-                        </div>
-
-                        <div class="box" >
-                            <img src="gallery/body.jpg" alt="Uploaded Image 1">
-                            <div class="artist-name">
-                                <p><span><b>Jamaica Anuba</b></span><br>
-                                   Human Body in All Its Glory</p>
-                            </div>
-                        </div>
-                        
+                    <div class="image-artwork">
+                        <?php
+                        if (!empty($artwork)) {
+                            foreach ($artwork as $art) {
+                                ?>
+                                <div class="box">
+                                    <img src="<?php echo htmlspecialchars($art['file']); ?>" alt="Uploaded Image">
+                                    <div class="artist-name">
+                                        <p><span><b><?php echo htmlspecialchars($accountInfo['u_name']); ?></b></span><br>
+                                        <?php echo htmlspecialchars($art['title']); ?></p>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                        } else {
+                            echo "<p>No artworks found for this artist.</p>";
+                        }
+                        ?>
                     </div>
-                                      
                 </div>
+
                 
                 
                 <div id="saved" class="tabcontent">

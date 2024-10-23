@@ -57,7 +57,15 @@ class AccountManager
         return false;
     }
 
-
+    public function getAccountInfo($u_id)
+    {
+        $sql = "SELECT u_id, u_name, email, username, u_type, u_status FROM accounts WHERE u_id = :u_id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
     public function changeName($u_id, $new_name)
     {
         $sql = "UPDATE accounts SET u_name = :new_name WHERE u_id = :u_id";
