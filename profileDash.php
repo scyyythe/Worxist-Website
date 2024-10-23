@@ -7,17 +7,16 @@ include 'class/exhibitClass.php';
 
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $u_id = intval($_GET['id']); // Convert to integer
+    $u_id = intval($_GET['id']); 
 } else {
     echo "Invalid User ID!";
     exit; 
 }
-
 $accountManager = new AccountManager($conn); 
 $accountInfo = $accountManager->getAccountInfo($u_id);
 
 $exhibitManager = new ExhibitManager($conn);
-$artwork=$exhibitManager->getUserArtworks($u_id);
+$artwork=$exhibitManager->visitArtworks($u_id);
 
 ?>
 

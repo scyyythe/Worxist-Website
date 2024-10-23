@@ -70,6 +70,14 @@ class ExhibitManager
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    public function visitArtworks($userId)
+    {
+        $statement = $this->conn->prepare("SELECT a_id, file, title, description, category FROM art_info WHERE u_id = :u_id");
+        $statement->bindValue(':u_id', $userId); 
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function getAllArtworks()
     {
