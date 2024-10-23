@@ -36,7 +36,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/accountLgin.css">
-    <link rel="shortcut icon" href="image/vags-logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="gallery/image/vags-logo.png" type="image/x-icon">
     <title>Worxist Login</title>
 </head>
 <body>
@@ -58,13 +58,13 @@
                     <div class="circle">
                 </div>
                 <div class="zues">
-                        <img src="image/greek god (1).png" alt="zeus">  
+                        <img src="gallery/image/greek god (1).png" alt="zeus">  
                 </div>  
         </div>
 
         <!-- LOGO -->
         <div class="logo">
-            <img src="image/vags-logo.png" alt="Worxist Logo">
+            <img src="gallery/image/vags-logo.png" alt="Worxist Logo">
         </div>
 
         <!-- CREATE ACCOUNT -->

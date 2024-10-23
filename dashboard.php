@@ -52,7 +52,7 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="shortcut icon" href="image/vags-logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="gallery/image/vags-logo.png" type="image/x-icon">
 
     <title>Worxist</title>
 </head>
@@ -61,7 +61,7 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
         <header>
             <div class="image-text" >
                 <span class="image" onclick="toggleSidebar()">
-                <img src="image/white logo.png" alt="Logo" >
+                <img src="gallery/image/white logo.png" alt="Logo" >
                     <div class="text header-text">
                     <span class="nameLogo">
                         Worxist

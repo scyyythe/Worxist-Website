@@ -6,7 +6,7 @@
     
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/style-home.css">
-    <link rel="shortcut icon" href="image/vags-logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="gallery/image/vags-logo.png" type="image/x-icon">
 
 
    
@@ -16,7 +16,7 @@
 
         <header>
         <div class="logo">
-            <img src="image/vags-logo.png" alt="Worxist Logo">
+            <img src="gallery/image/vags-logo.png" alt="Worxist Logo">
         </div>
         <div class="navbar">
             <a href="#home-page">HOME <span></span></a>
@@ -47,7 +47,7 @@
                  <div class="circle">
                 </div>
                 <div class="zues">
-                      <img src="image/greek god (1).png" alt="zeus">  
+                      <img src="gallery/image/greek god (1).png" alt="zeus">  
                 </div>
               
             </div>
@@ -58,7 +58,7 @@
     
         <section id="about">
             <div class="picture">
-                <img src="image/about-image (1).png" alt="Artwork">
+                <img src="gallery/image/about-image (1).png" alt="Artwork">
             </div>
     
             <div class="right-description">
