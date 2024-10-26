@@ -2,7 +2,7 @@
 session_start();
 
 include("include/connection.php");
-include 'class/exhibitClass.php'; 
+include 'class/class.php'; 
  
 
 if (!isset($_SESSION['username'])) {
@@ -38,9 +38,13 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
             $exhibit_title = $_POST['exhibit-title'];
             $exhibit_description = $_POST['exhibit-description'];
             $exhibit_date = $_POST['exhibit-date'];
-            $exhibitManager->requestCollabExhibit($exhibit_title, $exhibit_description, $exhibit_date);
-        }
+        
+         
+            $collaborative_artworks = isset($_POST['collaborative_artworks']) ? json_decode($_POST['collaborative_artworks'], true) : [];
 
+            $collaborators = isset($_POST['collaborator']) ? $_POST['collaborator'] : [];
+            $exhibitManager->requestCollabExhibit($exhibit_title, $exhibit_description, $exhibit_date, $collaborative_artworks, $collaborators);
+        }
 
 ?> 
 
@@ -619,7 +623,7 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
             </div>
         </form>
         <div class="image-exhibit">
-            <img src="image/solo-image.png" alt="Painting Graphics">
+            <img src="gallery/image/solo-image.png" alt="Painting Graphics">
         </div>
     </div>
 

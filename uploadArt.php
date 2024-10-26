@@ -1,8 +1,13 @@
 <?php
-
+session_start();
 include("include/connection.php");
-include("include/addArtwork.php");
+include 'class/class.php'; 
 
+if (isset($_POST['uploadArt']) && $_SERVER['REQUEST_METHOD'] == "POST") {
+    
+    $uploader = new ArtUploader($conn);
+    $uploader->uploadArtwork($_FILES['file'], $_POST['title'], $_POST['description'], $_POST['category']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +17,7 @@ include("include/addArtwork.php");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="shortcut icon" href="gallery/image/vags-logo.png" type="image/x-icon">
-    <link rel="stylesheet" href="css/uploadArt.css">
+    <link rel="stylesheet" href="css/style2.css">
     <title>Upload Artwork</title>
 </head>
 <body>

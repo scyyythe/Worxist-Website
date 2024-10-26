@@ -1,7 +1,7 @@
 <?php
     session_start();
     include("include/connection.php");
-    include 'class/manageAcc.php'; 
+    include 'class/class.php'; 
     
     
     if (isset($_POST['login'])) {

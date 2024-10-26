@@ -2,8 +2,7 @@
 session_start();
 
 include("include/connection.php");
-include 'class/manageAcc.php'; 
-include 'class/exhibitClass.php'; 
+include 'class/class.php';  
 
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
@@ -27,16 +26,16 @@ $artwork=$exhibitManager->visitArtworks($u_id);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/profileDash.css">
+    <link rel="stylesheet" href="css/style2.css">
     <link rel="shortcut icon" href="gallery/image/vags-logo.png" type="image/x-icon">
     <title>Profile View</title>
 </head>
 <body>
-    <header>
+    <header class="head-view">
         <p><a href="dashboard.php"><</a></p>
     </header>
 
-    <div class="wrapper">
+    <div class="wrapper-view">
         <div class="profile-details">
             <div class="image-profile">
                 <img src="gallery/head.png" alt="">
