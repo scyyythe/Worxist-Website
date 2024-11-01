@@ -540,13 +540,19 @@ body {
         font-size: 1.5rem;
     }
 }
-/* .bookmark{
-    height: 20px;
-    position: relative;
-    left: 100px;
-    border-style: solid;
-    color: #000000;
-} */
+
+.like-icon.liked {
+    color: red;
+}
+
+.bookmark-icon.saved {
+    color:yellow; 
+}
+
+.favorite-icon.favorited {
+    color: gold; 
+}
+
 .social-interact-icons i:hover{
     cursor: pointer;
 }

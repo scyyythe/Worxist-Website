@@ -273,47 +273,80 @@ settingLink.addEventListener('click', function(e) {
  
 });
 function showPopup(element) {
-    var blur = document.getElementById('blur');
-    const popup = document.getElementById('popup');
+  const blur = document.getElementById('blur');
+  const popup = document.getElementById('popup');
 
- 
-    const imageSrc = element.getAttribute('data-image');
-    const title = element.getAttribute('data-title');
-    const artist = element.getAttribute('data-artist');
-    const artistId = element.getAttribute("data-artist-id"); 
-    const category = element.getAttribute('data-category');
-    const description = element.getAttribute('data-description');
-    
+  const imageSrc = element.getAttribute('data-image');
+  const title = element.getAttribute('data-title');
+  const artist = element.getAttribute('data-artist');
+  const artistId = element.getAttribute('data-artist-id');
+  const category = element.getAttribute('data-category');
+  const description = element.getAttribute('data-description');
+  const artworkId = element.getAttribute('data-artwork-id'); // Accessing a_id here
 
-    document.querySelector('.box-pop img').src = imageSrc;
-    document.querySelector('.top-details h3').innerText = title;
-  
-    const dataIdLink = document.querySelector('.data-id');
-    dataIdLink.href = `profileDash.php?id=${artistId}`; 
-    dataIdLink.innerText = artist; 
+  // Log the retrieved values for debugging
+  console.log("Artwork ID (a_id):", artworkId);
+  console.log("Title:", title);
+  console.log("Artist:", artist);
 
-    document.querySelector('.category').innerText = category;
-    document.querySelector('.description-of-art').innerText = description;
+  // Set the artwork ID in the data attribute of social-interact-icons
+  const socialIcons = document.querySelector('.social-interact-icons');
+  socialIcons.setAttribute('data-artwork-id', artworkId);
 
+  document.querySelector('.box-pop img').src = imageSrc;
+  document.querySelector('.top-details h3').innerText = title;
+  const dataIdLink = document.querySelector('.data-id');
+  dataIdLink.href = `profileDash.php?id=${artistId}`;
+  dataIdLink.innerText = artist;
 
-    popup.style.display = 'flex';
-    setTimeout(() => {
-        popup.classList.add('active'); 
-    }, 0); 
+  document.querySelector('.category').innerText = category;
+  document.querySelector('.description-of-art').innerText = description;
 
-    blur.classList.add('active');
+  popup.style.display = 'flex';
+  setTimeout(() => {
+      popup.classList.add('active');
+  }, 0);
+
+  blur.classList.add('active');
+
+  document.querySelector('.like-icon').onclick = () => updateDatabase('likeArtwork', artworkId);
+  document.querySelector('.bookmark-icon').onclick = () => updateDatabase('saveArtwork', artworkId);
+  document.querySelector('.favorite-icon').onclick = () => updateDatabase('addToFavorites', artworkId);
 }
+
+function updateDatabase(action, artworkId) { 
+
+  return fetch('class/interaction.php', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ action: action, a_id: artworkId })
+  })
+  .then(response => {
+      return response.text().then(text => {
+          console.log('Raw response:', text); 
+          const jsonResponse = JSON.parse(text); 
+          return jsonResponse; 
+      });
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      return { success: false, message: 'Error occurred' }; 
+  });
+}
+
+
 
 
 function toggleImage() {
   const popup = document.getElementById('popup');
   const blur = document.getElementById('blur');
-
-  // Remove the active class from the popup and blur
-  popup.classList.remove('active'); 
-  blur.classList.remove('active'); 
- 
+  popup.classList.remove('active');
+  blur.classList.remove('active');
+  popup.style.display = 'none';
 }
+
 // created
 function toggleCreation(element = null) {
   var blur = document.getElementById('artworkContainer');

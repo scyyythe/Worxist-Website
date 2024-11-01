@@ -113,36 +113,118 @@ class AccountManager
     }
 
 
-    // intereactions of artwork
-    public function addToFavorites($a_id)
-    {
+    
+}
+
+//interaction sa image like,saved,favorites
+class artInteraction {
+    private $conn;
+
+    public function __construct($db_conn) {
+        $this->conn = $db_conn;
+    }
+//store database
+    public function addToFavorites($a_id) {
         $u_id = $_SESSION['u_id'];
-        $statement = $this->conn->prepare("INSERT INTO favorites (u_id, a_id) VALUES (:u_id, :a_id)");
+
+        if ($this->isArtworkLiked($u_id, $a_id)) {
+            return $this->unfavoriteArtwork($a_id); 
+        } else {
+            $statement = $this->conn->prepare("INSERT INTO favorite (u_id, a_id) VALUES (:u_id, :a_id)");
+            $statement->bindValue(':u_id', $u_id);
+            $statement->bindValue(':a_id', $a_id);
+            return $statement->execute();
+        }
+       
+    }
+
+    public function likeArtwork($a_id) {
+        $u_id = $_SESSION['u_id'];
+
+        if ($this->isArtworkLiked($u_id, $a_id)) {
+            return $this->unlikeArtwork($a_id); 
+        } else {
+            $statement = $this->conn->prepare("INSERT INTO likes (u_id, a_id) VALUES (:u_id, :a_id)");
+            $statement->bindValue(':u_id', $u_id);
+            $statement->bindValue(':a_id', $a_id);
+            return $statement->execute();
+        }
+    }
+
+    public function saveArtwork($a_id) {
+        $u_id = $_SESSION['u_id'];
+
+
+        if ($this->isArtworkSaved($u_id, $a_id)) {
+            return $this->unsaveArtwork($a_id); // Return true if unsaved successfully
+        } else {
+            $statement = $this->conn->prepare("INSERT INTO saved (u_id, a_id) VALUES (:u_id, :a_id)");
+            $statement->bindValue(':u_id', $u_id);
+            $statement->bindValue(':a_id', $a_id);
+            return $statement->execute(); 
+        }
+    }
+
+    //delete sa database once e unlike or e unsaved or wagtaong sa favorites
+    public function unlikeArtwork($a_id) {
+        $u_id = $_SESSION['u_id'];
+        $statement = $this->conn->prepare("DELETE FROM likes WHERE u_id = :u_id AND a_id = :a_id");
         $statement->bindValue(':u_id', $u_id);
         $statement->bindValue(':a_id', $a_id);
         return $statement->execute();
     }
 
-    public function likeArtwork($a_id)
-    {
+    public function unsaveArtwork($a_id) {
         $u_id = $_SESSION['u_id'];
-        $statement = $this->conn->prepare("INSERT INTO likes (u_id, a_id) VALUES (:u_id, :a_id)");
+        $statement = $this->conn->prepare("DELETE FROM saved WHERE u_id = :u_id AND a_id = :a_id");
         $statement->bindValue(':u_id', $u_id);
         $statement->bindValue(':a_id', $a_id);
-        return $statement->execute();
+        return $statement->execute(); 
     }
 
-    public function saveArtwork($a_id)
-    {
+    public function unfavoriteArtwork($a_id) {
         $u_id = $_SESSION['u_id'];
-        $statement = $this->conn->prepare("INSERT INTO saved_artworks (u_id, a_id) VALUES (:u_id, :a_id)");
+        $statement = $this->conn->prepare("DELETE FROM favorite WHERE u_id = :u_id AND a_id = :a_id");
         $statement->bindValue(':u_id', $u_id);
         $statement->bindValue(':a_id', $a_id);
-        return $statement->execute();
+        return $statement->execute(); 
+    }
+
+
+
+    //tig check if na like ba sa user ang kana na artwork pwede rpd pang display
+    private function isArtworkLiked($u_id, $a_id) {
+        $query = "SELECT COUNT(*) FROM likes WHERE u_id = :u_id AND a_id = :a_id";
+        $statement = $this->conn->prepare($query);
+        $statement->bindValue(':u_id', $u_id);
+        $statement->bindValue(':a_id', $a_id);
+        $statement->execute();
+        return $statement->fetchColumn() > 0; // Returns true if liked
+    }
+
+
+    private function isArtworkSaved($u_id, $a_id) {
+        $query = "SELECT COUNT(*) FROM saved WHERE u_id = :u_id AND a_id = :a_id";
+        $statement = $this->conn->prepare($query);
+        $statement->bindValue(':u_id', $u_id);
+        $statement->bindValue(':a_id', $a_id);
+        $statement->execute();
+        return $statement->fetchColumn() > 0; // Returns true if saved
+    }
+
+   
+    private function isArtworkFavorited($u_id, $a_id) {
+        $query = "SELECT COUNT(*) FROM favorite WHERE u_id = :u_id AND a_id = :a_id";
+        $statement = $this->conn->prepare($query);
+        $statement->bindValue(':u_id', $u_id);
+        $statement->bindValue(':a_id', $a_id);
+        $statement->execute();
+        return $statement->fetchColumn() > 0; 
     }
 }
 
 
+//upload ug image
 class ArtUploader {
     private $conn;
 
@@ -260,7 +342,7 @@ class ExhibitManager
         $statement->bindValue(':exbt_status', $exbt_status);
         $statement->execute();
     
-        // Get the last inserted exhibit ID
+       
         $exbt_id = $this->conn->lastInsertId();
     
         // Insert each collaborator
@@ -296,7 +378,7 @@ class ExhibitManager
 
     public function getAllArtworks(){
         $statement = $this->conn->prepare("
-            SELECT accounts.u_id,art_info.file, accounts.u_name, art_info.title, art_info.description, art_info.category
+            SELECT accounts.u_id,art_info.file, accounts.u_name,art_info.a_id, art_info.title, art_info.description, art_info.category
             FROM art_info 
             JOIN accounts ON art_info.u_id = accounts.u_id
         ");

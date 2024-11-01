@@ -200,47 +200,50 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
         </div>
 
 
-          <!-- Pop-up -->
+ <!-- Pop-up -->
 <div class="popup" id="popup">
     <div class="box-pop">
-        <img src="gallery/hands.jpg" alt="Hands">  
+        <!-- Dynamically populated image -->
+        <img src="" alt="" class="popup-image">
     </div>
 
-   <!-- Interaction like save favorites -->
-   <div class="social-interact-icons">
-        <i class='bx bxs-heart like-icon' ></i>
-        <i class='bx bxs-bookmark-star bookmark-icon' ></i>
-        <i class='bx bxs-star favorite-icon' ></i>
-    </div>
+    <!-- Interaction icons -->
+    <div class="social-interact-icons">
+        <i class="bx bxs-heart like-icon" id="like-icon" onclick="toggleLike(artworkId)"></i>
+        <i class="bx bxs-bookmark-star bookmark-icon" onclick="toggleSave(artworkId)"></i>
+        <i class="bx bxs-star favorite-icon" onclick="toggleFavorite(artworkId)"></i>
+</div>
+
+
+
+
     
-                    <div class="art-details">
-                        <div class="top-details"> 
-                            <h3>The Caress</h3>
-                            <div class="close-popup" onclick="toggleImage()">
-                                <i class='bx bx-x'></i>
-                            </div>
-                        </div>
+    <!-- Artwork details -->
+    <div class="art-details">
+        <div class="top-details"> 
+            <h3 class="data-artId"></h3>
+            <div class="close-popup" onclick="toggleImage()">
+                <i class="bx bx-x"></i>
+            </div>
+        </div>
 
-                        <div class="art-information">
-                        <p>
-                    <b>Artist:</b> 
-                        <em>             
-                        <a href="profileDash.php?id=<?php echo htmlspecialchars($image['u_id']); ?>" class="data-id" >
-                        </a>
-                        </em>
-                    </p>
-
-
-                    <p>Catgeory: <span class="category"></span></p>
-            <br>
+        <div class="art-information">
+            <p>
+                <b>Artist:</b> 
+                <em>
+                    <a href="" class="data-id" target="_blank"></a> 
+                </em>
+            </p>
+            <p>Category: <span class="category"></span></p>
             <p class="description-of-art"></p>
         </div>
 
+        <!-- Comments Section -->
         <div class="interaction">
             <h5>Comments</h5>
             <div class="user-image">
                 <div class="profile-pic"> 
-                    <img src="gallery/eyes.jpg" alt=""> 
+                    <img src="gallery/eyes.jpg" alt="User profile picture"> 
                 </div> 
                 <h5>Angel Canete</h5>                             
             </div>
@@ -249,13 +252,15 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
             </div>                            
         </div>
 
+        <!-- Input for adding comments -->
         <div class="input-comment">
             <textarea name="comment" id="comment" class="comment-area"></textarea>
-            <button class="comment-btn"><i class='bx bxs-send'></i></button>
+            <button class="comment-btn"><i class="bx bxs-send"></i></button>
         </div>
     </div>
 </div>
 
+<!-- Artwork gallery with dynamic data attributes -->
 <div class="image-artwork" id="blur">
     <?php 
     if (!empty($allImages)) {
@@ -266,9 +271,10 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
                  data-image="<?php echo htmlspecialchars($image['file']); ?>"
                  data-title="<?php echo htmlspecialchars($image['title']); ?>"
                  data-artist="<?php echo htmlspecialchars($image['u_name']); ?>"
-                data-artist-id="<?php echo htmlspecialchars($image['u_id']); ?>"
+                 data-artist-id="<?php echo htmlspecialchars($image['u_id']); ?>"
                  data-category="<?php echo htmlspecialchars($image['category']); ?>" 
-                 data-description="<?php echo htmlspecialchars($image['description']); ?>">
+                 data-description="<?php echo htmlspecialchars($image['description']); ?>"
+                 data-artwork-id="<?php echo htmlspecialchars($image['a_id']); ?>">
                  
                 <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Image">
                 <div class="artist-name">
@@ -284,7 +290,7 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
     ?>
 </div>
 
-     </div>
+   </div>
 
      <!-- my artworks -->
         <!-- pop-up -->
