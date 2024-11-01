@@ -347,60 +347,6 @@ function toggleImage() {
   popup.style.display = 'none';
 }
 
-// created
-function toggleCreation(element = null) {
-  var blur = document.getElementById('artworkContainer');
-  var popup = document.getElementById('popup-creation');
-
-  if (element) {
-
-
-      const imageSrc = element.getAttribute("data-image");
-      const title = element.getAttribute("data-title");
-      const artist = element.getAttribute("data-artist");
-      const description = element.getAttribute("data-description");
-      const category = element.getAttribute("data-category"); 
-
-      const popupImage = popup.querySelector(".box-pop img");
-      const popupTitle = popup.querySelector(".top-details h3");
-      const popupArtist = popup.querySelector(".art-information em a");
-      const popupCategory = popup.querySelector(".art-category"); 
-      const popupDescription = popup.querySelector(".art-information p:nth-of-type(3)");
-
-      popupImage.src = imageSrc;
-      popupTitle.textContent = title;
-      popupArtist.textContent = artist;
-      popupArtistId.textContent=artistId;
-      popupCategory.textContent = category; 
-      popupDescription.textContent = description;
-
-      blur.classList.add('active');
-      popup.classList.add('active');
-  } else {
-      
-      blur.classList.remove('active');
-      popup.classList.remove('active');
-  }
-}
-
-
-// saved
-function toggleSaved() {
-  var blur = document.getElementById('artworkContainer');
-  var popup = document.getElementById('popup-creation');
-  
-  blur.classList.toggle('active'); 
-  popup.classList.toggle('active');
-}
-
-// favortes
-function toggleFavorite() {
-  var blur = document.getElementById('artworkContainer');
-  var popup = document.getElementById('popup-creation');
-  
-  blur.classList.toggle('active'); 
-  popup.classList.toggle('active');
-}
 
 function toggleEditProfile() {
 

@@ -221,6 +221,37 @@ class artInteraction {
         $statement->execute();
         return $statement->fetchColumn() > 0; 
     }
+
+    //retrieve saved and favorties
+    public function getSavedArtworks($u_id) {
+        $statement = $this->conn->prepare("
+            SELECT art_info.file, art_info.title, art_info.description, art_info.category, art_info.a_id, accounts.u_name, accounts.u_id
+            FROM saved 
+            JOIN art_info ON saved.a_id = art_info.a_id
+            JOIN accounts ON art_info.u_id = accounts.u_id
+            WHERE saved.u_id = :u_id
+        ");
+    
+        $statement->bindValue(':u_id', $u_id);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    //retrieve favorites
+    public function getFavoriteArtworks($u_id) {
+        $statement = $this->conn->prepare("
+            SELECT art_info.file, art_info.title, art_info.description, art_info.category, art_info.a_id, accounts.u_name, accounts.u_id
+            FROM favorite 
+            INNER JOIN art_info ON favorite.a_id = art_info.a_id
+            INNER JOIN accounts ON art_info.u_id = accounts.u_id
+            WHERE favorite.u_id = :u_id
+        ");
+    
+        $statement->bindValue(':u_id', $u_id);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }
 
 
@@ -362,12 +393,19 @@ class ExhibitManager
     
     
 
-    public function getUserArtworks(){
-        $statement = $this->conn->prepare("SELECT a_id, file, title, description, category FROM art_info WHERE u_id = :u_id");
+    public function getUserArtworks() {
+        $statement = $this->conn->prepare("
+            SELECT accounts.u_id, art_info.file, accounts.u_name, art_info.a_id, art_info.title, 
+                   art_info.description, art_info.category
+            FROM art_info 
+            JOIN accounts ON art_info.u_id = accounts.u_id
+            WHERE accounts.u_id = :u_id
+        ");
         $statement->bindValue(':u_id', $this->u_id);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 
     public function visitArtworks($userId){
         $statement = $this->conn->prepare("SELECT a_id, file, title, description, category FROM art_info WHERE u_id = :u_id");

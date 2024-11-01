@@ -22,7 +22,9 @@ $images = $exhibitManager->getUserArtworks();
 $allImages = $exhibitManager->getAllArtworks();
 $exhibit = $exhibitManager->getAcceptedExhibits();
 
-
+$artInteract=new artInteraction($conn);
+$artSaved=$artInteract->getSavedArtworks($u_id);
+$artFave=$artInteract->getFavoriteArtworks($u_id);
 // request exhibit
         if (isset($_POST['requestSolo'])) {
             $exhibitManager = new ExhibitManager($conn);
@@ -149,59 +151,8 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
    <div class="wrapper">
 
 
-    <!-- artworks display -->
-     <div class="dashcontainer" id="dashboardContainer">
-    <div class="overlay">
-
-    </div>
-     <div class="top-head">
-        <p><b>Worxist</b><span>
-        </span></p>
-
-            <div class="searchbar">
-                 <input type="text" class="bar">
-                <i class='bx bx-search search'></i>
-
-            </div>
-           
-            <div class="notification-wrapper">
-                <div class="notification-icon" onclick="toggleNotifications()">
-                    <i class='bx bxs-bell'></i>
-                    <span class="badge">3</span> 
-                </div>
-
-            <div class="notification-center" id="notificationCenter">
-                <h5>Notifications</h5>
-                <ul>
-                    <li><a href="#">New comment on your post</a></li>
-                    <li><a href="#">You have a new follower</a></li>
-                    <li><a href="#">Jerald just posted an artwork</a></li>
-                </ul>
-                <a href="#" class="view-all">View all notifications</a>
-            </div>
-</div>
-
-            
-            <div class="filter-container">
-                <i class='bx bx-filter filter-icon' onclick="toggleDropdown()"></i>
-                    <div class="dropdown-content" id="dropdown">
-                        <a href="#">Sketches</a>
-                        <a href="#">Sculpture</a>
-                        <a href="#">Painting    </a>
-                    </div>
-            </div>
-
-            <div class="profile">
-                <div class="profile-pic"  onclick="toggleEditProfile()" > 
-                 <img src="gallery/eyes.jpg" alt=""> 
-                </div>
-                <p class="to-edit-profile-btn" onclick="toggleEditProfile()"><b><?php echo $username;?> </b></p>
-            </div>
-        </div>
-
-
  <!-- Pop-up -->
-<div class="popup" id="popup">
+ <div class="popup" id="popup">
     <div class="box-pop">
         <!-- Dynamically populated image -->
         <img src="" alt="" class="popup-image">
@@ -260,7 +211,58 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
     </div>
 </div>
 
-<!-- Artwork gallery with dynamic data attributes -->
+    <!-- artworks display -->
+     <div class="dashcontainer" id="dashboardContainer">
+    <div class="overlay">
+
+    </div>
+     <div class="top-head">
+        <p><b>Worxist</b><span>
+        </span></p>
+
+            <div class="searchbar">
+                 <input type="text" class="bar">
+                <i class='bx bx-search search'></i>
+
+            </div>
+           
+            <div class="notification-wrapper">
+                <div class="notification-icon" onclick="toggleNotifications()">
+                    <i class='bx bxs-bell'></i>
+                    <span class="badge">3</span> 
+                </div>
+
+            <div class="notification-center" id="notificationCenter">
+                <h5>Notifications</h5>
+                <ul>
+                    <li><a href="#">New comment on your post</a></li>
+                    <li><a href="#">You have a new follower</a></li>
+                    <li><a href="#">Jerald just posted an artwork</a></li>
+                </ul>
+                <a href="#" class="view-all">View all notifications</a>
+            </div>
+</div>
+
+            
+            <div class="filter-container">
+                <i class='bx bx-filter filter-icon' onclick="toggleDropdown()"></i>
+                    <div class="dropdown-content" id="dropdown">
+                        <a href="#">Sketches</a>
+                        <a href="#">Sculpture</a>
+                        <a href="#">Painting    </a>
+                    </div>
+            </div>
+
+            <div class="profile">
+                <div class="profile-pic"  onclick="toggleEditProfile()" > 
+                 <img src="gallery/eyes.jpg" alt=""> 
+                </div>
+                <p class="to-edit-profile-btn" onclick="toggleEditProfile()"><b><?php echo $username;?> </b></p>
+            </div>
+        </div>
+
+
+
 <div class="image-artwork" id="blur">
     <?php 
     if (!empty($allImages)) {
@@ -292,65 +294,7 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
 
    </div>
 
-     <!-- my artworks -->
-        <!-- pop-up -->
-        <div class="popup" id="popup-creation" >
-                    <div class="box-pop">
-                        <img src="  gallery/rose.png" alt="Hands">  
-                             
-                    </div>
-
-                    <!-- interction like save favorites -->
-                
-
-                     <div class="social-interact-icons">
-                        <i class='bx bxs-heart'></i>  
-                        <i class='bx bxs-bookmark-star'></i>       
-                        <i class='bx bxs-star' ></i>
-                     </div>
-                    
-
-
-                    <div class="art-details">
-                        <div class="top-details"> 
-                            <h3>The Caress</h3>
-                            <div class="close-popup-creations" onclick="toggleCreation()">
-                                <i class='bx bx-x'></i>
-                             </div>
-                        </div>
-    
-                        <div class="art-information">
-                            <p>Artist: <em><a href="" class="artist-name"></a></em> </p>
-                            <p>Category:<span class="art-category"></span></p>
-                            <br>
-                            <p class="art-description">&nbsp;&nbsp;&nbsp;</p>
-                        </div>
-
-                        <div class="interaction">
-                            <h5>Comments</h5>
-            
-                            <div class="user-image">
-                                <div class="profile-pic"> 
-                                <img src="gallery/eyes.jpg" alt=""> 
-                                </div> 
-                                <h5>Angel Canete</h5>                             
-                             </div>
-                            
-                                <div class="comment">
-                                <p>Wow!</p>
-
-                                </div>
-
-                                <div class="input-comment">
-
-                                    <textarea name="comment" id="comment" class="comment-area"></textarea>
-                                    <button class="comment-btn"><i class='bx bxs-send'></i></button>
-                                </div>
-                                
-                        </div>
-                    </div>
-        </div>
-
+   
 
         <!-- artwork section -->
      <div class="artwork-section" id="artworkContainer">
@@ -373,25 +317,34 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
                 <i class='bx bx-message-square-add'></i>
             </button>
 
-            <?php if (!empty($images)) {
-                foreach ($images as $image) {
-                    echo '<div class="box" onclick="toggleCreation(this)"'; 
-                    echo ' data-image="' .htmlspecialchars($image['file']) . '"';
-                    echo ' data-title="' .htmlspecialchars($image['title']) . '"';
-                    echo ' data-category="' .htmlspecialchars($image['category']) . '"'; 
-                    echo ' data-description="' .htmlspecialchars($image['description']) . '">'; 
-                    echo '<img src="' .htmlspecialchars($image['file']) . '" alt="Uploaded Image">';
-                    echo '<div class="artist-name">';
-                    echo '<p><span><b>' . htmlspecialchars($name) . '</b></span><br>' . htmlspecialchars($image['title']). '</p>'; 
-                    echo '</div>'; 
-                    echo '</div>'; 
+                        <?php 
+                if (!empty($images)) {
+                    foreach ($images as $image) { 
+                        ?>
+                        <div class="box" 
+                            onclick="showPopup(this)" 
+                            data-image="<?php echo htmlspecialchars($image['file']); ?>"
+                            data-title="<?php echo htmlspecialchars($image['title']); ?>"
+                            data-artist="<?php echo htmlspecialchars($image['u_name']); ?>"
+                            data-artist-id="<?php echo htmlspecialchars($image['u_id']); ?>"
+                            data-category="<?php echo htmlspecialchars($image['category']); ?>" 
+                            data-description="<?php echo htmlspecialchars($image['description']); ?>"
+                            data-artwork-id="<?php echo htmlspecialchars($image['a_id']); ?>">
+                            
+                            <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Image">
+                            <div class="artist-name">
+                                <p><span><b><?php echo htmlspecialchars($image['u_name']); ?></b></span><br>
+                                <?php echo htmlspecialchars($image['title']); ?></p>
+                            </div>
+                        </div>
+                        <?php 
+                    }
+                } else {
+                    echo "<p>No images found.</p>";
                 }
-} ?>
-
-
-
+                ?>
 </div>
-     
+ 
     </div>
     
     
@@ -399,35 +352,69 @@ $exhibit = $exhibitManager->getAcceptedExhibits();
     <div id="Saved" class="tabcontent">
       <h3>Saved Artworks</h3>
      
-        <div class="image-artwork saved-image">
-            <div class="box" onclick="toggleSaved()">
-                <img src="gallery/eternity.jpg" alt="Hands">
-                <div class="artist-name">
-                    <p><span><b>Jerald Aliviano</b></span><br>
-                    The Eternity</p>
-                </div>
-                
+      <div class="image-artwork">
+                        <?php 
+                if (!empty($artSaved)) {
+                    foreach ($artSaved as $save) { 
+                        ?>
+                        <div class="box" 
+                            onclick="showPopup(this)" 
+                            data-image="<?php echo htmlspecialchars($save['file']); ?>"
+                            data-title="<?php echo htmlspecialchars($save['title']); ?>"
+                            data-artist="<?php echo htmlspecialchars($save['u_name']); ?>"
+                            data-artist-id="<?php echo htmlspecialchars($save['u_id']); ?>"
+                            data-category="<?php echo htmlspecialchars($save['category']); ?>" 
+                            data-description="<?php echo htmlspecialchars($save['description']); ?>"
+                            data-artwork-id="<?php echo htmlspecialchars($save['a_id']); ?>">
+                            
+                            <img src="<?php echo htmlspecialchars($save['file']); ?>" alt="Uploaded Image">
+                            <div class="artist-name">
+                                <p><span><b><?php echo htmlspecialchars($save['u_name']); ?></b></span><br>
+                                <?php echo htmlspecialchars($save['title']); ?></p>
+                            </div>
+                        </div>
+                        <?php 
+                    }
+                } else {
+                    echo "<p>No images found.</p>";
+                }
+                ?>
             </div>
-    
-        </div>
-      
+                
         </div>
     
     
          <!-- Favorites -->
          <div id="Favorites" class="tabcontent">
             <h3>My Favorites</h3>
-            <div class="image-artwork favorite-image">
-            <div class="box" onclick="toggleSaved()">
-                <img src="gallery/body.jpg" alt="Hands">
-                <div class="artist-name">
-                    <p><span><b>Jerald Aliviano</b></span><br>
-                    The Eternity</p>
-                </div>
-                
+            <div class="image-artwork">
+                        <?php 
+                if (!empty($artFave)) {
+                    foreach ($artFave as $favorite) { 
+                        ?>
+                        <div class="box" 
+                            onclick="showPopup(this)" 
+                            data-image="<?php echo htmlspecialchars($favorite['file']); ?>"
+                            data-title="<?php echo htmlspecialchars($favorite['title']); ?>"
+                            data-artist="<?php echo htmlspecialchars($favorite['u_name']); ?>"
+                            data-artist-id="<?php echo htmlspecialchars($favorite['u_id']); ?>"
+                            data-category="<?php echo htmlspecialchars($favorite['category']); ?>" 
+                            data-description="<?php echo htmlspecialchars($favorite['description']); ?>"
+                            data-artwork-id="<?php echo htmlspecialchars($favorite['a_id']); ?>">
+                            
+                            <img src="<?php echo htmlspecialchars($favorite['file']); ?>" alt="Uploaded Image">
+                            <div class="artist-name">
+                                <p><span><b><?php echo htmlspecialchars($favorite['u_name']); ?></b></span><br>
+                                <?php echo htmlspecialchars($favorite['title']); ?></p>
+                            </div>
+                        </div>
+                        <?php 
+                    }
+                } else {
+                    echo "<p>No images found.</p>";
+                }
+                ?>
             </div>
-    
-        </div>
         </div>
 
         
