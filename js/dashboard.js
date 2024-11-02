@@ -274,7 +274,6 @@ settingLink.addEventListener('click', function(e) {
 });
 
 
-//pop up
 function showPopup(element) {
   const blur = document.getElementById('blur');
   const popup = document.getElementById('popup');
@@ -285,7 +284,7 @@ function showPopup(element) {
   const artistId = element.getAttribute('data-artist-id');
   const category = element.getAttribute('data-category');
   const description = element.getAttribute('data-description');
-  const artworkId = element.getAttribute('data-artwork-id'); 
+  const artworkId = element.getAttribute('data-artwork-id');
 
   console.log("Artwork ID (a_id):", artworkId);
   console.log("Title:", title);
@@ -303,6 +302,23 @@ function showPopup(element) {
   document.querySelector('.category').innerText = category;
   document.querySelector('.description-of-art').innerText = description;
 
+
+   const loggedInUserId = document.getElementById('data-id').getAttribute('data-artist-id');
+
+   if (artistId === loggedInUserId) {
+    if (!document.querySelector('.edit-option')) {
+      const editOption = document.createElement('p');
+      editOption.innerHTML = "<i class='bx bxs-edit'></i>";
+      editOption.classList.add('edit-option'); 
+
+      editOption.onclick = () => {
+        window.location.href = `editArtwork.php?a_id=${artworkId}`; 
+    };
+      document.querySelector('.top-details').appendChild(editOption);
+  }
+  
+}
+
   popup.style.display = 'flex';
   setTimeout(() => {
       popup.classList.add('active');
@@ -312,7 +328,6 @@ function showPopup(element) {
 
   initializeIconStates(artworkId);
 
- 
   document.querySelector('.like-icon').onclick = () => {
       const likeIcon = document.querySelector('.like-icon');
       likeIcon.classList.toggle('liked'); 
@@ -330,8 +345,8 @@ function showPopup(element) {
       favoriteIcon.classList.toggle('favorited'); 
       updateDatabase('addToFavorites', artworkId); 
   };
- 
 }
+
 
 function initializeIconStates(artworkId) {
  

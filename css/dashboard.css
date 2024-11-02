@@ -557,6 +557,17 @@ body {
 .social-interact-icons i:hover{
     cursor: pointer;
 }
+.edit-option {
+    cursor: pointer; 
+    padding: 8px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.edit-option:hover {
+    background-color: #f0f0f0; 
+    color: #ff0000; 
+}
+
 .interaction{   
     position: relative;
     right: 3%;
@@ -1886,7 +1897,153 @@ body {
  }
 
 
- @media (max-width: 768px) {
+
+
+ /* EDIT DETAILS NA PHP PAGE */
+ .head-edit{
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    p{
+        font-size: 1.5rem;
+    }
+
+    h4{
+        margin-left: 10px;
+        margin-bottom: 20px;
+    }
+}
+.display-header{
+    width: 98%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+#date-time-display{
+    font-size: 12px;
+}
+textarea{
+    font-size: 12px;
+    resize: none;
+    width: 40%;
+    height: 100px;
+    padding: 5px;
+     border-radius: 5px;
+     border: solid 1px #cac0c0;
+}
+.return:hover{
+    cursor: pointer;
+    color: #a70b0b;
+}
+.artwork-upload{
+
+    width: 100%;
+    padding-inline: 70px;
+    line-height: 2.5;
+    display: flex;
+    flex-direction: column;
+
+    label{
+        font-size: 13px;
+    }
+}
+.artwork-upload input{
+    font-size: 12px;
+    border-radius: 5px;
+    width: 35%;
+    height: 30px;
+    padding-inline: 5px;
+}
+.title{
+    border: solid 1px #cac0c0;
+}
+.artwork-upload select{
+    font-size: 12px;
+    border: solid 1px #cac0c0;
+    width: 20%;
+    height: 30px;
+    border-radius: 10px;
+}
+.delete-artwork{
+    font-size: 12px;
+    width: 200px;
+    height: 30px;
+    border-radius: 20px;
+    border: solid 1px !important;
+    border-color:#a70b0b !important;
+    background-color: white !important;
+    color: #a70b0b!important;
+    position: relative;
+    bottom: 30px;
+    transition: background-color 0.3s ease; 
+}
+.artwork-upload button{
+    font-size: 12px;
+    width: 300px;
+    height: 30px;
+    border-radius: 20px;
+    border-style: none;
+    background-color:#a70b0b;
+    color: white;
+    position: relative;
+    bottom: 30px;
+    transition: background-color 0.3s ease; 
+}
+
+.artwork-upload button:hover{
+    cursor: pointer;
+    background-color: #f11111; ;
+}
+
+/* image display */
+
+
+.image-upload {
+
+    width: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    input{
+        padding: 5px;
+    }
+
+}
+
+.image-display {
+    margin-top: 80px;
+    border-radius: 20px;
+    width: 650px; 
+    height: 600px;
+    border: 2px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    p{
+        font-weight: 600;
+        color: #b9b9b9;
+        font-size: 1.5rem;
+    }
+}
+
+.image-display img {
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-display img.hidden {
+    display: none; 
+}
+@media (max-width: 768px) {
     .exhibit-container {
         width: 100%;
     }

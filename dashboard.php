@@ -5,8 +5,8 @@ include("include/connection.php");
 include 'class/class.php'; 
  
 
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header("Location: login-register.php");
     die;
 }
 
@@ -17,9 +17,11 @@ $u_id = $_SESSION['u_id'];
 $title = isset($_SESSION['title']) ? $_SESSION['title'] : 'Default Title';
 
 
-$exhibitManager = new ExhibitManager($conn);
+$exhibitManager = new artManager($conn);
 $images = $exhibitManager->getUserArtworks();
 $allImages = $exhibitManager->getAllArtworks();
+
+$exhibitManager = new ExhibitManager($conn);
 $exhibit = $exhibitManager->getAcceptedExhibits();
 
 $artInteract=new artInteraction($conn);
@@ -154,7 +156,7 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
  <!-- Pop-up -->
  <div class="popup" id="popup">
     <div class="box-pop">
-        <!-- Dynamically populated image -->
+   
         <img src="" alt="" class="popup-image">
     </div>
 
@@ -164,7 +166,7 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
     <i class='bx bxs-bookmark bookmark-icon' onclick="toggleSave(this)"></i>
     <i class='bx bxs-star favorite-icon' onclick="toggleFavorite(this)"></i>
 </div>
-
+    
     
    
     <div class="art-details">
@@ -180,7 +182,7 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
             <p>
                 <b>Artist:</b> 
                 <em>
-                    <a href="" class="data-id" target="_blank"></a> 
+                    <a href="" class="data-id" id="data-id" data-artist-id="<?php echo $_SESSION['u_id']; ?>" target="_blank"></a> 
                 </em>
             </p>
             <p>Category: <span class="category"></span></p>
