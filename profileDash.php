@@ -42,8 +42,8 @@ $artwork=$exhibitManager->visitArtworks($u_id);
             </div>
 
             <div class="user-information">
-            <h5><?php echo htmlspecialchars($accountInfo['u_name']); ?></h5>
-            <p><span>@</span><?php echo htmlspecialchars($accountInfo['username']); ?></p>
+            <h5><?php echo ($accountInfo['u_name']); ?></h5>
+            <p><span>@</span><?php echo ($accountInfo['username']); ?></p>
 
                 <div class="follow">
                     <p><span >10</span>
@@ -115,10 +115,10 @@ $artwork=$exhibitManager->visitArtworks($u_id);
                             foreach ($artwork as $art) {
                                 ?>
                                 <div class="box">
-                                    <img src="<?php echo htmlspecialchars($art['file']); ?>" alt="Uploaded Image">
+                                    <img src="<?php echo ($art['file']); ?>" alt="Uploaded Image">
                                     <div class="artist-name">
-                                        <p><span><b><?php echo htmlspecialchars($accountInfo['u_name']); ?></b></span><br>
-                                        <?php echo htmlspecialchars($art['title']); ?></p>
+                                        <p><span><b><?php echo ($accountInfo['u_name']); ?></b></span><br>
+                                        <?php echo ($art['title']); ?></p>
                                     </div>
                                 </div>
                                 <?php
@@ -192,12 +192,12 @@ $artwork=$exhibitManager->visitArtworks($u_id);
 
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none"; // Hide all tab content
+        tabcontent[i].style.display = "none"; 
     }
 
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", ""); // Remove active class
+        tablinks[i].className = tablinks[i].className.replace(" active", ""); 
     }
 
     document.getElementById(tabName).style.display = "block"; 

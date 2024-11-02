@@ -193,7 +193,7 @@
             modal.style.display = "block"; 
         }
 
-        // Form validation for login
+       
         const loginForm = document.forms["login"];
         loginForm.addEventListener("submit", (e) => {
             const username = loginForm["username"].value;

@@ -272,6 +272,9 @@ settingLink.addEventListener('click', function(e) {
 
  
 });
+
+
+//pop up
 function showPopup(element) {
   const blur = document.getElementById('blur');
   const popup = document.getElementById('popup');
@@ -282,14 +285,12 @@ function showPopup(element) {
   const artistId = element.getAttribute('data-artist-id');
   const category = element.getAttribute('data-category');
   const description = element.getAttribute('data-description');
-  const artworkId = element.getAttribute('data-artwork-id'); // Accessing a_id here
+  const artworkId = element.getAttribute('data-artwork-id'); 
 
-  // Log the retrieved values for debugging
   console.log("Artwork ID (a_id):", artworkId);
   console.log("Title:", title);
   console.log("Artist:", artist);
 
-  // Set the artwork ID in the data attribute of social-interact-icons
   const socialIcons = document.querySelector('.social-interact-icons');
   socialIcons.setAttribute('data-artwork-id', artworkId);
 
@@ -309,42 +310,80 @@ function showPopup(element) {
 
   blur.classList.add('active');
 
-  document.querySelector('.like-icon').onclick = () => updateDatabase('likeArtwork', artworkId);
-  document.querySelector('.bookmark-icon').onclick = () => updateDatabase('saveArtwork', artworkId);
-  document.querySelector('.favorite-icon').onclick = () => updateDatabase('addToFavorites', artworkId);
+  initializeIconStates(artworkId);
+
+ 
+  document.querySelector('.like-icon').onclick = () => {
+      const likeIcon = document.querySelector('.like-icon');
+      likeIcon.classList.toggle('liked'); 
+      updateDatabase('likeArtwork', artworkId); 
+  };
+  
+  document.querySelector('.bookmark-icon').onclick = () => {
+      const bookmarkIcon = document.querySelector('.bookmark-icon');
+      bookmarkIcon.classList.toggle('saved'); 
+      updateDatabase('saveArtwork', artworkId); 
+  };
+  
+  document.querySelector('.favorite-icon').onclick = () => {
+      const favoriteIcon = document.querySelector('.favorite-icon');
+      favoriteIcon.classList.toggle('favorited'); 
+      updateDatabase('addToFavorites', artworkId); 
+  };
+ 
 }
 
-function updateDatabase(action, artworkId) { 
-
-  return fetch('class/interaction.php', {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ action: action, a_id: artworkId })
-  })
-  .then(response => {
-      return response.text().then(text => {
-          console.log('Raw response:', text); 
-          const jsonResponse = JSON.parse(text); 
-          return jsonResponse; 
+function initializeIconStates(artworkId) {
+ 
+  fetch(`class/interaction.php?action=getStates&a_id=${artworkId}`)
+      .then(response => response.json())
+      .then(data => {
+          if (data) {
+              if (data.liked) {
+                  document.querySelector('.like-icon').classList.add('liked');
+              }
+              if (data.saved) {
+                  document.querySelector('.bookmark-icon').classList.add('saved');
+              }
+              if (data.favorited) {
+                  document.querySelector('.favorite-icon').classList.add('favorited');
+              }
+          }
       });
-  })
-  .catch(error => {
-      console.error('Error:', error);
-      return { success: false, message: 'Error occurred' }; 
-  });
 }
 
+function updateDatabase(action, artworkId) {
+    return fetch('class/interaction.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ action: action, a_id: artworkId })
+    })
+    .then(response => {
+        return response.text().then(text => {
+            console.log('Raw response:', text); 
+            const jsonResponse = JSON.parse(text); 
+            return jsonResponse; 
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        return { success: false, message: 'Error occurred' }; 
+    });
+}
 
-
-
-function toggleImage() {
+function closePopup() {
   const popup = document.getElementById('popup');
   const blur = document.getElementById('blur');
-  popup.classList.remove('active');
-  blur.classList.remove('active');
-  popup.style.display = 'none';
+
+  popup.classList.remove('active'); 
+  blur.classList.remove('active'); 
+
+ 
+  setTimeout(() => {
+      popup.style.display = 'none';
+  }, 300); 
 }
 
 

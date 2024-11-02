@@ -127,7 +127,7 @@ class artInteraction {
     public function addToFavorites($a_id) {
         $u_id = $_SESSION['u_id'];
 
-        if ($this->isArtworkLiked($u_id, $a_id)) {
+        if ($this->isArtworkFavorited($u_id, $a_id)) {
             return $this->unfavoriteArtwork($a_id); 
         } else {
             $statement = $this->conn->prepare("INSERT INTO favorite (u_id, a_id) VALUES (:u_id, :a_id)");
@@ -199,7 +199,7 @@ class artInteraction {
         $statement->bindValue(':u_id', $u_id);
         $statement->bindValue(':a_id', $a_id);
         $statement->execute();
-        return $statement->fetchColumn() > 0; // Returns true if liked
+        return $statement->fetchColumn() > 0;
     }
 
 
@@ -209,7 +209,7 @@ class artInteraction {
         $statement->bindValue(':u_id', $u_id);
         $statement->bindValue(':a_id', $a_id);
         $statement->execute();
-        return $statement->fetchColumn() > 0; // Returns true if saved
+        return $statement->fetchColumn() > 0; 
     }
 
    

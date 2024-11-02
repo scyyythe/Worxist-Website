@@ -160,20 +160,18 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
 
     <!-- Interaction icons -->
     <div class="social-interact-icons">
-        <i class="bx bxs-heart like-icon" id="like-icon" onclick="toggleLike(artworkId)"></i>
-        <i class="bx bxs-bookmark-star bookmark-icon" onclick="toggleSave(artworkId)"></i>
-        <i class="bx bxs-star favorite-icon" onclick="toggleFavorite(artworkId)"></i>
+    <i class='bx bxs-heart like-icon' id="like-icon" onclick="toggleLike(this)"></i>
+    <i class='bx bxs-bookmark bookmark-icon' onclick="toggleSave(this)"></i>
+    <i class='bx bxs-star favorite-icon' onclick="toggleFavorite(this)"></i>
 </div>
 
-
-
-
     
-    <!-- Artwork details -->
+   
     <div class="art-details">
         <div class="top-details"> 
             <h3 class="data-artId"></h3>
-            <div class="close-popup" onclick="toggleImage()">
+           
+            <div class="close-popup" onclick="closePopup()">
                 <i class="bx bx-x"></i>
             </div>
         </div>
@@ -189,7 +187,7 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
             <p class="description-of-art"></p>
         </div>
 
-        <!-- Comments Section -->
+        
         <div class="interaction">
             <h5>Comments</h5>
             <div class="user-image">
@@ -203,7 +201,7 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
             </div>                            
         </div>
 
-        <!-- Input for adding comments -->
+       
         <div class="input-comment">
             <textarea name="comment" id="comment" class="comment-area"></textarea>
             <button class="comment-btn"><i class="bx bxs-send"></i></button>
@@ -271,17 +269,17 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
             <div class="box" 
                  onclick="showPopup(this)" 
                  data-image="<?php echo htmlspecialchars($image['file']); ?>"
-                 data-title="<?php echo htmlspecialchars($image['title']); ?>"
-                 data-artist="<?php echo htmlspecialchars($image['u_name']); ?>"
-                 data-artist-id="<?php echo htmlspecialchars($image['u_id']); ?>"
-                 data-category="<?php echo htmlspecialchars($image['category']); ?>" 
-                 data-description="<?php echo htmlspecialchars($image['description']); ?>"
-                 data-artwork-id="<?php echo htmlspecialchars($image['a_id']); ?>">
+                 data-title="<?php echo($image['title']); ?>"
+                 data-artist="<?php echo ($image['u_name']); ?>"
+                 data-artist-id="<?php echo ($image['u_id']); ?>"
+                 data-category="<?php echo($image['category']); ?>" 
+                 data-description="<?php echo($image['description']); ?>"
+                 data-artwork-id="<?php echo ($image['a_id']); ?>">
                  
-                <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Image">
+                <img src="<?php echo($image['file']); ?>" alt="Uploaded Image">
                 <div class="artist-name">
-                    <p><span><b><?php echo htmlspecialchars($image['u_name']); ?></b></span><br>
-                    <?php echo htmlspecialchars($image['title']); ?></p>
+                    <p><span><b><?php echo($image['u_name']); ?></b></span><br>
+                    <?php echo ($image['title']); ?></p>
                 </div>
             </div>
             <?php 
@@ -310,37 +308,40 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
     <!-- Created -->
     <div class="tabcontent" id="Created" >
       <h3>My Creations</h3>
-     
+    
       <div class="image-artwork created">
 
             <button class="box-button" id="upload" onclick="window.location.href='uploadArt.php'"> 
                 <i class='bx bx-message-square-add'></i>
             </button>
-
+          
                         <?php 
                 if (!empty($images)) {
                     foreach ($images as $image) { 
                         ?>
+                         
                         <div class="box" 
+                  
                             onclick="showPopup(this)" 
-                            data-image="<?php echo htmlspecialchars($image['file']); ?>"
-                            data-title="<?php echo htmlspecialchars($image['title']); ?>"
-                            data-artist="<?php echo htmlspecialchars($image['u_name']); ?>"
-                            data-artist-id="<?php echo htmlspecialchars($image['u_id']); ?>"
-                            data-category="<?php echo htmlspecialchars($image['category']); ?>" 
-                            data-description="<?php echo htmlspecialchars($image['description']); ?>"
-                            data-artwork-id="<?php echo htmlspecialchars($image['a_id']); ?>">
                             
-                            <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Image">
+                            data-image="<?php echo htmlspecialchars($image['file']); ?>"
+                            data-title="<?php echo ($image['title']); ?>"
+                            data-artist="<?php echo ($image['u_name']); ?>"
+                            data-artist-id="<?php echo($image['u_id']); ?>"
+                            data-category="<?php echo($image['category']); ?>" 
+                            data-description="<?php echo($image['description']); ?>"
+                            data-artwork-id="<?php echo($image['a_id']); ?>">
+                            <img src="<?php echo($image['file']); ?>" alt="Uploaded Image">
                             <div class="artist-name">
-                                <p><span><b><?php echo htmlspecialchars($image['u_name']); ?></b></span><br>
-                                <?php echo htmlspecialchars($image['title']); ?></p>
+                                <p><span><b><?php echo ($image['u_name']); ?></b></span><br>
+                                <?php echo ($image['title']); ?></p>
                             </div>
+                          
                         </div>
                         <?php 
                     }
                 } else {
-                    echo "<p>No images found.</p>";
+                    echo "<p>No Saved Artworks</p>";
                 }
                 ?>
 </div>
@@ -360,23 +361,23 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
                         <div class="box" 
                             onclick="showPopup(this)" 
                             data-image="<?php echo htmlspecialchars($save['file']); ?>"
-                            data-title="<?php echo htmlspecialchars($save['title']); ?>"
-                            data-artist="<?php echo htmlspecialchars($save['u_name']); ?>"
-                            data-artist-id="<?php echo htmlspecialchars($save['u_id']); ?>"
-                            data-category="<?php echo htmlspecialchars($save['category']); ?>" 
-                            data-description="<?php echo htmlspecialchars($save['description']); ?>"
-                            data-artwork-id="<?php echo htmlspecialchars($save['a_id']); ?>">
+                            data-title="<?php echo ($save['title']); ?>"
+                            data-artist="<?php echo ($save['u_name']); ?>"
+                            data-artist-id="<?php echo ($save['u_id']); ?>"
+                            data-category="<?php echo ($save['category']); ?>" 
+                            data-description="<?php echo ($save['description']); ?>"
+                            data-artwork-id="<?php echo ($save['a_id']); ?>">
                             
-                            <img src="<?php echo htmlspecialchars($save['file']); ?>" alt="Uploaded Image">
+                            <img src="<?php echo ($save['file']); ?>" alt="Uploaded Image">
                             <div class="artist-name">
-                                <p><span><b><?php echo htmlspecialchars($save['u_name']); ?></b></span><br>
-                                <?php echo htmlspecialchars($save['title']); ?></p>
+                                <p><span><b><?php echo ($save['u_name']); ?></b></span><br>
+                                <?php echo ($save['title']); ?></p>
                             </div>
                         </div>
                         <?php 
                     }
                 } else {
-                    echo "<p>No images found.</p>";
+                    echo "<p>Empty Favorites</p>";
                 }
                 ?>
             </div>
@@ -395,17 +396,17 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
                         <div class="box" 
                             onclick="showPopup(this)" 
                             data-image="<?php echo htmlspecialchars($favorite['file']); ?>"
-                            data-title="<?php echo htmlspecialchars($favorite['title']); ?>"
-                            data-artist="<?php echo htmlspecialchars($favorite['u_name']); ?>"
-                            data-artist-id="<?php echo htmlspecialchars($favorite['u_id']); ?>"
-                            data-category="<?php echo htmlspecialchars($favorite['category']); ?>" 
-                            data-description="<?php echo htmlspecialchars($favorite['description']); ?>"
-                            data-artwork-id="<?php echo htmlspecialchars($favorite['a_id']); ?>">
+                            data-title="<?php echo($favorite['title']); ?>"
+                            data-artist="<?php echo ($favorite['u_name']); ?>"
+                            data-artist-id="<?php echo ($favorite['u_id']); ?>"
+                            data-category="<?php echo ($favorite['category']); ?>" 
+                            data-description="<?php echo ($favorite['description']); ?>"
+                            data-artwork-id="<?php echo ($favorite['a_id']); ?>">
                             
-                            <img src="<?php echo htmlspecialchars($favorite['file']); ?>" alt="Uploaded Image">
+                            <img src="<?php echo ($favorite['file']); ?>" alt="Uploaded Image">
                             <div class="artist-name">
-                                <p><span><b><?php echo htmlspecialchars($favorite['u_name']); ?></b></span><br>
-                                <?php echo htmlspecialchars($favorite['title']); ?></p>
+                                <p><span><b><?php echo ($favorite['u_name']); ?></b></span><br>
+                                <?php echo ($favorite['title']); ?></p>
                             </div>
                         </div>
                         <?php 
@@ -528,7 +529,7 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
         <div class="top-gallery">
             <h3>
                 <?php 
-                    echo isset($exhibit[0]['exbt_title']) ? htmlspecialchars($exhibit[0]['exbt_title']) : 'Exhibit Title'; 
+                    echo isset($exhibit[0]['exbt_title']) ? ($exhibit[0]['exbt_title']) : 'Exhibit Title'; 
                 ?>
             </h3>
         </div>
@@ -571,7 +572,7 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
                 <p>
                     <span>
                         <?php 
-                            echo isset($exhibit[1]['u_name']) ? htmlspecialchars($exhibit[1]['u_name']) : 'Artist Name'; 
+                            echo isset($exhibit[1]['u_name']) ?($exhibit[1]['u_name']) : 'Artist Name'; 
                         ?>
                     </span><br>Cebu, Philippines
                 </p>
@@ -628,10 +629,10 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
                 <div class="image-item">
                     <?php
                     
-                    error_log("Image path: " . htmlspecialchars($image['file']));
-                    error_log("Artwork ID: " . htmlspecialchars($image['a_id']));
+                    error_log("Image path: " . ($image['file']));
+                    error_log("Artwork ID: " . ($image['a_id']));
                     ?>
-                    <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Artwork" data-id="<?php echo htmlspecialchars($image['a_id']); ?>">
+                    <img src="<?php echo ($image['file']); ?>" alt="Uploaded Artwork" data-id="<?php echo ($image['a_id']); ?>">
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
@@ -743,7 +744,7 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
                 <!-- edit username -->
                 <form action="change.php" method="POST">
                     <label for="edit-username">Edit Username</label><br>
-                    <input type="text" id="edit-username" name="new_username" value="<?php echo htmlspecialchars($username); ?>" required><br><br>
+                    <input type="text" id="edit-username" name="new_username" value="<?php echo($username); ?>" required><br><br>
                     <input type="hidden" name="action" value="change_username">
                     <button type="submit">Save Changes</button>
                 </form>
