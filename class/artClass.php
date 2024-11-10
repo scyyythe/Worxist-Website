@@ -47,7 +47,7 @@ class artManager
     public function getUserArtworks() {
         $statement = $this->conn->prepare("
             SELECT accounts.u_id, art_info.file, accounts.u_name, art_info.a_id, art_info.title, 
-                   art_info.description, art_info.category
+                   art_info.description,art_info.date, art_info.category
             FROM art_info 
             JOIN accounts ON art_info.u_id = accounts.u_id
             WHERE accounts.u_id = :u_id
@@ -67,7 +67,7 @@ class artManager
 
     public function getAllArtworks(){
         $statement = $this->conn->prepare("
-            SELECT accounts.u_id,art_info.file, accounts.u_name,art_info.a_id, art_info.title, art_info.description, art_info.category
+            SELECT accounts.u_id,art_info.file, accounts.u_name,art_info.a_id, art_info.title, art_info.description,art_info.date, art_info.category
             FROM art_info 
             JOIN accounts ON art_info.u_id = accounts.u_id
         ");

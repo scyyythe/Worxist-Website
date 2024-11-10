@@ -1,32 +1,39 @@
 <?php
-    session_start();
-    include("include/connection.php");
-    include 'class/accClass.php'; 
+session_start();
+include("include/connection.php");
+include 'class/accClass.php';
+
+$errorMessage = ''; 
+
+if (isset($_POST['login'])) {
+    $accountManager = new AccountManager($conn);
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $result = $accountManager->login($username, $password);
     
-    
-    if (isset($_POST['login'])) {
-        $accountManager = new AccountManager($conn);
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $result = $accountManager->login($username, $password);
-        if ($result) {
-            echo $result;
-        }
+    if ($result) {
+        echo $result;
+    } else {
+        $errorMessage = "Incorrect username or password.";
     }
-    
-    
-    if (isset($_POST['register'])) {
-        $accountManager = new AccountManager($conn);
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+}
+
+if (isset($_POST['register'])) {
+    $accountManager = new AccountManager($conn);
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    if (empty($name) || empty($email) || empty($username) || empty($password)) {
+        $errorMessage = "All fields are required for registration.";
+    } else {
         $accountManager->register($name, $email, $username, $password);
     }
-    
-  
-      
+}
+
 ?>
+
 
 
 <!DOCTYPE html>

@@ -284,6 +284,7 @@ function showPopup(element) {
   const artistId = element.getAttribute('data-artist-id');
   const category = element.getAttribute('data-category');
   const description = element.getAttribute('data-description');
+  const date = element.getAttribute('data-date');
   const artworkId = element.getAttribute('data-artwork-id');
 
   console.log("Artwork ID (a_id):", artworkId);
@@ -301,7 +302,7 @@ function showPopup(element) {
 
   document.querySelector('.category').innerText = category;
   document.querySelector('.description-of-art').innerText = description;
-
+  document.querySelector('.dateUpload').innerText=date;
 
    const loggedInUserId = document.getElementById('data-id').getAttribute('data-artist-id');
 
@@ -326,7 +327,11 @@ function showPopup(element) {
 
   blur.classList.add('active');
 
-  initializeIconStates(artworkId);
+  document.addEventListener('DOMContentLoaded', () => {
+    const artworkId = document.querySelector('.box-pop img').getAttribute('data-artwork-id');
+    initializeIconStates(artworkId);  
+    
+  });
 
   document.querySelector('.like-icon').onclick = () => {
       const likeIcon = document.querySelector('.like-icon');
@@ -349,23 +354,27 @@ function showPopup(element) {
 
 
 function initializeIconStates(artworkId) {
- 
   fetch(`class/interaction.php?action=getStates&a_id=${artworkId}`)
-      .then(response => response.json())
-      .then(data => {
-          if (data) {
-              if (data.liked) {
-                  document.querySelector('.like-icon').classList.add('liked');
-              }
-              if (data.saved) {
-                  document.querySelector('.bookmark-icon').classList.add('saved');
-              }
-              if (data.favorited) {
-                  document.querySelector('.favorite-icon').classList.add('favorited');
-              }
-          }
-      });
+    .then(response => response.json())
+    .then(data => {
+        if (data) {
+            // Ensure that the data is available
+            if (data.liked) {
+                document.querySelector('.like-icon').classList.add('liked');
+            }
+            if (data.saved) {
+                document.querySelector('.bookmark-icon').classList.add('saved');
+            }
+            if (data.favorited) {
+                document.querySelector('.favorite-icon').classList.add('favorited');
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching icon states:', error);
+    });
 }
+
 
 function updateDatabase(action, artworkId) {
     return fetch('class/interaction.php', {

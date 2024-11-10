@@ -25,8 +25,6 @@ class AccountManager
             $_SESSION['loggedin'] = true;
             header("Location: dashboard.php");
             die;
-        } else {
-            return "Failed to login. Please try again.";
         }
     }
 
@@ -144,7 +142,7 @@ class ArtUploader {
     
         $a_status = 'Pending';
         $u_id = $_SESSION['u_id'];
-        $date = date('Y-m-d');  // Get current date only (no time)
+        $date = date('Y-m-d');  
         $filePath = '';
     
         if ($file && $file['tmp_name']) {

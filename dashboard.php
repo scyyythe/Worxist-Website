@@ -182,14 +182,17 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
         </div>
 
         <div class="art-information">
+       
             <p>
                 <b>Artist:</b> 
                 <em>
                     <a href="" class="data-id" id="data-id" data-artist-id="<?php echo $_SESSION['u_id']; ?>" target="_blank"></a> 
                 </em>
             </p>
-            <p>Category: <span class="category"></span></p>
+            <p><b>Category:</b> <span class="category"></span></p><br>
             <p class="description-of-art"></p>
+            <p><b>Date:</b>&nbsp;<span class="dateUpload"></span></p>
+          
         </div>
 
         
@@ -279,6 +282,7 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
                  data-artist-id="<?php echo ($image['u_id']); ?>"
                  data-category="<?php echo($image['category']); ?>" 
                  data-description="<?php echo($image['description']); ?>"
+                 data-date="<?php echo($image['date']); ?>"
                  data-artwork-id="<?php echo ($image['a_id']); ?>">
                  
                 <img src="<?php echo($image['file']); ?>" alt="Uploaded Image">
@@ -335,6 +339,7 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
                             data-artist-id="<?php echo($image['u_id']); ?>"
                             data-category="<?php echo($image['category']); ?>" 
                             data-description="<?php echo($image['description']); ?>"
+                            data-date="<?php echo($image['date']); ?>"
                             data-artwork-id="<?php echo($image['a_id']); ?>">
                             <img src="<?php echo($image['file']); ?>" alt="Uploaded Image">
                             <div class="artist-name">
