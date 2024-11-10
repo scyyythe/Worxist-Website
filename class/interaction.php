@@ -1,7 +1,8 @@
 <?php
 session_start();
 include '../include/connection.php'; 
-include 'class.php'; 
+include 'accClass.php'; 
+include 'interactClass.php'; 
 
 $class = new artInteraction($conn);
 header('Content-Type: application/json'); 

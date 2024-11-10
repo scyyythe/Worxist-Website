@@ -1,13 +1,13 @@
 <?php
 session_start();
 include("include/connection.php");
-include 'class/class.php'; 
+include 'class/accClass.php'; 
 
 if (isset($_POST['uploadArt']) && $_SERVER['REQUEST_METHOD'] == "POST") {
-    
     $uploader = new ArtUploader($conn);
     $uploader->uploadArtwork($_FILES['file'], $_POST['title'], $_POST['description'], $_POST['category']);
 }
+
 ?>
 
 <!DOCTYPE html>

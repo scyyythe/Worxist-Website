@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'include/connection.php'; 
-include 'class/class.php'; 
+include 'class/accClass.php'; 
 
 $accountManager = new AccountManager($conn);
 

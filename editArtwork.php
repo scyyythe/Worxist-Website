@@ -1,8 +1,9 @@
 <?php
 session_start();
 include("include/connection.php");
-include 'class/class.php';  
-
+include 'class/accClass.php';  
+include 'class/artClass.php'; 
+include 'class/exhbtClass.php';
 
 if (isset($_GET['a_id']) && filter_var($_GET['a_id'])) {
     $artworkId = $_GET['a_id'];

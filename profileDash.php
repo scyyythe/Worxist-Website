@@ -2,7 +2,9 @@
 session_start();
 
 include("include/connection.php");
-include 'class/class.php';  
+include 'class/accClass.php'; 
+include 'class/artClass.php'; 
+include 'class/exhbtClass.php'; 
 
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
@@ -14,7 +16,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 $accountManager = new AccountManager($conn); 
 $accountInfo = $accountManager->getAccountInfo($u_id);
 
-$exhibitManager = new ExhibitManager($conn);
+$exhibitManager = new artManager($conn);
 $artwork=$exhibitManager->visitArtworks($u_id);
 
 ?>
