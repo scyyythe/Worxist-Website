@@ -37,6 +37,14 @@ if (isset($_POST['uploadArt']) && $_SERVER['REQUEST_METHOD'] == "POST") {
 
 
     <div class="container">  
+        <!-- Validation Modal -->
+<div id="validationModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <p>Please fill in all the fields before submitting!</p>
+    </div>
+</div>
+
     <!-- input artwork details -->
     <div class="artwork-upload">
         <form action="" method="POST" name="uploadArt" enctype="multipart/form-data">
@@ -79,6 +87,33 @@ if (isset($_POST['uploadArt']) && $_SERVER['REQUEST_METHOD'] == "POST") {
     </div>
 
     <script>
+
+        // Show modal
+function showModal() {
+    const modal = document.getElementById('validationModal');
+    modal.style.display = 'block';
+}
+
+// Close modal
+function closeModal() {
+    const modal = document.getElementById('validationModal');
+    modal.style.display = 'none';
+}
+
+
+document.querySelector('form[name="uploadArt"]').addEventListener('submit', function(event) {
+    const title = document.getElementById('title').value.trim();
+    const description = document.getElementById('description').value.trim();
+    const category = document.getElementById('category').value;
+    const file = document.querySelector('input[type="file"]').files[0];
+
+    
+    if (!title || !description || !category || !file) {
+        event.preventDefault();  
+        showModal();  
+    }
+});
+
         function returnArt() {
     window.location.href = 'dashboard.php';
     }
