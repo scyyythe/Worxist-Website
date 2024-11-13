@@ -479,14 +479,19 @@ body {
     filter: blur(2px);    
 }
 .close-popup{
+    position: relative;
+    bottom: 3px;
     height: 25px;
     z-index: 1100; 
+    font-weight: bold;
+    font-size: 15px;
     i{
         font-size:1rem;
     }
 }
 .close-popup:hover{
     cursor: pointer;
+    color: #9f1414;
 }
 .art-details{
 
@@ -561,6 +566,9 @@ body {
     cursor: pointer; 
     padding: 8px;
     transition: background-color 0.3s, color 0.3s;
+    position:absolute;
+    left: 580px;
+    bottom:0px;
 }
 
 .edit-option:hover {

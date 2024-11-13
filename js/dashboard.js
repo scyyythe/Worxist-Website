@@ -124,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function() {
   var firstTab = document.querySelector('.tablinks');
   firstTab.click(); 
 });
+
 // dropdown filter
 function toggleDropdown() {
   var dropdown = document.getElementById("dropdown");
@@ -302,23 +303,28 @@ function showPopup(element) {
 
   document.querySelector('.category').innerText = category;
   document.querySelector('.description-of-art').innerText = description;
-  document.querySelector('.dateUpload').innerText=date;
+  document.querySelector('.dateUpload').innerText = date;
 
-   const loggedInUserId = document.getElementById('data-id').getAttribute('data-artist-id');
+  const loggedInUserId = document.getElementById('data-id').getAttribute('data-artist-id');
 
-   if (artistId === loggedInUserId) {
-    if (!document.querySelector('.edit-option')) {
-      const editOption = document.createElement('p');
-      editOption.innerHTML = "<i class='bx bxs-edit'></i>";
-      editOption.classList.add('edit-option'); 
 
-      editOption.onclick = () => {
-        window.location.href = `editArtwork.php?a_id=${artworkId}`; 
-    };
-      document.querySelector('.top-details').appendChild(editOption);
+  const existingEditOption = document.querySelector('.edit-option');
+  if (existingEditOption) {
+    existingEditOption.remove();
   }
-  
-}
+
+ 
+  if (artistId === loggedInUserId) {
+    const editOption = document.createElement('p');
+    editOption.innerHTML = "<i class='bx bxs-edit'></i>";
+    editOption.classList.add('edit-option');
+
+    editOption.onclick = () => {
+      window.location.href = `editArtwork.php?a_id=${artworkId}`;
+    };
+
+    document.querySelector('.top-details').appendChild(editOption);
+  }
 
   popup.style.display = 'flex';
   setTimeout(() => {
@@ -358,7 +364,7 @@ function initializeIconStates(artworkId) {
     .then(response => response.json())
     .then(data => {
         if (data) {
-            // Ensure that the data is available
+          
             if (data.liked) {
                 document.querySelector('.like-icon').classList.add('liked');
             }
