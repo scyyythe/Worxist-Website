@@ -39,23 +39,17 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
             $exhibitManager->requestSoloExhibit($exhibit_title, $exhibit_description, $exhibit_date, $selected_artworks);
         }
 
-        if (isset($_POST['requestCollab'])) {
-          
-            $exhibitManager = new ExhibitManager($conn);
-        
-            $exhibit_title = $_POST['exhibit-title'];
-            $exhibit_description = $_POST['exhibit-description'];
-            $exhibit_date = $_POST['exhibit-date'];
-        
-        
-            $collaborative_artworks = isset($_POST['selected_artworks']) ? json_decode($_POST['selected_artworks'], true) : [];
-        
-          
-            $collaborators = isset($_POST['collaborator']) ? $_POST['collaborator'] : [];
-        
+      if (isset($_POST['requestCollab'])) {
+    $exhibitManager = new ExhibitManager($conn);
 
-            $exhibitManager->requestCollabExhibit($exhibit_title, $exhibit_description, $exhibit_date, $collaborative_artworks, $collaborators);
-        }
+    $exhibit_title = $_POST['exhibit-title'];
+    $exhibit_description = $_POST['exhibit-description'];
+    $exhibit_date = $_POST['exhibit-date'];
+    $selected_artworks = $_POST['selected_artworks']; 
+
+    $exhibitManager->requestCollabExhibit($exhibit_title, $exhibit_description, $exhibit_date,  $selected_artworks);
+}
+
         
 
 
@@ -679,14 +673,17 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
 
     <div class="exhibit-inputs">
         <form action="" name="collabExhibit" method="POST">
-            <label for="exhibit-title">Exhibit Title</label><br>
+        <label for="exhibit-title">Exhibit Title</label><br>
             <input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit" required><br>
 
             <label for="exhibit-description">Exhibit Description</label><br>
             <textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit" required></textarea><br>
 
             <label for="exhibit-date">Exhibit Date</label><br>
-            <input type="date" id="exhibit-date" name="exhibit-date" required>
+            <input type="date" id="exhibit-date" name="exhibit-date" required><br>
+
+            
+            <input type="hidden" name="selected_artworks" id="selectedArtworks">
 
             <div class="confirm-solo">
                 <button class="collab-btn" name="requestCollab">Confirm Schedule</button>
@@ -711,21 +708,27 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
 </div>
 
     </div>
-
     <div class="select-art">
-        <p>Selected Artworks (Maximum of 10)</p>
-        <div class="display-creations">
-            <?php if (!empty($images)): ?>
-                <?php foreach ($images as $image): ?>
-                    <div class="image-item">
-                        <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Artwork">
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>No artworks found for this user.</p>
-            <?php endif; ?>
-        </div>
+    <p>Selected Artworks (Maximum of 10)</p>
+    <div class="display-creations">
+        <?php if (!empty($images)): ?>
+            <?php foreach ($images as $image): ?>
+                <div class="image-item">
+                    <?php
+                    
+                    error_log("Image path: " . ($image['file']));
+                    error_log("Artwork ID: " . ($image['a_id']));
+                    ?>
+                    <img src="<?php echo ($image['file']); ?>" alt="Uploaded Artwork" data-id="<?php echo ($image['a_id']); ?>">
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No artworks found for this user.</p>
+        <?php endif; ?>
     </div>
+</div>
+   
+
 </div>
 
 
@@ -1030,8 +1033,6 @@ updateCarousel();
 </script>
 
    <script src="js/dashboard.js"></script>
-   <script src="js/api.js"> </script>
-                                    
                                     
 </body>
 </html>

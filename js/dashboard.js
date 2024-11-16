@@ -1,40 +1,45 @@
 // katong lihok sa login register
 document.addEventListener('DOMContentLoaded', function() {
 
-  function scrollToAbout() {
-    const aboutSection = document.getElementById('about');
-    if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      console.error("Element with id='about' not found.");
-    }
+    function scrollToAbout() {
+      const aboutSection = document.getElementById('about');
+      if (aboutSection) {
+          aboutSection.scrollIntoView({ behavior: 'smooth' });
+      } else {
+          console.error("Element with id='about' not found.");
+      }
   }
 
-  // Gallery move
+  const exploreButton = document.querySelector('.explore-button button');
+  if (exploreButton) {
+      exploreButton.addEventListener('click', scrollToAbout);
+  }
+
+
+
   const carousel = document.querySelector(".gallery-images"),
-        firstImg = document.querySelectorAll("img")[0];
+      firstImg = document.querySelectorAll("img")[0];
 
-  if (firstImg) {
-    const arrowIcons = document.querySelectorAll(".arrow i");
-    let firstImgWidth = firstImg.clientWidth + 272;
-    arrowIcons.forEach(icon => {
+
+if (firstImg) {
+  const arrowIcons = document.querySelectorAll(".arrow i");
+  let firstImgWidth = firstImg.clientWidth + 272; 
+
+  arrowIcons.forEach(icon => {
       icon.addEventListener("click", () => {
-        carousel.scrollLeft += icon.id == "left" ? -firstImgWidth : firstImgWidth;
+          if (icon.id === "left") {
+              
+              carousel.scrollLeft -= firstImgWidth; 
+          } else if (icon.id === "right") {
+              // Scroll right
+              carousel.scrollLeft += firstImgWidth; 
+          }
       });
-    });
-  } else {
-    console.error("Gallery images not found.");
-  }
+  });
+} else {
+  console.error("Gallery images not found.");
+}
 
-  // left click
-  const leftBtn = document.getElementById('left');
-  if (leftBtn) {
-    leftBtn.addEventListener('click', function() {
-      window.location.href = 'index.php';
-    });
-  } else {
-    console.error("Left button with id='left' not found.");
-  }
 
   // return click
   const returnBtn = document.getElementById('return');
@@ -45,6 +50,17 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     console.error("Return button with id='return' not found.");
   }
+
+  // return click
+  const returnTo = document.getElementById('returnTo');
+  if (returnTo) {
+    returnTo.addEventListener('click', function() {
+      window.location.href = 'index.php';
+    });
+  } else {
+    console.error("Return button with id='return' not found.");
+  }
+
 
 
   const signIn = document.getElementById("show-login");
@@ -473,6 +489,7 @@ document.getElementById("defaultOpen").click();
 
 
 // select artwork for exhibit
+
 document.querySelectorAll('.display-creations img').forEach((img) => {
   img.addEventListener('click', function () {
    
@@ -488,12 +505,17 @@ document.querySelectorAll('.display-creations img').forEach((img) => {
           }
       }
 
-     
+      // Log the artwork ID
+      console.log('Selected Artwork ID:', img.getAttribute('data-id'));
+
       const selectedIds = Array.from(document.querySelectorAll('.display-creations img.selected'))
           .map(selectedImg => selectedImg.getAttribute('data-id'));
       document.getElementById('selectedArtworks').value = JSON.stringify(selectedIds);
+     
   });
 });
+
+
 
 
 //settings tab

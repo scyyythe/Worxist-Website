@@ -1,3 +1,16 @@
+<?php
+session_start();
+
+include("include/connection.php");
+include 'class/accclass.php'; 
+include 'class/artClass.php'; 
+include 'class/exhbtClass.php';
+
+
+$exhibitManager = new ExhibitManager($conn);
+$acceptedExhibits = $exhibitManager->getAcceptedExhibits();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,8 +49,9 @@
                 <p>Explore, appreciate, and be inspired by a diverse range of styles and mediums.  Step inside and let the art speak to you.</p>
 
                 <div class="explore-button">
-                    <button onclick="scrollToAbout()">Explore More</button>
-                </div>
+    <button onclick="scrollToAbout()">Explore More</button>
+</div>
+
                 <div class="small-circle">
                 </div>
             </div>
@@ -56,7 +70,7 @@
           
         <!-- ABOUT SECTION -->
     
-        <section id="about">
+        <section id="about">-
             <div class="picture">
                 <img src="gallery/image/about-image (1).png" alt="Artwork">
             </div>
@@ -83,95 +97,76 @@
         </section>
         <br><br><br><br><br>
 
-
         <!-- GALLERY SECTION -->
-    <section id="gallery">
-        <div class="gallery-container">
-            
-            <div class="gallery-title">
-               <h1>GALLERY</h1>
-               <p>Explore our collection</p>
-            </div>
-
-            <div class="arrow">
-                 <i id="left" class='bx bx-chevron-left'></i>
-             <i  id="right" class='bx bx-chevron-right'></i>
-            </div>
-           
-
-            <div class="gallery-images">
-
-                <!-- image 1 -->
-  
-                <div class="card">
-                    <img src="gallery/rose.png" alt=" Head">
-                    <div class="title-card">
-                        <p><span>Roses</span><br>by Maya Kulenovic</p>
-                    </div>
-                
-                    <div class="description">
-                        
-                         <br>          
-                             <p>The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to...</p>
-                             <button id="explore">Explore></button>
-                   
-                       
-                    </div>
-                   
-                </div>
-
-                <!-- image 2 -->
-                <div class="card">
-                    <img src="gallery/head.png" alt=" Head">
-                    <div class="title-card">
-                        <p><span>Sleeper</span><br>by Maya Kulenovic</p>
-                    </div>
-                    <div class="description">
-                        
-                         <br>
-                        <p>The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to...</p>
-                        <button id="explore">Explore></button>
-                    </div>
-                   
-                </div>
-               
-                <!-- image 3 -->
-                <div class="card">
-                    
-                    <img src="gallery/paris.png" alt=" Head">
-                    <div class="title-card">
-                        <p><span>Paris</span><br>by Maya Kulenovic</p>
-                    </div>
-                    <div class="description">
-                         <br>
-                        <p>The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to...</p>
-                        <button id="explore">Explore></button>
-                    </div>
-                   
-                </div>
-                
-
-                <!-- image 4 -->
-                <div class="card">
-                    <img src="gallery/guitar.jpg" alt=" Head">
-                    <div class="title-card">
-                        <p><span>Roses</span><br>by Maya Kulenovic</p>
-                    </div>
-                    <div class="description">
-                         <br>
-                        <p>The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to...</p>
-                        <button id="explore">Explore></button>
-                    </div>
-                    
-                </div>
-               
-            </div>
-
-        </div>
+<section id="gallery">
+    <div class="gallery-container">
         
-     
+        <div class="gallery-title">
+            <h1>GALLERY</h1>
+            <p>Explore our collection</p>
+        </div>
 
-    </section>
+        <div class="arrow">
+            <i id="left" class='bx bx-chevron-left'></i>
+            <i id="right" class='bx bx-chevron-right'></i>
+        </div>
+
+        <div class="gallery-images">
+            <?php
+          
+            if (empty($acceptedExhibits)) {
+              
+                $defaultImages = [
+                    ["file" => "rose.png", "title" => "Roses", "artist" => "Maya Kulenovic", "description" => "The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to..."],
+                    ["file" => "head.png", "title" => "Sleeper", "artist" => "Maya Kulenovic", "description" => "The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to..."],
+                    ["file" => "paris.png", "title" => "Paris", "artist" => "Maya Kulenovic", "description" => "The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to..."],
+                    ["file" => "guitar.jpg", "title" => "Roses", "artist" => "Maya Kulenovic", "description" => "The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to..."]
+                ];
+
+             
+                foreach ($defaultImages as $image) {
+                    ?>
+                    <div class="card">
+                        <img src="gallery/<?php echo $image['file']; ?>" alt="Head">
+                        <div class="title-card">
+                            <p><span><?php echo $image['title']; ?></span><br>by <?php echo $image['artist']; ?></p>
+                        </div>
+                        <div class="description">
+                            <br>
+                            <p><?php echo $image['description']; ?></p>
+                            <button id="explore">Explore</button>
+                        </div>
+                    </div>
+                    <?php
+                }
+            } else {
+                
+                foreach ($acceptedExhibits as $exhibit) {
+                    $artworkTitle = htmlspecialchars($exhibit['artwork_title']);
+                    $artworkDescription = htmlspecialchars($exhibit['artwork_description']);
+                    $artworkFile = htmlspecialchars($exhibit['artwork_file']);
+                    $artistName = htmlspecialchars($exhibit['u_name']);
+                    ?>
+                    <div class="card">
+                        <img src="<?php echo $artworkFile; ?>" alt="<?php echo $artworkTitle; ?>">
+                        <div class="title-card">
+                            <p><span><?php echo $artworkTitle; ?></span><br>by <?php echo $artistName; ?></p>
+                        </div>
+                        <div class="description">
+                            <br>
+                            <p><?php echo $artworkDescription; ?></p>
+                            <button id="explore">Explore</button>
+                        </div>
+                    </div>
+                    <?php
+                }
+            }
+            ?>
+        </div>
+    </div>
+</section>
+
+
 
     <footer>
         <div class="icon-wrapper">

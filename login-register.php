@@ -78,7 +78,7 @@ if (isset($_POST['register'])) {
         <div class="form-container" id="form-container">
           
             <div class="to-login">
-                <p> <i id="left" class='bx bx-chevron-left'></i></p>
+                <p> <i id="returnTo" class='bx bx-chevron-left'></i></p>
                 <p>Already a member? <a href="#" id="show-login">Sign in</a></p>
                 
             </div>

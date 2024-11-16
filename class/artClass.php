@@ -64,16 +64,32 @@ class artManager
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    public function getAllArtworks(){
-        $statement = $this->conn->prepare("
-            SELECT accounts.u_id,art_info.file, accounts.u_name,art_info.a_id, art_info.title, art_info.description,art_info.date, art_info.category
-            FROM art_info 
+    public function getAllArtworks($category = null) {
+        // Base query to get all artworks
+        $query = "
+            SELECT accounts.u_id, art_info.file, accounts.u_name, art_info.a_id, art_info.title, 
+                   art_info.description, art_info.date, art_info.category
+            FROM art_info
             JOIN accounts ON art_info.u_id = accounts.u_id
-        ");
+        ";
+    
+        // Add category filter if category is provided
+        if ($category) {
+            $query .= " WHERE art_info.category = :category";
+        }
+    
+        $statement = $this->conn->prepare($query);
+    
+        // Bind the category parameter if provided
+        if ($category) {
+            $statement->bindParam(':category', $category);
+        }
+    
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    
 
 }
 ?>
