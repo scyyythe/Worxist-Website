@@ -6,6 +6,7 @@ include 'class/accclass.php';
 include 'class/artClass.php'; 
 include 'class/exhbtClass.php'; 
 include 'class/interactClass.php'; 
+include 'class/collabClass.php';
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: login-register.php");
@@ -51,6 +52,15 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
             $collaborators = isset($_POST['collaborator']) ? $_POST['collaborator'] : [];
             $exhibitManager->requestCollabExhibit($exhibit_title, $exhibit_description, $exhibit_date, $collaborative_artworks, $collaborators);
         }
+
+
+// Search Collab
+if (isset($_GET['query']) && !empty($_GET['query'])) {
+    echo $exhibitManager->searchCollaborators($_GET['query']);
+    exit; 
+}
+
+
 
 ?> 
 
@@ -658,51 +668,62 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
 
 
 <!-- collab request -->
-            <div id="Collaborative" class="requestTab">
-            <div class="exhibit-inputs">
-                <form action="" name="collabExhibit" method="POST" >
-                    <label for="exhibit-title">Exhibit Title</label><br>
-                    <input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit"><br>
 
-                    <label for="exhibit-description">Exhibit Description</label><br>
-                    <textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit"></textarea><br>
+<div id="Collaborative" class="requestTab">
+ 
 
-                    <label for="exhibit-date">Exhibit Date</label><br>
-                    <input type="date" id="exhibit-date" name="exhibit-date">
+    <div class="exhibit-inputs">
+        <form action="" name="collabExhibit" method="POST">
+            <label for="exhibit-title">Exhibit Title</label><br>
+            <input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit" required><br>
 
-                    <div class="confrim-solo">
-                     <button class="collab-btn" name="requestCollab">Confirm Schedule</button>
-                    </div>
-                </form>
-                <div class="add-collab">
-                    <label for="">Add Collaborators</label><br>
-                   <input type="text" name="" id="" placeholder="Search">
+            <label for="exhibit-description">Exhibit Description</label><br>
+            <textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit" required></textarea><br>
 
-                   <div class="display-collab">
+            <label for="exhibit-date">Exhibit Date</label><br>
+            <input type="date" id="exhibit-date" name="exhibit-date" required>
 
-                   </div>
-                </div>
+            <div class="confirm-solo">
+                <button class="collab-btn" name="requestCollab">Confirm Schedule</button>
             </div>
-                
-                    <div class="select-art">
-                        <p>Selected Artworks (Maximum of 10)</p>
+        </form>
 
-                        <div class="display-creations">
-                                <?php if (!empty($images)): ?>
-                                    <?php foreach ($images as $image): ?>
-                                        <div class="image-item">
-                                            <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Artwork"">
-                                        </div>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <p>No artworks found for this user.</p>
-                                <?php endif; ?>
-                        </div>
+        <!-- Collaborators Section -->
+        <div class="add-collab">
+    <label for="collabSearch">Add Collaborators</label><br>
+    <input type="text" id="collabSearch" placeholder="Search" oninput="searchCollaborators(this.value)" required>
 
+   
+    <div class="display-collab" id="searchResults">
+        
+    </div>
+
+    <div id="selectedCollaborators">
+       
+    </div>
+
+    <button type="button" id="addCollaboratorsBtn" onclick="addCollaborators()">Add Collaborators</button>
+</div>
+
+    </div>
+
+    <div class="select-art">
+        <p>Selected Artworks (Maximum of 10)</p>
+        <div class="display-creations">
+            <?php if (!empty($images)): ?>
+                <?php foreach ($images as $image): ?>
+                    <div class="image-item">
+                        <img src="<?php echo htmlspecialchars($image['file']); ?>" alt="Uploaded Artwork">
                     </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No artworks found for this user.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
 
-              
-            </div>
+
 
         </div>
 
@@ -949,15 +970,15 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
     <!-- end of wrapper -->
    </div>
    <script>
-const images = [
-    <?php for ($i = 0; $i < count($exhibit); $i++):?>
-    {
-        src: "<?php echo isset($exhibit[$i]['file']) ? htmlspecialchars($exhibit[$i]['file']) : 'gallery/default_image.jpg'; ?>",
-        title: "<?php echo isset($exhibit[$i]['title']) ? html_entity_decode(htmlspecialchars($exhibit[$i]['title'])) : 'Artwork Title'; ?>",
-        description: "<?php echo isset($exhibit[$i]['description']) ? html_entity_decode(htmlspecialchars($exhibit[$i]['description'])) : 'Artwork Description'; ?>"
-    }<?php if ($i < count($exhibit) - 1) echo ','; ?>
-    <?php endfor; ?>
-];
+ const images = [
+        <?php foreach ($exhibit as $exhibits): ?>
+        {
+            src: "<?php echo htmlspecialchars($exhibits['artwork_file']); ?>",
+            title: "<?php echo htmlspecialchars($exhibits['artwork_title']); ?>",
+            description: "<?php echo htmlspecialchars($exhibits['artwork_description']); ?>"
+        },
+        <?php endforeach; ?>
+    ];
 
 
 

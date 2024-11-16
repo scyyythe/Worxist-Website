@@ -528,3 +528,111 @@ window.onload = function() {
   openDefaultTab();
 };
 
+//search collaboratots
+let debounceTimeout;
+
+function searchCollaborators(query) {
+    const searchResultsDiv = document.getElementById("searchResults");
+    searchResultsDiv.innerHTML = ""; // Clear previous results immediately
+
+    if (query.length === 0) {
+        searchResultsDiv.innerHTML = ''; // Clear results when input is empty
+        return; 
+    }
+
+    // Show loading message while fetching results
+    searchResultsDiv.innerHTML = '<p>Loading...</p>';
+
+    // Clear any previous debounce timeout
+    clearTimeout(debounceTimeout);
+
+    // Set a new debounce timeout to delay the search
+    debounceTimeout = setTimeout(() => {
+        // Fetch data using fetch API
+        fetch('dashboard.php?query=' + encodeURIComponent(query))
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                return response.json(); 
+            })
+            .then(data => {
+                searchResultsDiv.innerHTML = ''; // Clear the loading message
+                
+                if (data.length === 1 && data[0].name === 'No collaborators found.') {
+                    searchResultsDiv.innerHTML = '<p>No collaborators found.</p>';
+                    return;
+                }
+
+                // Populate search results
+                data.forEach(collaborator => {
+                    const div = document.createElement('div');
+                    div.classList.add('collab-item');
+
+                    const span = document.createElement('span');
+                    span.classList.add('collab-name');
+                    span.textContent = collaborator.name;
+
+                    const button = document.createElement('button');
+                    button.classList.add('select-collab-btn');
+                    button.textContent = 'Select';
+                    button.onclick = function() {
+                        selectCollaborator(collaborator.name);
+                    };
+
+                    div.appendChild(span);
+                    div.appendChild(button);
+                    searchResultsDiv.appendChild(div);
+                });
+            })
+            .catch(error => {
+                searchResultsDiv.innerHTML = '<p>Error fetching data: ' + error.message + '</p>';
+            });
+    }, 300);  
+}
+
+
+// Function to handle the collaborator selection
+function selectCollaborator(name) {
+  const selectedCollaboratorsDiv = document.getElementById("selectedCollaborators");
+
+  // Check if the collaborator is already selected
+  if (selectedCollaboratorsDiv.innerHTML.includes(name)) {
+      alert("This collaborator is already selected.");
+      return;
+  }
+
+  // Create a div for the selected collaborator
+  const collaboratorItem = document.createElement("div");
+  collaboratorItem.classList.add("selected-collaborator");
+  collaboratorItem.textContent = name;
+
+  // Create a remove button for the selected collaborator
+  const removeBtn = document.createElement("button");
+  removeBtn.textContent = "Remove";
+  removeBtn.classList.add("remove-collab-btn");
+  removeBtn.onclick = function() {
+      removeCollaborator(collaboratorItem);
+  };
+
+  collaboratorItem.appendChild(removeBtn);
+  selectedCollaboratorsDiv.appendChild(collaboratorItem);
+}
+
+function removeCollaborator(collaboratorItem) {
+  const selectedCollaboratorsDiv = document.getElementById("selectedCollaborators");
+  selectedCollaboratorsDiv.removeChild(collaboratorItem);
+}
+
+
+function addCollaborators() {
+  const selectedCollaboratorsDiv = document.getElementById("selectedCollaborators");
+  if (selectedCollaboratorsDiv.children.length === 0) {
+      alert("Please select at least one collaborator.");
+  } else {
+     
+      alert("Collaborators added.");
+  }
+}
+
+
