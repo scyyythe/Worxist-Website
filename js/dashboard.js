@@ -473,7 +473,6 @@ document.getElementById("defaultOpen").click();
 
 
 // select artwork for exhibit
-// select artwork for exhibit
 document.querySelectorAll('.display-creations img').forEach((img) => {
   img.addEventListener('click', function () {
    
@@ -489,10 +488,10 @@ document.querySelectorAll('.display-creations img').forEach((img) => {
           }
       }
 
-      // Collect selected artwork IDs and add them to the hidden input field
+     
       const selectedIds = Array.from(document.querySelectorAll('.display-creations img.selected'))
           .map(selectedImg => selectedImg.getAttribute('data-id'));
-      document.getElementById('selectedArtworks').value = JSON.stringify(selectedIds); // Ensure this is added
+      document.getElementById('selectedArtworks').value = JSON.stringify(selectedIds);
   });
 });
 
@@ -529,7 +528,11 @@ window.onload = function() {
   openDefaultTab();
 };
 
+
+
+
 //search collaboratots
+
 let debounceTimeout;
 
 function searchCollaborators(query) {
@@ -635,5 +638,4 @@ function addCollaborators() {
       alert("Collaborators added.");
   }
 }
-
 
