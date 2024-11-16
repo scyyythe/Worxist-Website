@@ -6,7 +6,7 @@ include 'class/accclass.php';
 include 'class/artClass.php'; 
 include 'class/exhbtClass.php'; 
 include 'class/interactClass.php'; 
-include 'class/collabClass.php';
+
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: login-register.php");
@@ -36,6 +36,7 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
             $exhibit_title = $_POST['exhibit-title'];
             $exhibit_description = $_POST['exhibit-description'];
             $exhibit_date = $_POST['exhibit-date'];
+            
             $selected_artworks = $_POST['selected_artworks']; 
             $exhibitManager->requestSoloExhibit($exhibit_title, $exhibit_description, $exhibit_date, $selected_artworks);
         }
@@ -46,12 +47,35 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
             $exhibit_description = $_POST['exhibit-description'];
             $exhibit_date = $_POST['exhibit-date'];
         
-         
-            $collaborative_artworks = isset($_POST['collaborative_artworks']) ? json_decode($_POST['collaborative_artworks'], true) : [];
-
+            // Handle collaborative artworks
+            if (isset($_POST['collaborative_artworks'])) {
+                // If the data is a string (JSON), decode it
+                if (is_string($_POST['collaborative_artworks'])) {
+                    $selectedArtworks = json_decode($_POST['collaborative_artworks'], true);
+                    if ($selectedArtworks === null || empty($selectedArtworks)) {
+                        error_log("No artworks selected or invalid JSON.");
+                        return;
+                    }
+                }
+                // If the data is already an array, use it directly
+                elseif (is_array($_POST['collaborative_artworks'])) {
+                    $selectedArtworks = $_POST['collaborative_artworks'];
+                } else {
+                    error_log("Invalid format for collaborative artworks.");
+                    return;
+                }
+            } else {
+                $selectedArtworks = [];
+                error_log("No collaborative artworks selected.");
+            }
+        
+            // Handle collaborators (optional)
             $collaborators = isset($_POST['collaborator']) ? $_POST['collaborator'] : [];
-            $exhibitManager->requestCollabExhibit($exhibit_title, $exhibit_description, $exhibit_date, $collaborative_artworks, $collaborators);
+        
+            // Call the function to handle the collaborative exhibit
+            $exhibitManager->requestCollabExhibit($exhibit_title, $exhibit_description, $exhibit_date, $selectedArtworks, $collaborators);
         }
+        
 
 
 // Search Collab
@@ -683,6 +707,8 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
             <label for="exhibit-date">Exhibit Date</label><br>
             <input type="date" id="exhibit-date" name="exhibit-date" required>
 
+            <input type="hidden" name="selected_artworks" id="selectedArtworks">
+            
             <div class="confirm-solo">
                 <button class="collab-btn" name="requestCollab">Confirm Schedule</button>
             </div>
