@@ -39,17 +39,16 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
             $exhibitManager->requestSoloExhibit($exhibit_title, $exhibit_description, $exhibit_date, $selected_artworks);
         }
 
-     if (isset($_POST['requestCollab'])) {
-    $exhibitManager = new ExhibitManager($conn);
-
-    $exhibit_title = $_POST['exhibit-title'];
-    $exhibit_description = $_POST['exhibit-description'];
-    $exhibit_date = $_POST['exhibit-date'];
-    $selected_artworks = $_POST['selected_artworks']; 
-    $selected_collaborators = $_POST['selected_collaborators']; 
-
-    $exhibitManager->requestCollabExhibit($exhibit_title, $exhibit_description, $exhibit_date, $selected_artworks, $selected_collaborators);
-}
+        if (isset($_POST['requestCollab'])) {
+            $exhibitManager = new ExhibitManager($conn);
+            $exbt_title = $_POST['exhibit-title'];
+            $exbt_descrip = $_POST['exhibit-description'];
+            $exbt_date = $_POST['exhibit-date'];
+            $selected_artworks = $_POST['selected_artworks_collab']; 
+            $selected_collaborators = $_POST['selected_collaborators']; 
+            $exhibitManager->requestCollabExhibit($exbt_title, $exbt_descrip, $exbt_date, $selected_artworks, $selected_collaborators);
+        }
+        
 
 
         
@@ -671,7 +670,8 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
 <!-- collab request -->
 <div id="Collaborative" class="requestTab">
     <div class="exhibit-inputs">
-        <form action="" name="collabExhibit" method="POST">
+    <form action="" name="collabExhibit" method="POST">
+
             <label for="exhibit-title">Exhibit Title</label><br>
             <input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit" required><br>
 
@@ -684,7 +684,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
     
             <input type="hidden" id="selectedCollaboratorsInput" name="selected_collaborators" value="">
 
-            <input type="hidden" name="selected_artworks" id="selectedArtworks">
+            <input type="hidden" name="selected_artworks_collab" id="selectedArtworksCollab">
 
             <div class="confirm-solo">
                 <button class="collab-btn" name="requestCollab">Confirm Schedule</button>

@@ -15,11 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
       exploreButton.addEventListener('click', scrollToAbout);
   }
 
-
-
   const carousel = document.querySelector(".gallery-images"),
       firstImg = document.querySelectorAll("img")[0];
-
 
 if (firstImg) {
   const arrowIcons = document.querySelectorAll(".arrow i");
@@ -40,7 +37,6 @@ if (firstImg) {
   console.error("Gallery images not found.");
 }
 
-
   // return click
   const returnBtn = document.getElementById('return');
   if (returnBtn) {
@@ -60,8 +56,6 @@ if (firstImg) {
   } else {
     console.error("Return button with id='return' not found.");
   }
-
-
 
   const signIn = document.getElementById("show-login");
   const signUp = document.getElementById("show-create");
@@ -92,17 +86,12 @@ if (firstImg) {
   }
 });
 
-
-
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
   sidebar.classList.toggle('open');
 }
 
-
-
 //sidebar active
-
 const sidebarItems = document.querySelectorAll('.sidebar li');
 
 
@@ -120,7 +109,6 @@ function toggleNotifications() {
   var notificationCenter = document.getElementById("notificationCenter");
   notificationCenter.classList.toggle("active");
 }
-
 
 // tabpane in Artwork Dashboard
 function myOption(evt, option) {
@@ -155,7 +143,6 @@ const modal = document.getElementById("followers-modal");
 const followersContent = document.getElementById("followers-content");
 const followingContent = document.getElementById("following-content");
 
-
 const viewFollowersButton = document.getElementById("openFollowers");
 const viewFollowingButton = document.getElementById("openFollowing");
 
@@ -167,7 +154,6 @@ viewFollowersButton.addEventListener("click", function(event) {
     followingContent.style.display = "none";
     modal.style.display = "block";
 });
-
 
 // following modal
 viewFollowingButton.addEventListener("click", function(event) {
@@ -186,9 +172,6 @@ window.addEventListener("click", function(event) {
         modal.style.display = "none"; 
     }
 });
-
-
-
 
 
 // e link mga side bar
@@ -218,8 +201,6 @@ document.addEventListener('DOMContentLoaded', function() {
   settingContainer.style.display = 'none';
   reqContainer.style.display='none';
 
-
-
   // Dashboard
   dashboardLink.addEventListener('click', function(e) {
       e.preventDefault(); 
@@ -229,7 +210,6 @@ document.addEventListener('DOMContentLoaded', function() {
       exhibitContainer.style.display = 'none';
       settingContainer.style.display = 'none';
       reqContainer.style.display='none';
-
 
   });
 
@@ -242,7 +222,6 @@ document.addEventListener('DOMContentLoaded', function() {
       exhibitContainer.style.display = 'none';
       settingContainer.style.display = 'none';
       reqContainer.style.display='none';
-
 
   });
 
@@ -259,8 +238,6 @@ messageLink.addEventListener('click', function(e) {
 
 });
 
-
-
 // exhibit container
 exhibitLink.addEventListener('click', function(e) {
   e.preventDefault();
@@ -273,7 +250,6 @@ exhibitLink.addEventListener('click', function(e) {
 
 
 });
-
 
 // settings
 settingLink.addEventListener('click', function(e) {
@@ -289,7 +265,6 @@ settingLink.addEventListener('click', function(e) {
 
  
 });
-
 
 function showPopup(element) {
   const blur = document.getElementById('blur');
@@ -329,7 +304,6 @@ function showPopup(element) {
     existingEditOption.remove();
   }
 
- 
   if (artistId === loggedInUserId) {
     const editOption = document.createElement('p');
     editOption.innerHTML = "<i class='bx bxs-edit'></i>";
@@ -374,7 +348,6 @@ function showPopup(element) {
   };
 }
 
-
 function initializeIconStates(artworkId) {
   fetch(`class/interaction.php?action=getStates&a_id=${artworkId}`)
     .then(response => response.json())
@@ -396,7 +369,6 @@ function initializeIconStates(artworkId) {
         console.error('Error fetching icon states:', error);
     });
 }
-
 
 function updateDatabase(action, artworkId) {
     return fetch('class/interaction.php', {
@@ -426,7 +398,6 @@ function closePopup() {
   popup.classList.remove('active'); 
   blur.classList.remove('active'); 
 
- 
   setTimeout(() => {
       popup.style.display = 'none';
   }, 300); 
@@ -442,14 +413,12 @@ function toggleEditProfile() {
   const settingContainer = document.getElementById('settingsContainer');
   const reqContainer=document.getElementById('reqExhibit-con');
 
-
   dashboardContainer.style.display = 'none';
   artworkContainer.style.display = 'none';
   messageContainer.style.display = 'none';
   exhibitContainer.style.display = 'none';
   reqContainer.style.display='none';
   
-
   settingContainer.style.display = 'block';
 }
 
@@ -463,7 +432,6 @@ function toggleExhibit() {
   const exhibitContainer = document.getElementById('exhibitContainer');
   const settingContainer = document.getElementById('settingsContainer');
   const reqContainer=document.getElementById('reqExhibit-con');
-
 
   dashboardContainer.style.display = 'none';
   artworkContainer.style.display = 'none';
@@ -483,43 +451,37 @@ function openPage(pageName) {
   }
   document.getElementById(pageName).style.display = "block";
 }
-
 document.getElementById("defaultOpen").click();
 
-//settings tab
 
+
+//settings tab
 function openSettings(evt, settingTab) {
   var i, tabcontent, setlinks;
-
 
   tabcontent = document.getElementsByClassName("tabInformation");
   for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";
   }
-
   setlinks = document.getElementsByClassName("setlinks");
   for (i = 0; i < setlinks.length; i++) {
     setlinks[i].className = setlinks[i].className.replace(" active", "");
   }
-
-
   document.getElementById(settingTab).style.display = "block";
   evt.currentTarget.className += " active";
 }
-
 function openDefaultTab() {
   var defaultTabButton = document.getElementById("defaultOpen");
   
-  
   openSettings({ currentTarget: defaultTabButton }, 'myProfile');
 }
-
 window.onload = function() {
   openDefaultTab();
 };
 
-//select artwork
 
+
+//select an artworkkk
 document.querySelectorAll('.display-creations img').forEach((img) => {
   img.addEventListener('click', function () {
       if (img.classList.contains('selected')) {
@@ -529,16 +491,27 @@ document.querySelectorAll('.display-creations img').forEach((img) => {
               img.classList.add('selected');
           } else {
               alert('You can only select up to 10 artworks.');
-              return; 
+              return;
           }
       }
-      console.log('Selected Artwork ID:', img.getAttribute('data-id'));
-
       const selectedIds = Array.from(document.querySelectorAll('.display-creations img.selected'))
           .map(selectedImg => selectedImg.getAttribute('data-id'));
+
+      if (document.forms['collabExhibit']) {
+          document.getElementById('selectedArtworksCollab').name = 'selected_artworks_collab';
+      } else if (document.forms['soloExhibit']) {
+          document.getElementById('selectedArtworks').name = 'selected_artworks';
+      }
+      
       document.getElementById('selectedArtworks').value = JSON.stringify(selectedIds);
+      document.getElementById('selectedArtworksCollab').value = JSON.stringify(selectedIds);
+  
+      console.log('Selected Artwork IDs:', selectedIds);
   });
 });
+
+
+
 
 //search collaboratots
 let debounceTimeout;
@@ -630,7 +603,6 @@ function selectCollaborator(name, u_id) {
   selectedCollaborators.push(u_id); 
   selectedCollaboratorsInput.value = selectedCollaborators.join(','); 
 }
-
 
 function removeCollaborator(collaboratorItem, u_id) {
   const selectedCollaboratorsDiv = document.getElementById("selectedCollaborators");
