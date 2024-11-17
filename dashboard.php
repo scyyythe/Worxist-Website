@@ -18,6 +18,21 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
 $u_id = $_SESSION['u_id']; 
 $title = isset($_SESSION['title']) ? $_SESSION['title'] : 'Default Title';
 
+$accountManager = new AccountManager($conn);
+$userInfo = $accountManager->getAccountInfo($u_id);
+$profilePic = $userInfo['profile'];
+if (!$profilePic) {
+    $profilePic = 'gallery/girl.jpg';
+}
+//profile picture
+if (isset($_POST['uploadProfilePic'])) {
+    $accountManager=new AccountManager($conn);
+    $accountManager->uploadProfilePicture($_FILES['profilePicture']);
+}
+if (isset($_POST['removeProfilePic'])) {
+    $accountManager=new AccountManager($conn);
+    $accountManager->removeProfilePicture();
+}
 
 $exhibitManager = new artManager($conn);
 $images = $exhibitManager->getUserArtworks();
@@ -48,19 +63,12 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
             $selected_collaborators = $_POST['selected_collaborators']; 
             $exhibitManager->requestCollabExhibit($exbt_title, $exbt_descrip, $exbt_date, $selected_artworks, $selected_collaborators);
         }
-        
-
-
-        
-
-
 // Search Collab
 if (isset($_GET['query']) && !empty($_GET['query'])) {
+    
     echo $exhibitManager->searchCollaborators($_GET['query']);
     exit; 
 }
-
-
 
 ?> 
 
@@ -211,7 +219,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
             <h5>Comments</h5>
             <div class="user-image">
                 <div class="profile-pic"> 
-                    <img src="gallery/eyes.jpg" alt="User profile picture"> 
+                <img src="<?php echo $profilePic; ?>" alt="Profile Picture"> 
                 </div> 
                 <h5>Angel Canete</h5>                             
             </div>
@@ -269,10 +277,10 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                         <a href="#">Painting    </a>
                     </div>
             </div>
-
+          
             <div class="profile">
                 <div class="profile-pic"  onclick="toggleEditProfile()" > 
-                 <img src="gallery/eyes.jpg" alt=""> 
+                    <img src="<?php echo $profilePic; ?>" alt="Profile Picture">
                 </div>
                 <p class="to-edit-profile-btn" onclick="toggleEditProfile()"><b><?php echo $username;?> </b></p>
             </div>
@@ -726,11 +734,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
 </div>
 
 
-
-
         </div>
-
-
 
 
 <div class="settings-container" id="settingsContainer">
@@ -743,13 +747,13 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
         <button class="setlinks" onclick="openSettings(event, 'notifSetting')">Notification</button>
     </div>
                
-            <div id="myProfile" class="tabInformation"> <!-- Corrected spelling -->
+            <div id="myProfile" class="tabInformation"> 
                 <h3>My Profile</h3>
                 <div class="top-myprofile">
                     <div class="profile-picture">
                     <div class="image-profile">
-                            <img src="gallery/girl.jpg" alt="">
-                    </div>
+    <img src="<?php echo $profilePic; ?>" alt="Profile Picture">
+</div>
 
                         <div class="text-image">
                             <h3>Upload new image</h3>
@@ -757,10 +761,31 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                         </div>
                     </div>
 
-                    <div class="upload-image-btn">
-                        <button>Upload</button>
-                        <button>Remove image</button>
-                    </div>
+                    <div class="profileModal" id="profileModal" style="display:none;">
+    <div class="modalProfile-content">
+        <span class="profileclose-btn" id="profilecloseModal">&times;</span>
+        <h2>Upload Profile Picture</h2>
+        
+        
+        <form id="profileUploadForm" method="POST" enctype="multipart/form-data">
+            <input type="file" name="profilePicture" id="profilePicture" accept="image/*" required onchange="previewImage(event)">
+            <div class="upload-image-btn">
+                <button type="submit" name="uploadProfilePic">Upload</button>
+               
+            </div>
+        </form>
+
+        
+        <div id="imagePreviewContainer" style="display:none;">
+            <h3>Selected Image:</h3>
+            <img id="imagePreview" src="" alt="Preview" style="max-width: 200px;">
+        </div>
+    </div>
+</div>
+
+
+<button id="uploadProfileBtn">Upload Profile Picture</button>
+<button type="button" id="removeProfilePic" onclick="removeProfilePic()">Remove Image</button>   
 
                 </div>
 

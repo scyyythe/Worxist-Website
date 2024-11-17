@@ -58,7 +58,7 @@ class AccountManager
 
     public function getAccountInfo($u_id)
     {
-        $sql = "SELECT u_id, u_name, email, username, u_type, u_status FROM accounts WHERE u_id = :u_id";
+        $sql = "SELECT * FROM accounts WHERE u_id = :u_id";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
         $stmt->execute();
@@ -111,9 +111,57 @@ class AccountManager
         return $stmt->execute();
     }
 
+    public function uploadProfilePicture($file) {
+        // Check if file is uploaded
+        if ($file['error'] == 0) {
+            // Create a directory for the file if it doesn't exist
+            if (!is_dir('profile_pics')) {
+                mkdir('profile_pics');
+            }
+
+            $fileName = $_SESSION['u_id'] . '_profile.jpg'; // Store image with user ID as name
+            $filePath = 'profile_pics/' . $fileName;
+
+            // Move the uploaded file to the target directory
+            if (move_uploaded_file($file['tmp_name'], $filePath)) {
+                // Update the 'profile' field in the accounts table
+                $statement = $this->conn->prepare("UPDATE accounts SET profile = :filePath WHERE u_id = :u_id");
+                $statement->bindValue(':filePath', $filePath);
+                $statement->bindValue(':u_id', $_SESSION['u_id']);
+                $statement->execute();
+
+                // Redirect to the profile page or dashboard
+                header("Location: dashboard.php");
+                exit;
+            } else {
+                echo "Error uploading file.";
+            }
+        } else {
+            echo "No file selected or error in file upload.";
+        }
+    }
+
+    // Method to remove profile picture
+    public function removeProfilePicture() {
+        // Remove the profile picture from the database
+        $statement = $this->conn->prepare("UPDATE accounts SET profile = NULL WHERE u_id = :u_id");
+        $statement->bindValue(':u_id', $_SESSION['u_id']);
+        $statement->execute();
+
+        // Optionally, remove the file from the server as well
+        $filePath = 'profile_pics/' . $_SESSION['u_id'] . '_profile.jpg';
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
+        // Redirect to the profile page or dashboard
+        header("Location: dashboard.php");
+        exit;
+    }
 
     
 }
+
 
 //upload ug image
 class ArtUploader {
@@ -153,13 +201,13 @@ class ArtUploader {
     
         $statement = $this->conn->prepare("INSERT INTO art_info (u_id, title, description, category, file, date, a_status) VALUES (:u_id, :title, :description, :category, :file, :date, :a_status)");
     
-        // Bind each placeholder with the correct value
+       
         $statement->bindValue(':u_id', $u_id);
         $statement->bindValue(':title', $title);
         $statement->bindValue(':description', $description);
         $statement->bindValue(':category', $category);
         $statement->bindValue(':file', $filePath);
-        $statement->bindValue(':date', $date);  // Bind the date value correctly
+        $statement->bindValue(':date', $date);
         $statement->bindValue(':a_status', $a_status);
     
         $result = $statement->execute();

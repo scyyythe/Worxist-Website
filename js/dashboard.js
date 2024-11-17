@@ -620,3 +620,63 @@ function removeCollaborator(collaboratorItem, u_id) {
 
 
 
+//upload profile picture modal
+// Upload profile picture modal
+const uploadBtn = document.getElementById("uploadProfileBtn");
+const modalProfile = document.getElementById("profileModal");
+const closeModal = document.getElementById("profilecloseModal");
+
+// Show the modal when the "Upload Profile Picture" button is clicked
+uploadBtn.addEventListener("click", function() {
+    modalProfile.style.display = "flex";
+});
+
+// Close the modal when the close button is clicked
+closeModal.addEventListener("click", function() {
+    modalProfile.style.display = "none";
+});
+
+// Close the modal when clicking outside the modal content (on the modal's background)
+window.addEventListener("click", function(event) {
+    if (event.target === modalProfile) {
+        modalProfile.style.display = "none";
+    }
+});
+
+function previewImage(event) {
+    const file = event.target.files[0];
+    const previewContainer = document.getElementById("imagePreviewContainer");
+    const imagePreview = document.getElementById("imagePreview");
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            previewContainer.style.display = "block"; 
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function removeProfilePic() {
+    const imagePreview = document.getElementById("imagePreview");
+    const previewContainer = document.getElementById("imagePreviewContainer");
+    const fileInput = document.getElementById("profilePicture");
+
+    previewContainer.style.display = "none";
+    imagePreview.src = "";
+
+    fileInput.value = "";
+}
+
+function removeProfilePic() {
+    const imagePreview = document.getElementById("imagePreview");
+    const previewContainer = document.getElementById("imagePreviewContainer");
+    const fileInput = document.getElementById("profilePicture");
+
+    previewContainer.style.display = "none";
+    imagePreview.src = "";
+    
+    fileInput.value = "";
+}
+
