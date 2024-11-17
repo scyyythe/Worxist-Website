@@ -23,7 +23,7 @@ class ExhibitManager
         $this->conn->beginTransaction();
     
         try {
-            // Insert the exhibit
+           
             $statement = $this->conn->prepare("
                 INSERT INTO exhibit_tbl (u_id, exbt_title, exbt_descrip, exbt_date, exbt_type, exbt_status)
                 VALUES (:u_id, :exbt_title, :exbt_descrip, :exbt_date, :exbt_type, :exbt_status)
@@ -37,8 +37,7 @@ class ExhibitManager
             $statement->execute();
     
             $exbt_id = $this->conn->lastInsertId();
-    
-            // Insert artworks into the exhibit
+            
             foreach ($selectedArtworks as $a_id) {
                 $checkStmt = $this->conn->prepare("SELECT COUNT(*) FROM art_info WHERE a_id = :a_id");
                 $checkStmt->bindValue(':a_id', $a_id, PDO::PARAM_INT);
@@ -67,65 +66,83 @@ class ExhibitManager
         }
     }
     
-    public function requestCollabExhibit($exbt_title, $exbt_descrip, $exbt_date, $selected_artworks) {
-    $exbt_type = 'Collaborate';  
-    $exbt_status = 'Pending';
-
-    $this->conn->beginTransaction();
-
+    public function requestCollabExhibit($exbt_title, $exbt_descrip, $exbt_date, $selected_artworks, $selected_collaborators) {
+        $exbt_type = 'Collaborate';  
+        $exbt_status = 'Pending';
     
-    $statement = $this->conn->prepare("
-        INSERT INTO exhibit_tbl (u_id, exbt_title, exbt_descrip, exbt_date, exbt_type, exbt_status)
-        VALUES (:u_id, :exbt_title, :exbt_descrip, :exbt_date, :exbt_type, :exbt_status)
-    ");
-    $statement->bindValue(':u_id', $this->u_id, PDO::PARAM_INT);
-    $statement->bindValue(':exbt_title', $exbt_title);
-    $statement->bindValue(':exbt_descrip', $exbt_descrip);
-    $statement->bindValue(':exbt_date', $exbt_date);
-    $statement->bindValue(':exbt_type', $exbt_type);
-    $statement->bindValue(':exbt_status', $exbt_status);
+        $this->conn->beginTransaction();
+    
+        $statement = $this->conn->prepare("
+            INSERT INTO exhibit_tbl (u_id, exbt_title, exbt_descrip, exbt_date, exbt_type, exbt_status)
+            VALUES (:u_id, :exbt_title, :exbt_descrip, :exbt_date, :exbt_type, :exbt_status)
+        ");
+        $statement->bindValue(':u_id', $this->u_id, PDO::PARAM_INT);
+        $statement->bindValue(':exbt_title', $exbt_title);
+        $statement->bindValue(':exbt_descrip', $exbt_descrip);
+        $statement->bindValue(':exbt_date', $exbt_date);
+        $statement->bindValue(':exbt_type', $exbt_type);
+        $statement->bindValue(':exbt_status', $exbt_status);
+    
+        if (!$statement->execute()) {
+            error_log("Error inserting exhibit: " . implode(", ", $statement->errorInfo()));
+            $this->conn->rollBack();
+            return;
+        }
+    
+        $exbt_id = $this->conn->lastInsertId();
+    
 
-    if (!$statement->execute()) {
-        error_log("Error inserting exhibit: " . implode(", ", $statement->errorInfo()));
-        $this->conn->rollBack();  // Roll back if the exhibit insert fails
-        return;
-    }
-
-    $exbt_id = $this->conn->lastInsertId();
-
-  
-    $selectedArtworks = json_decode($selected_artworks, true);
-    if (!empty($selectedArtworks) && is_array($selectedArtworks)) {
-        foreach ($selectedArtworks as $a_id) {
+        $selectedArtworks = json_decode($selected_artworks, true);
+   
+            foreach ($selectedArtworks as $a_id) {
+                $checkStmt = $this->conn->prepare("SELECT COUNT(*) FROM art_info WHERE a_id = :a_id");
+                $checkStmt->bindValue(':a_id', $a_id, PDO::PARAM_INT);
+                $checkStmt->execute();
+    
+                if ($checkStmt->fetchColumn()) {
+                    $artworkStmt = $this->conn->prepare("
+                        INSERT INTO exhibit_artworks (exbt_id, a_id)
+                        VALUES (:exbt_id, :a_id)
+                    ");
+                    $artworkStmt->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
+                    $artworkStmt->bindValue(':a_id', $a_id, PDO::PARAM_INT);
+                    if (!$artworkStmt->execute()) {
+                        error_log("Error inserting artwork into exhibit: " . implode(", ", $artworkStmt->errorInfo()));
+                    }
+                } else {
+                    error_log("Invalid artwork ID: " . $a_id);
+                }
             
-            $checkStmt = $this->conn->prepare("SELECT COUNT(*) FROM art_info WHERE a_id = :a_id");
-            $checkStmt->bindValue(':a_id', $a_id, PDO::PARAM_INT);
+        }
+    
+        $collaborators = explode(',', $selected_collaborators);
+        foreach ($collaborators as $u_id) {
+          
+            $checkStmt = $this->conn->prepare("SELECT COUNT(*) FROM accounts WHERE u_id = :u_id");
+            $checkStmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
             $checkStmt->execute();
-
+    
             if ($checkStmt->fetchColumn()) {
-                 $artworkStmt = $this->conn->prepare("
-                    INSERT INTO exhibit_artworks (exbt_id, a_id)
-                    VALUES (:exbt_id, :a_id)
+                
+                $collabStmt = $this->conn->prepare("
+                    INSERT INTO collab_exhibit (exbt_id, u_id)
+                    VALUES (:exbt_id, :u_id)
                 ");
-                $artworkStmt->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
-                $artworkStmt->bindValue(':a_id', $a_id, PDO::PARAM_INT);
-                if (!$artworkStmt->execute()) {
-                    error_log("Error inserting artwork into exhibit: " . implode(", ", $artworkStmt->errorInfo()));
+                $collabStmt->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
+                $collabStmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
+                if (!$collabStmt->execute()) {
+                    error_log("Error inserting collaborator into exhibit: " . implode(", ", $collabStmt->errorInfo()));
                 }
             } else {
-                error_log("Invalid artwork ID: " . $a_id);
+                error_log("Invalid collaborator ID: " . $u_id);
             }
         }
-    } else {
-        error_log("No artworks selected or invalid data format.");
+    
+        $this->conn->commit();
+        header("Location: dashboard.php");
+        exit;
     }
-
-   
-    $this->conn->commit();
-   
-    header("Location: dashboard.php");
-    exit;
-}
+    
 
     
     
@@ -165,6 +182,7 @@ class ExhibitManager
                 foreach ($results as $collaborator) {
                     $response[] = [
                         'name' => $collaborator['u_name'],
+                        'u_id' => $collaborator['u_id'],
                     ];
                 }
             } else {

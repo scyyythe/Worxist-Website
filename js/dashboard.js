@@ -486,38 +486,6 @@ function openPage(pageName) {
 
 document.getElementById("defaultOpen").click();
 
-
-
-// select artwork for exhibit
-
-document.querySelectorAll('.display-creations img').forEach((img) => {
-  img.addEventListener('click', function () {
-   
-      if (img.classList.contains('selected')) {
-          img.classList.remove('selected');
-      } else {
-      
-          if (document.querySelectorAll('.selected').length < 10) {
-              img.classList.add('selected');
-          } else {
-              alert('You can only select up to 10 artworks.');
-              return; 
-          }
-      }
-
-      // Log the artwork ID
-      console.log('Selected Artwork ID:', img.getAttribute('data-id'));
-
-      const selectedIds = Array.from(document.querySelectorAll('.display-creations img.selected'))
-          .map(selectedImg => selectedImg.getAttribute('data-id'));
-      document.getElementById('selectedArtworks').value = JSON.stringify(selectedIds);
-     
-  });
-});
-
-
-
-
 //settings tab
 
 function openSettings(evt, settingTab) {
@@ -550,31 +518,44 @@ window.onload = function() {
   openDefaultTab();
 };
 
+//select artwork
 
+document.querySelectorAll('.display-creations img').forEach((img) => {
+  img.addEventListener('click', function () {
+      if (img.classList.contains('selected')) {
+          img.classList.remove('selected');
+      } else {
+          if (document.querySelectorAll('.selected').length < 10) {
+              img.classList.add('selected');
+          } else {
+              alert('You can only select up to 10 artworks.');
+              return; 
+          }
+      }
+      console.log('Selected Artwork ID:', img.getAttribute('data-id'));
 
+      const selectedIds = Array.from(document.querySelectorAll('.display-creations img.selected'))
+          .map(selectedImg => selectedImg.getAttribute('data-id'));
+      document.getElementById('selectedArtworks').value = JSON.stringify(selectedIds);
+  });
+});
 
 //search collaboratots
-
 let debounceTimeout;
 
 function searchCollaborators(query) {
     const searchResultsDiv = document.getElementById("searchResults");
-    searchResultsDiv.innerHTML = ""; // Clear previous results immediately
+    searchResultsDiv.innerHTML = ""; 
 
     if (query.length === 0) {
-        searchResultsDiv.innerHTML = ''; // Clear results when input is empty
+        searchResultsDiv.innerHTML = '';
         return; 
     }
-
-    // Show loading message while fetching results
-    searchResultsDiv.innerHTML = '<p>Loading...</p>';
-
-    // Clear any previous debounce timeout
+    searchResultsDiv.innerHTML = '<p>Loading...</p>'; 
     clearTimeout(debounceTimeout);
 
-    // Set a new debounce timeout to delay the search
     debounceTimeout = setTimeout(() => {
-        // Fetch data using fetch API
+        
         fetch('dashboard.php?query=' + encodeURIComponent(query))
             .then(response => {
                 if (!response.ok) {
@@ -583,81 +564,87 @@ function searchCollaborators(query) {
                 return response.json(); 
             })
             .then(data => {
-                searchResultsDiv.innerHTML = ''; // Clear the loading message
-                
-                if (data.length === 1 && data[0].name === 'No collaborators found.') {
-                    searchResultsDiv.innerHTML = '<p>No collaborators found.</p>';
-                    return;
-                }
-
-                // Populate search results
-                data.forEach(collaborator => {
-                    const div = document.createElement('div');
-                    div.classList.add('collab-item');
-
-                    const span = document.createElement('span');
-                    span.classList.add('collab-name');
-                    span.textContent = collaborator.name;
-
-                    const button = document.createElement('button');
-                    button.classList.add('select-collab-btn');
-                    button.textContent = 'Select';
-                    button.onclick = function() {
-                        selectCollaborator(collaborator.name);
-                    };
-
-                    div.appendChild(span);
-                    div.appendChild(button);
-                    searchResultsDiv.appendChild(div);
-                });
-            })
+              console.log(data); 
+          
+              searchResultsDiv.innerHTML = '';
+              
+              if (data.length === 1 && data[0].name === 'No collaborators found.') {
+                  searchResultsDiv.innerHTML = '<p>No collaborators found.</p>';
+                  return;
+              }
+          
+              data.forEach(collaborator => {
+                  const div = document.createElement('div');
+                  div.classList.add('collab-item');
+          
+                  const span = document.createElement('span');
+                  span.classList.add('collab-name');
+                  span.textContent = collaborator.name;
+          
+                  const button = document.createElement('button');
+                  button.classList.add('select-collab-btn');
+                  button.textContent = 'Select';
+                  button.onclick = function() {
+                      console.log(collaborator); 
+                      selectCollaborator(collaborator.name, collaborator.u_id); 
+                  };
+          
+                  div.appendChild(span);
+                  div.appendChild(button);
+                  searchResultsDiv.appendChild(div);
+              });
+          })
+          
             .catch(error => {
                 searchResultsDiv.innerHTML = '<p>Error fetching data: ' + error.message + '</p>';
             });
     }, 300);  
 }
 
+function selectCollaborator(name, u_id) {
+  console.log("Collaborator Selected:", name, u_id);  
 
-// Function to handle the collaborator selection
-function selectCollaborator(name) {
   const selectedCollaboratorsDiv = document.getElementById("selectedCollaborators");
-
-  // Check if the collaborator is already selected
+  const selectedCollaboratorsInput = document.getElementById("selectedCollaboratorsInput");
+  
   if (selectedCollaboratorsDiv.innerHTML.includes(name)) {
       alert("This collaborator is already selected.");
       return;
   }
 
-  // Create a div for the selected collaborator
   const collaboratorItem = document.createElement("div");
   collaboratorItem.classList.add("selected-collaborator");
   collaboratorItem.textContent = name;
 
-  // Create a remove button for the selected collaborator
   const removeBtn = document.createElement("button");
   removeBtn.textContent = "Remove";
   removeBtn.classList.add("remove-collab-btn");
   removeBtn.onclick = function() {
-      removeCollaborator(collaboratorItem);
+      removeCollaborator(collaboratorItem, u_id);
   };
 
   collaboratorItem.appendChild(removeBtn);
   selectedCollaboratorsDiv.appendChild(collaboratorItem);
+
+  const selectedCollaborators = selectedCollaboratorsInput.value ? selectedCollaboratorsInput.value.split(',') : [];
+  selectedCollaborators.push(u_id); 
+  selectedCollaboratorsInput.value = selectedCollaborators.join(','); 
 }
 
-function removeCollaborator(collaboratorItem) {
+
+function removeCollaborator(collaboratorItem, u_id) {
   const selectedCollaboratorsDiv = document.getElementById("selectedCollaborators");
+  const selectedCollaboratorsInput = document.getElementById("selectedCollaboratorsInput");
+
   selectedCollaboratorsDiv.removeChild(collaboratorItem);
+
+  let selectedCollaborators = selectedCollaboratorsInput.value.split(',');
+  selectedCollaborators = selectedCollaborators.filter(id => id !== u_id);
+  selectedCollaboratorsInput.value = selectedCollaborators.join(',');
+
+  console.log('Selected Collaborators Input Value after Removal:', selectedCollaboratorsInput.value); 
 }
 
 
-function addCollaborators() {
-  const selectedCollaboratorsDiv = document.getElementById("selectedCollaborators");
-  if (selectedCollaboratorsDiv.children.length === 0) {
-      alert("Please select at least one collaborator.");
-  } else {
-     
-      alert("Collaborators added.");
-  }
-}
+
 

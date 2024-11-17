@@ -39,16 +39,18 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
             $exhibitManager->requestSoloExhibit($exhibit_title, $exhibit_description, $exhibit_date, $selected_artworks);
         }
 
-      if (isset($_POST['requestCollab'])) {
+     if (isset($_POST['requestCollab'])) {
     $exhibitManager = new ExhibitManager($conn);
 
     $exhibit_title = $_POST['exhibit-title'];
     $exhibit_description = $_POST['exhibit-description'];
     $exhibit_date = $_POST['exhibit-date'];
     $selected_artworks = $_POST['selected_artworks']; 
+    $selected_collaborators = $_POST['selected_collaborators']; 
 
-    $exhibitManager->requestCollabExhibit($exhibit_title, $exhibit_description, $exhibit_date,  $selected_artworks);
+    $exhibitManager->requestCollabExhibit($exhibit_title, $exhibit_description, $exhibit_date, $selected_artworks, $selected_collaborators);
 }
+
 
         
 
@@ -667,13 +669,10 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
 
 
 <!-- collab request -->
-
 <div id="Collaborative" class="requestTab">
- 
-
     <div class="exhibit-inputs">
         <form action="" name="collabExhibit" method="POST">
-        <label for="exhibit-title">Exhibit Title</label><br>
+            <label for="exhibit-title">Exhibit Title</label><br>
             <input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit" required><br>
 
             <label for="exhibit-description">Exhibit Description</label><br>
@@ -682,7 +681,9 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
             <label for="exhibit-date">Exhibit Date</label><br>
             <input type="date" id="exhibit-date" name="exhibit-date" required><br>
 
-            
+    
+            <input type="hidden" id="selectedCollaboratorsInput" name="selected_collaborators" value="">
+
             <input type="hidden" name="selected_artworks" id="selectedArtworks">
 
             <div class="confirm-solo">
@@ -690,24 +691,18 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
             </div>
         </form>
 
-        <!-- Collaborators Section -->
         <div class="add-collab">
-    <label for="collabSearch">Add Collaborators</label><br>
-    <input type="text" id="collabSearch" placeholder="Search" oninput="searchCollaborators(this.value)" required>
+            
+            <label for="collabSearch">Add Collaborators</label><br>
+            <input type="text" id="collabSearch" placeholder="Search" oninput="searchCollaborators(this.value)">
 
-   
-    <div class="display-collab" id="searchResults">
-        
+            <div class="display-collab" id="searchResults"></div>
+
+            <div id="selectedCollaborators"></div>
+        </div>
     </div>
 
-    <div id="selectedCollaborators">
-       
-    </div>
-
-    <button type="button" id="addCollaboratorsBtn" onclick="addCollaborators()">Add Collaborators</button>
-</div>
-
-    </div>
+    <!-- Artworks Section -->
     <div class="select-art">
     <p>Selected Artworks (Maximum of 10)</p>
     <div class="display-creations">
@@ -727,9 +722,9 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
         <?php endif; ?>
     </div>
 </div>
-   
 
 </div>
+
 
 
 

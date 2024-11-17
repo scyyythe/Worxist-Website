@@ -2,7 +2,6 @@
 session_start();
 
 include("include/connection.php");
-include 'class/accclass.php'; 
 include 'class/artClass.php'; 
 include 'class/exhbtClass.php';
 
