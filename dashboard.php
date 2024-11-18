@@ -18,6 +18,7 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
 $u_id = $_SESSION['u_id']; 
 $title = isset($_SESSION['title']) ? $_SESSION['title'] : 'Default Title';
 
+
 $accountManager = new AccountManager($conn);
 $userInfo = $accountManager->getAccountInfo($u_id);
 $profilePic = $userInfo['profile'];
@@ -38,8 +39,11 @@ $exhibitManager = new artManager($conn);
 $images = $exhibitManager->getUserArtworks();
 $allImages = $exhibitManager->getAllArtworks();
 
+
+
 $exhibitManager = new ExhibitManager($conn);
 $exhibit = $exhibitManager->getAcceptedExhibits();
+
 
 $artInteract=new artInteraction($conn);
 $artSaved=$artInteract->getSavedArtworks($u_id);
@@ -59,19 +63,18 @@ $artFave=$artInteract->getFavoriteArtworks($u_id);
             $exbt_title = $_POST['exhibit-title'];
             $exbt_descrip = $_POST['exhibit-description'];
             $exbt_date = $_POST['exhibit-date'];
-            $selected_artworks = $_POST['selected_artworks_collab']; 
+            $selected_artworks = $_POST ['selected_artworks_collab']; 
             $selected_collaborators = $_POST['selected_collaborators']; 
             $exhibitManager->requestCollabExhibit($exbt_title, $exbt_descrip, $exbt_date, $selected_artworks, $selected_collaborators);
         }
-// Search Collab
-if (isset($_GET['query']) && !empty($_GET['query'])) {
-    
+
+if (isset($_GET['query']) && !empty($_GET['query'])) { 
     echo $exhibitManager->searchCollaborators($_GET['query']);
     exit; 
 }
 
-?> 
 
+?> 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -181,11 +184,15 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
         <img src="" alt="" class="popup-image">
     </div>
 
-    <!-- Interaction icons -->
     <div class="social-interact-icons">
     <i class='bx bxs-heart like-icon' id="like-icon" onclick="toggleLike(this)"></i>
+    <p class="noHeart"></p> 
+
     <i class='bx bxs-bookmark bookmark-icon' onclick="toggleSave(this)"></i>
+    <p class="noBookmark"></p> 
+
     <i class='bx bxs-star favorite-icon' onclick="toggleFavorite(this)"></i>
+    <p class="noFavorite"></p> 
 </div>
     
     
@@ -292,6 +299,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
     <?php 
     if (!empty($allImages)) {
         foreach ($allImages as $image) { 
+        
             ?>
             <div class="box" 
                  onclick="showPopup(this)" 
@@ -301,8 +309,11 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                  data-artist-id="<?php echo ($image['u_id']); ?>"
                  data-category="<?php echo($image['category']); ?>" 
                  data-description="<?php echo($image['description']); ?>"
-                   data-date="<?php echo date("F d, Y", strtotime($image['date'])); ?>"
-                 data-artwork-id="<?php echo ($image['a_id']); ?>">
+                data-date="<?php echo date("F d, Y", strtotime($image['date'])); ?>"
+                 data-artwork-id="<?php echo ($image['a_id']); ?>"
+                 data-liked="<?php echo ($image['likes_count']); ?>"
+                 data-favorite="<?php echo ($image['favorites_count']); ?>"
+                 data-saved="<?php echo ($image['saved_count']) ?>">
                  
                 <img src="<?php echo($image['file']); ?>" alt="Uploaded Image">
                 <div class="artist-name">
@@ -359,7 +370,12 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                             data-category="<?php echo($image['category']); ?>" 
                             data-description="<?php echo($image['description']); ?>"
                             data-date="<?php echo($image['date']); ?>"
-                            data-artwork-id="<?php echo($image['a_id']); ?>">
+                            data-artwork-id="<?php echo($image['a_id']); ?>" 
+                            data-liked="<?php echo ($image['likes_count']); ?>"
+                            data-favorite="<?php echo ($image['favorites_count']); ?>"
+                            data-saved="<?php echo ($image['saved_count']) ?>">
+
+
                             <img src="<?php echo($image['file']); ?>" alt="Uploaded Image">
                             <div class="artist-name">
                                 <p><span><b><?php echo ($image['u_name']); ?></b></span><br>

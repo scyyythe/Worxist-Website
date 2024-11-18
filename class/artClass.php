@@ -46,11 +46,25 @@ class artManager
     
     public function getUserArtworks() {
         $statement = $this->conn->prepare("
-            SELECT accounts.u_id, art_info.file, accounts.u_name, art_info.a_id, art_info.title, 
-                   art_info.description,art_info.date, art_info.category
+            SELECT 
+                accounts.u_id, 
+                art_info.file, 
+                accounts.u_name, 
+                art_info.a_id, 
+                art_info.title, 
+                art_info.description,
+                art_info.date, 
+                art_info.category,
+                COALESCE(COUNT(DISTINCT likes.u_id), 0) AS likes_count,
+                COALESCE(COUNT(DISTINCT saved.u_id), 0) AS saved_count,
+                COALESCE(COUNT(DISTINCT favorite.u_id), 0) AS favorites_count
             FROM art_info 
             JOIN accounts ON art_info.u_id = accounts.u_id
+            LEFT JOIN likes ON art_info.a_id = likes.a_id
+            LEFT JOIN saved ON art_info.a_id = saved.a_id
+            LEFT JOIN favorite ON art_info.a_id = favorite.a_id
             WHERE accounts.u_id = :u_id
+            GROUP BY art_info.a_id
         ");
         $statement->bindValue(':u_id', $this->u_id);
         $statement->execute();
@@ -64,27 +78,38 @@ class artManager
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    
     public function getAllArtworks($category = null) {
-        // Base query to get all artworks
         $query = "
-            SELECT accounts.u_id, art_info.file, accounts.u_name, art_info.a_id, art_info.title, 
-                   art_info.description, art_info.date, art_info.category
+            SELECT 
+                accounts.u_id, 
+                art_info.file, 
+                accounts.u_name, 
+                art_info.a_id, 
+                art_info.title, 
+                art_info.description, 
+                art_info.date, 
+                art_info.category,
+                COALESCE(COUNT(DISTINCT likes.u_id), 0) AS likes_count,
+                COALESCE(COUNT(DISTINCT saved.u_id), 0) AS saved_count,
+                COALESCE(COUNT(DISTINCT favorite.u_id), 0) AS favorites_count
             FROM art_info
             JOIN accounts ON art_info.u_id = accounts.u_id
+            LEFT JOIN likes ON art_info.a_id = likes.a_id
+            LEFT JOIN saved ON art_info.a_id = saved.a_id
+            LEFT JOIN favorite ON art_info.a_id = favorite.a_id
         ";
     
-        // Add category filter if category is provided
         if ($category) {
             $query .= " WHERE art_info.category = :category";
         }
     
-        $statement = $this->conn->prepare($query);
+        $query .= " GROUP BY art_info.a_id";
     
-        // Bind the category parameter if provided
+        $statement = $this->conn->prepare($query);
         if ($category) {
             $statement->bindParam(':category', $category);
         }
-    
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }

@@ -50,6 +50,7 @@ class AccountManager
             $_SESSION['email'] = $email;
             $_SESSION['accType'] = $accType;
             $_SESSION['accStatus'] = $accStatus;
+          
             header("Location: login-register.php");
             die;
         }

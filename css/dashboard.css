@@ -549,19 +549,24 @@ body {
     i{
         font-size: 1.5rem;
     }
+
+    p{
+        font-size: 12px;
+        margin-inline: auto;
+    }
 }
 
 
 .like-icon.liked {
-    color: red; 
+    color: red  !important;
 }
 
 .bookmark-icon.saved {
-    color: gold; 
+    color: gold !important; 
 }
 
 .favorite-icon.favorited {
-    color: yellow; 
+    color: yellow  !important; 
 }
 
 .social-interact-icons i:hover{

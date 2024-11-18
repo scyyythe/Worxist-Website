@@ -84,8 +84,24 @@ if (firstImg) {
   } else {
     console.error("Explore button with id='explore' not found.");
   }
+
+  //register validation modal
+// document.querySelector('form[name="register"]').addEventListener('submit', function(event) { 
+//   const modal = document.getElementById('registerModal');
+//   modal.style.display = 'flex';
+
+// });
+
+// document.getElementById('closeModal').addEventListener('click', function() {
+//   document.getElementById('registerModal').style.display = 'none';
+
+// });
+
 });
 
+
+
+//dashboard page
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
   sidebar.classList.toggle('open');
@@ -278,6 +294,10 @@ function showPopup(element) {
   const description = element.getAttribute('data-description');
   const date = element.getAttribute('data-date');
   const artworkId = element.getAttribute('data-artwork-id');
+  const liked = parseInt(element.getAttribute('data-liked')); // Convert to number
+    const saved = parseInt(element.getAttribute('data-saved')); // Convert to number
+    const favorite = parseInt(element.getAttribute('data-favorite')); // Convert to number
+
 
   console.log("Artwork ID (a_id):", artworkId);
   console.log("Title:", title);
@@ -295,6 +315,9 @@ function showPopup(element) {
   document.querySelector('.category').innerText = category;
   document.querySelector('.description-of-art').innerText = description;
   document.querySelector('.dateUpload').innerText = date;
+  document.querySelector('.noHeart').innerText=liked;
+  document.querySelector('.noBookmark').innerText=saved;
+  document.querySelector('.noFavorite').innerText=favorite;
 
   const loggedInUserId = document.getElementById('data-id').getAttribute('data-artist-id');
 
@@ -310,8 +333,9 @@ function showPopup(element) {
     editOption.classList.add('edit-option');
 
     editOption.onclick = () => {
-      window.location.href = `editArtwork.php?a_id=${artworkId}`;
-    };
+      window.location.href = `editArtwork.php?a_id=${artworkId}`;  // Make sure `artworkId` is properly passed
+  };
+  
 
     document.querySelector('.top-details').appendChild(editOption);
   }
@@ -322,30 +346,40 @@ function showPopup(element) {
   }, 0);
 
   blur.classList.add('active');
-
   document.addEventListener('DOMContentLoaded', () => {
-    const artworkId = document.querySelector('.box-pop img').getAttribute('data-artwork-id');
     initializeIconStates(artworkId);  
-    
   });
 
+
   document.querySelector('.like-icon').onclick = () => {
-      const likeIcon = document.querySelector('.like-icon');
-      likeIcon.classList.toggle('liked'); 
-      updateDatabase('likeArtwork', artworkId); 
-  };
-  
-  document.querySelector('.bookmark-icon').onclick = () => {
-      const bookmarkIcon = document.querySelector('.bookmark-icon');
-      bookmarkIcon.classList.toggle('saved'); 
-      updateDatabase('saveArtwork', artworkId); 
-  };
-  
-  document.querySelector('.favorite-icon').onclick = () => {
-      const favoriteIcon = document.querySelector('.favorite-icon');
-      favoriteIcon.classList.toggle('favorited'); 
-      updateDatabase('addToFavorites', artworkId); 
-  };
+    const likeIcon = document.querySelector('.like-icon');
+    const newLikedCount = likeIcon.classList.contains('liked') ? liked - 1 : liked + 1;
+
+    document.querySelector('.noHeart').innerText = newLikedCount;
+    likeIcon.classList.toggle('liked');
+
+    updateDatabase('likeArtwork', artworkId, newLikedCount);
+};
+
+document.querySelector('.bookmark-icon').onclick = () => {
+    const bookmarkIcon = document.querySelector('.bookmark-icon');
+    const newSavedCount = bookmarkIcon.classList.contains('saved') ? saved - 1 : saved + 1;
+   
+    document.querySelector('.noBookmark').innerText = newSavedCount;
+    bookmarkIcon.classList.toggle('saved');
+
+    updateDatabase('saveArtwork', artworkId, newSavedCount);
+};
+
+document.querySelector('.favorite-icon').onclick = () => {
+    const favoriteIcon = document.querySelector('.favorite-icon');
+    const newFavoriteCount = favoriteIcon.classList.contains('favorited') ? favorite - 1 : favorite + 1;
+
+    document.querySelector('.noFavorite').innerText = newFavoriteCount;
+    favoriteIcon.classList.toggle('favorited');
+
+    updateDatabase('addToFavorites', artworkId, newFavoriteCount);
+};
 }
 
 function initializeIconStates(artworkId) {
@@ -370,25 +404,25 @@ function initializeIconStates(artworkId) {
     });
 }
 
-function updateDatabase(action, artworkId) {
-    return fetch('class/interaction.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ action: action, a_id: artworkId })
-    })
-    .then(response => {
-        return response.text().then(text => {
-            console.log('Raw response:', text); 
-            const jsonResponse = JSON.parse(text); 
-            return jsonResponse; 
-        });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        return { success: false, message: 'Error occurred' }; 
-    });
+function updateDatabase(action, artworkId, newCount) {
+  return fetch('class/interaction.php', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ action: action, a_id: artworkId, newCount: newCount })
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (!data.success) {
+          console.error('Error updating database');
+      } else {
+          console.log(`${action} updated successfully!`);
+      }
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
 }
 
 function closePopup() {
