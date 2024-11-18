@@ -386,7 +386,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                         <?php 
                     }
                 } else {
-                    echo "<p>No Saved Artworks</p>";
+                    echo "<p>No Artworks Uploaded</p>";
                 }
                 ?>
 </div>
@@ -411,7 +411,11 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                             data-artist-id="<?php echo ($save['u_id']); ?>"
                             data-category="<?php echo ($save['category']); ?>" 
                             data-description="<?php echo ($save['description']); ?>"
-                            data-artwork-id="<?php echo ($save['a_id']); ?>">
+                            data-artwork-id="<?php echo ($save['a_id']); ?>"
+                            data-liked="<?php echo ($image['likes_count']); ?>"
+                            data-favorite="<?php echo ($image['favorites_count']); ?>"
+                            data-saved="<?php echo ($image['saved_count']) ?>">
+                                        
                             
                             <img src="<?php echo ($save['file']); ?>" alt="Uploaded Image">
                             <div class="artist-name">
@@ -422,7 +426,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                         <?php 
                     }
                 } else {
-                    echo "<p>Empty Favorites</p>";
+                    echo "<p>Empty Saved Artwork</p>";
                 }
                 ?>
             </div>
@@ -446,7 +450,10 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                             data-artist-id="<?php echo ($favorite['u_id']); ?>"
                             data-category="<?php echo ($favorite['category']); ?>" 
                             data-description="<?php echo ($favorite['description']); ?>"
-                            data-artwork-id="<?php echo ($favorite['a_id']); ?>">
+                            data-artwork-id="<?php echo ($favorite['a_id']); ?>"
+                            data-liked="<?php echo ($image['likes_count']); ?>"
+                            data-favorite="<?php echo ($image['favorites_count']); ?>"
+                            data-saved="<?php echo ($image['saved_count']) ?>">
                             
                             <img src="<?php echo ($favorite['file']); ?>" alt="Uploaded Image">
                             <div class="artist-name">
@@ -457,7 +464,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                         <?php 
                     }
                 } else {
-                    echo "<p>No images found.</p>";
+                    echo "<p>Empty Favorites</p>";
                 }
                 ?>
             </div>
@@ -641,7 +648,15 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                 <button class="requestLink" onclick="openPage('Solo')" id="defaultOpen">Solo</button>
                 <button class="requestLink" onclick="openPage('Collaborative')" >Collaborate</button>
             </div>
-            
+
+
+            <div id="artworkValidationModal" class="artwork-modal">
+    <div class="artwork-modal-content">
+        <span class="artwork-close">&times;</span>
+        <h3>Validation Errror</h3>
+        <p>Please select at least one artwork to schedule the exhibit.</p>
+    </div>
+</div>
             <div id="Solo" class="requestTab">
     <div class="exhibit-inputs">
         <form action="" name="soloExhibit" method="POST" id="soloExhibitForm">
@@ -655,7 +670,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
             <input type="date" id="exhibit-date" name="exhibit-date" required><br>
 
             
-            <input type="hidden" name="selected_artworks" id="selectedArtworks">
+            <input type="hidden" name="selected_artworks" id="selectedArtworks" required>
 
             <div class="confirm-solo">
                 <button class="solo-btn" id="solo-btn" name="requestSolo">Confirm Schedule</button>
@@ -681,7 +696,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p>No artworks found for this user.</p>
+            <p>You don't have any uploaded artworks.</p>
         <?php endif; ?>
     </div>
 </div>
@@ -693,6 +708,25 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
 
 <!-- collab request -->
 <div id="Collaborative" class="requestTab">
+
+        <div id="artworkValidationModalCollaborative" class="artwork-modal-collaborative">
+            <div class="artwork-modal-content">
+                <span class="artwork-close">&times;</span>
+                <h3>Validation Errror</h3>
+                <p>Please select at least one artwork before submitting.</p>
+            </div>
+        </div>
+
+        <div id="collaboratorValidationModal" class="collaborator-modal">
+            <div class="collaborator-modal-content">
+                <span class="collaborator-close">&times;</span>
+                <h3>Validation Error</h3>
+                <p>Please add at least one collaborator before submitting.</p>
+            </div>
+        </div>
+
+
+
     <div class="exhibit-inputs">
     <form action="" name="collabExhibit" method="POST">
 
@@ -706,9 +740,9 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
             <input type="date" id="exhibit-date" name="exhibit-date" required><br>
 
     
-            <input type="hidden" id="selectedCollaboratorsInput" name="selected_collaborators" value="">
+            <input type="hidden" id="selectedCollaboratorsInput" name="selected_collaborators" value="" required>
 
-            <input type="hidden" name="selected_artworks_collab" id="selectedArtworksCollab">
+            <input type="hidden" name="selected_artworks_collab" id="selectedArtworksCollab" required>
 
             <div class="confirm-solo">
                 <button class="collab-btn" name="requestCollab">Confirm Schedule</button>
@@ -742,7 +776,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p>No artworks found for this user.</p>
+            <p>You don't have any uploaded artworks.</p>
         <?php endif; ?>
     </div>
 </div>

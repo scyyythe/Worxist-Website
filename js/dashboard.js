@@ -1,4 +1,6 @@
-// katong lihok sa login register
+
+// js para sa login-register.php and index.php//
+
 document.addEventListener('DOMContentLoaded', function() {
 
     function scrollToAbout() {
@@ -85,18 +87,6 @@ if (firstImg) {
     console.error("Explore button with id='explore' not found.");
   }
 
-  //register validation modal
-// document.querySelector('form[name="register"]').addEventListener('submit', function(event) { 
-//   const modal = document.getElementById('registerModal');
-//   modal.style.display = 'flex';
-
-// });
-
-// document.getElementById('closeModal').addEventListener('click', function() {
-//   document.getElementById('registerModal').style.display = 'none';
-
-// });
-
 });
 
 
@@ -145,6 +135,7 @@ document.addEventListener("DOMContentLoaded", function() {
   firstTab.click(); 
 });
 
+
 // dropdown filter
 function toggleDropdown() {
   var dropdown = document.getElementById("dropdown");
@@ -154,6 +145,8 @@ function toggleDropdown() {
       dropdown.style.display = "block";
   }
 }
+
+
 // FOLLOWERS AND FOLLOWING
 const modal = document.getElementById("followers-modal");
 const followersContent = document.getElementById("followers-content");
@@ -282,6 +275,9 @@ settingLink.addEventListener('click', function(e) {
  
 });
 
+
+
+// pop up modal para sa clicked na artworks
 function showPopup(element) {
   const blur = document.getElementById('blur');
   const popup = document.getElementById('popup');
@@ -294,9 +290,9 @@ function showPopup(element) {
   const description = element.getAttribute('data-description');
   const date = element.getAttribute('data-date');
   const artworkId = element.getAttribute('data-artwork-id');
-  const liked = parseInt(element.getAttribute('data-liked')); // Convert to number
-    const saved = parseInt(element.getAttribute('data-saved')); // Convert to number
-    const favorite = parseInt(element.getAttribute('data-favorite')); // Convert to number
+  const liked = parseInt(element.getAttribute('data-liked')); 
+    const saved = parseInt(element.getAttribute('data-saved')); 
+    const favorite = parseInt(element.getAttribute('data-favorite'));
 
 
   console.log("Artwork ID (a_id):", artworkId);
@@ -333,7 +329,7 @@ function showPopup(element) {
     editOption.classList.add('edit-option');
 
     editOption.onclick = () => {
-      window.location.href = `editArtwork.php?a_id=${artworkId}`;  // Make sure `artworkId` is properly passed
+      window.location.href = `editArtwork.php?a_id=${artworkId}`;  
   };
   
 
@@ -349,7 +345,6 @@ function showPopup(element) {
   document.addEventListener('DOMContentLoaded', () => {
     initializeIconStates(artworkId);  
   });
-
 
   document.querySelector('.like-icon').onclick = () => {
     const likeIcon = document.querySelector('.like-icon');
@@ -382,6 +377,7 @@ document.querySelector('.favorite-icon').onclick = () => {
 };
 }
 
+//interaction sa like favorited andsaved
 function initializeIconStates(artworkId) {
   fetch(`class/interaction.php?action=getStates&a_id=${artworkId}`)
     .then(response => response.json())
@@ -438,6 +434,8 @@ function closePopup() {
 }
 
 
+
+
 function toggleEditProfile() {
 
   const dashboardContainer = document.getElementById('dashboardContainer');
@@ -455,6 +453,7 @@ function toggleEditProfile() {
   
   settingContainer.style.display = 'block';
 }
+
 
 
 //exhibit
@@ -515,6 +514,7 @@ window.onload = function() {
 
 
 
+
 //select an artworkkk
 document.querySelectorAll('.display-creations img').forEach((img) => {
   img.addEventListener('click', function () {
@@ -542,6 +542,65 @@ document.querySelectorAll('.display-creations img').forEach((img) => {
   
       console.log('Selected Artwork IDs:', selectedIds);
   });
+});
+
+//validation in requesting an exhibit
+//solo
+document.getElementById('soloExhibitForm').addEventListener('submit', function (e) {
+  const selectedArtworks = document.getElementById('selectedArtworks').value;
+
+  console.log('Selected Artworks:', selectedArtworks);
+
+  if (!selectedArtworks.trim()) { 
+      e.preventDefault(); 
+
+      const modal = document.getElementById('artworkValidationModal');
+      modal.style.display = 'block';
+
+      const closeModal = document.querySelector('.artwork-modal .artwork-close');
+      closeModal.addEventListener('click', () => modal.style.display = 'none');
+      window.addEventListener('click', (event) => {
+          if (event.target === modal) modal.style.display = 'none';
+      });
+  }
+});
+//validation in requesting an exhibit
+//collab
+document.querySelector('form[name="collabExhibit"]').addEventListener('submit', function (e) {
+  const selectedArtworksCollab = document.getElementById('selectedArtworksCollab').value;
+  const selectedCollaborators = document.getElementById('selectedCollaboratorsInput').value;
+
+  console.log('Selected Artworks for Collaborative Exhibit:', selectedArtworksCollab);
+  console.log('Selected Collaborators:', selectedCollaborators);
+
+  if (!selectedArtworksCollab.trim()) { 
+      e.preventDefault(); 
+
+      const artworkModal = document.getElementById('artworkValidationModalCollaborative');
+      artworkModal.style.display = 'block';
+
+      const closeArtworkModal = document.querySelector('.artwork-modal-collaborative .artwork-close');
+      closeArtworkModal.addEventListener('click', () => artworkModal.style.display = 'none');
+      window.addEventListener('click', (event) => {
+          if (event.target === artworkModal) artworkModal.style.display = 'none';
+      });
+
+      return; 
+  }
+
+  if (!selectedCollaborators.trim()) {
+      e.preventDefault(); 
+
+      const collaboratorModal = document.getElementById('collaboratorValidationModal');
+      collaboratorModal.style.display = 'block';
+    
+      const closeCollaboratorModal = document.querySelector('.collaborator-modal .collaborator-close');
+      closeCollaboratorModal.addEventListener('click', () => collaboratorModal.style.display = 'none');
+      window.addEventListener('click', (event) => {
+          if (event.target === collaboratorModal) collaboratorModal.style.display = 'none';
+      });
+      return; 
+  }
 });
 
 
@@ -653,24 +712,18 @@ function removeCollaborator(collaboratorItem, u_id) {
 
 
 
-
 //upload profile picture modal
-// Upload profile picture modal
 const uploadBtn = document.getElementById("uploadProfileBtn");
 const modalProfile = document.getElementById("profileModal");
 const closeModal = document.getElementById("profilecloseModal");
 
-// Show the modal when the "Upload Profile Picture" button is clicked
 uploadBtn.addEventListener("click", function() {
     modalProfile.style.display = "flex";
 });
-
-// Close the modal when the close button is clicked
 closeModal.addEventListener("click", function() {
     modalProfile.style.display = "none";
 });
 
-// Close the modal when clicking outside the modal content (on the modal's background)
 window.addEventListener("click", function(event) {
     if (event.target === modalProfile) {
         modalProfile.style.display = "none";

@@ -1401,6 +1401,123 @@ body {
         background-color: #f8f8f8;
     }
 }
+/* validaiton on requesting an exhibit */
+.artwork-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    h3{
+        color: #9f1414;
+        margin-block: 10px;
+    }
+
+}
+
+
+.artwork-modal-content {
+    background: rgba(255, 255, 255, 0.356);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    text-align: center;
+    backdrop-filter: blur(20px); 
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.artwork-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.artwork-close:hover, .artwork-close:focus {
+    color: red;
+    text-decoration: none;
+}
+.artwork-modal-collaborative {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    
+    h3{
+        color: #9f1414;
+        margin-block: 10px;
+    }
+
+}
+
+.artwork-modal-content {
+    background: rgba(255, 255, 255, 0.356);
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 50%;
+    text-align: center;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.artwork-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+.collaborator-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    h3{
+        color: #9f1414;
+        margin-block: 10px;
+    }
+}
+
+.collaborator-modal-content {
+    background: rgba(255, 255, 255, 0.356);
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 50%;
+    text-align: center;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.collaborator-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+
+
 
 .image-exhibit{
     position: relative;
