@@ -19,9 +19,6 @@ $acceptedExhibits = $exhibitManager->getAcceptedExhibits();
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/style-home.css">
     <link rel="shortcut icon" href="gallery/image/vags-logo.png" type="image/x-icon">
-
-
-   
     <title>Virtual Art Gallery</title>
 </head>
 <body>

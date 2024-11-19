@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // POPUP DELETE MESSAGE IN MANAGE ACOUNTS
 document.addEventListener('DOMContentLoaded', function () {
-    const trashIcons = document.querySelectorAll('.bx-trash-alt');
+    const trashIcons = document.querySelectorAll('.bx-archive-in');
     const popup = document.getElementById('popup');
     const cancelBtn = document.getElementById('cancelBtn');
     const continueBtn = document.getElementById('continueBtn');

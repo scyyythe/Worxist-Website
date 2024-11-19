@@ -22,10 +22,12 @@ $title = isset($_SESSION['title']) ? $_SESSION['title'] : 'Default Title';
 $accountManager = new AccountManager($conn);
 $userInfo = $accountManager->getAccountInfo($u_id);
 $profilePic = $userInfo['profile'];
-if (!$profilePic) {
-    $profilePic = 'gallery/girl.jpg';
+$imagePath = '../profile_pics/' . $profilePic;
+if (!file_exists($imagePath)) {
+    $profilePic = 'gallery/girl.jpg';  
 }
-//profile picture
+
+
 if (isset($_POST['uploadProfilePic'])) {
     $accountManager=new AccountManager($conn);
     $accountManager->uploadProfilePicture($_FILES['profilePicture']);

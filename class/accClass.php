@@ -47,7 +47,7 @@ class AccountManager
     public function register($name, $email, $username, $password)
     {
         $accType = 'User';
-        $accStatus = 'Pending';
+        $accStatus = 'Active';
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         $statement = $this->conn->prepare("INSERT INTO accounts (u_name, email, username, password, u_type, u_status) 
@@ -62,6 +62,7 @@ class AccountManager
         if ($statement->execute()) {
             $_SESSION['username'] = $username;
             $_SESSION['name'] = $name;
+            $_SESSION['hashed_password'] = $hashed_password;
             $_SESSION['email'] = $email;
             $_SESSION['accType'] = $accType;
             $_SESSION['accStatus'] = $accStatus;
@@ -71,6 +72,20 @@ class AccountManager
         }
         return false;
     }
+
+    public function getUsers() {
+        $query = "SELECT u_id,profile, u_name, username, email, u_status FROM accounts WHERE u_type = 'User'";
+        $statement = $this->conn->prepare($query);
+        $statement->execute();
+    
+        $users = [];
+        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+            $users[] = $row; 
+        }
+    
+        return $users;
+    }
+    
 
     public function getAccountInfo($u_id)
     {
@@ -126,27 +141,40 @@ class AccountManager
         $stmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
         return $stmt->execute();
     }
-
+    
     public function uploadProfilePicture($file) {
-        // Check if file is uploaded
+
         if ($file['error'] == 0) {
-            // Create a directory for the file if it doesn't exist
-            if (!is_dir('profile_pics')) {
-                mkdir('profile_pics');
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!in_array($file['type'], $allowedTypes)) {
+                echo "Invalid file type.";
+                return;
+            }
+    
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
             }
 
-            $fileName = $_SESSION['u_id'] . '_profile.jpg'; // Store image with user ID as name
-            $filePath = 'profile_pics/' . $fileName;
-
-            // Move the uploaded file to the target directory
+            $userId = $_SESSION['u_id'];
+            $userFolder = 'profile_pics/' . $userId;
+            if (!is_dir($userFolder)) {
+                mkdir($userFolder, 0755, true); 
+            }
+            
+            // Generate a unique file name based on current time
+            $fileName = time() . '_' . basename($file['name']);
+            $filePath = $userFolder . '/' . $fileName;
+    
+            // Move the uploaded file to the user's folder
             if (move_uploaded_file($file['tmp_name'], $filePath)) {
-                // Update the 'profile' field in the accounts table
+                // Save the relative file path in the database
+                $relativeFilePath = $userId . '/' . $fileName;
                 $statement = $this->conn->prepare("UPDATE accounts SET profile = :filePath WHERE u_id = :u_id");
-                $statement->bindValue(':filePath', $filePath);
-                $statement->bindValue(':u_id', $_SESSION['u_id']);
+                $statement->bindValue(':filePath', $relativeFilePath);
+                $statement->bindValue(':u_id', $userId);
                 $statement->execute();
-
-                // Redirect to the profile page or dashboard
+    
+                 $_SESSION['profile'] = $relativeFilePath;
                 header("Location: dashboard.php");
                 exit;
             } else {
@@ -156,21 +184,22 @@ class AccountManager
             echo "No file selected or error in file upload.";
         }
     }
-
-    // Method to remove profile picture
+    
+    
+    
     public function removeProfilePicture() {
-        // Remove the profile picture from the database
+        
         $statement = $this->conn->prepare("UPDATE accounts SET profile = NULL WHERE u_id = :u_id");
         $statement->bindValue(':u_id', $_SESSION['u_id']);
         $statement->execute();
 
-        // Optionally, remove the file from the server as well
+     
         $filePath = 'profile_pics/' . $_SESSION['u_id'] . '_profile.jpg';
         if (file_exists($filePath)) {
             unlink($filePath);
         }
 
-        // Redirect to the profile page or dashboard
+        
         header("Location: dashboard.php");
         exit;
     }

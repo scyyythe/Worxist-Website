@@ -15,10 +15,16 @@ if (!isset($_SESSION['u_type']) || $_SESSION['u_type'] !== 'Admin') {
     die;
 }
 
-
+$name= $_SESSION['name'];
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
+$u_type=$_SESSION['u_type'];    
 $u_id = $_SESSION['u_id'];
+
+$user = new AccountManager($conn);
+$infos = $user->getAccountInfo($u_id);
+$users = $user->getUsers();
+
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +34,7 @@ $u_id = $_SESSION['u_id'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="shortcut icon" href="gallery/image/vags-logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/gallery/image/vags-logo.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -219,65 +225,65 @@ $u_id = $_SESSION['u_id'];
                       <i class='bx bx-filter'><p class="filter-btn">Filter</p></i>
                     </div>
                 </div>
+            <!-- Table -->
+         <table class="user-table">
+    <thead>
+        <tr>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (!empty($users)): ?>
+            <?php foreach ($users as $user): ?>
+                <tr>
+                <td>
+                    <?php
+                    $imagePath = '../profile_pics/' . $user['profile'];  
+                    if (file_exists($imagePath) && !empty($user['profile'])) {
+                        echo "<img src=\"$imagePath\" alt=\"Profile Photo\" class=\"user-photo\">";
+                    } else {
+                        echo "<img src=\"../gallery/head.png\" alt=\"Default Profile Photo\" class=\"user-photo\">";
+                    }
+                    ?>
+                </td>
+                    <td class="name"><?= $user['u_name']; ?></td>
+                    <td class="mobile"><?= $user['username']; ?></td>
+                    <td class="email"><?= $user['email']; ?></td>
+                    <td><span class="status <?= strtolower($user['u_status']); ?>"><?= $user['u_status']; ?></span></td>
+                    <td>
+                        <i class='bx bx-archive-in archive-icon' data-user-id="<?= $user['u_id']; ?>"></i>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr><td colspan="6">No users found</td></tr>
+        <?php endif; ?>
+    </tbody>
+</table>
 
-                <!-- Table -->
-                <table class="user-table">
-                    <thead>
-                        <tr>
-                            <th>Photo</th>
-                            <th>Name</th>
-                            <th>Mobile no.</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><img src="pics/1672369246156.jpg" alt="Photo" class="user-photo"></td>
-                            <td class="name">Jera Anderson</td>
-                            <td class="mobile">123456789</td>
-                            <td class="email">@jeraunder</td>
-                            <td><span class="status inactive">Inactive</span></td>
-                            <td>
-                              <i class='bx bx-trash-alt' ></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img src="pics/a1.jpg" alt="Photo" class="user-photo"></td>
-                            <td class="name">Jandeb Laplap</td>
-                            <td class="mobile">123456789</td>
-                            <td class="email">@jeraunder</td>
-                            <td><span class="status active">Active</span></td>
-                            <td>
-                              <i class='bx bx-trash-alt' ></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><img src="pics/1672369246156.jpg" alt="Photo" class="user-photo"></td>
-                            <td class="name">Jera Anderson</td>
-                            <td class="mobile">123456789</td>
-                            <td class="email">@jeraunder</td>
-                            <td><span class="status banned">Banned</span></td>
-                            <td>
-                              <i class='bx bx-trash-alt' ></i>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <!-- Popup Message for Delete Icon -->
-                <div class="popup" id="popup">
-                    <div class="popup-content">
-                        <i class='bx bxs-trash' ></i>
-                        <h2>Delete User?</h2>
-                        <p>Are you sure you want to delete this user? 
-                            <br>This action is irreversible and will permanently erase the user data.</p>
-                        <div class="popup-btns">
-                          <button class="continue-btn" id="continueBtn">Continue</button>
-                          <button class="cancel-btn" id="cancelBtn">Cancel</button>
-                        </div>
+
+
+
+
+                <!-- Popup Message for Archive Icon -->
+            <div class="popup" id="popup">
+                <div class="popup-content">
+                    <i class='bx bxs-archive' ></i>
+                    <h2>Archive User?</h2>
+                    <p>Are you sure you want to archive this user? 
+                        <br>This action is reversible and will temporarily archive the user's data.</p>
+                    <div class="popup-btns">
+                        <button class="continue-btn" id="continueBtn">Continue</button>
+                        <button class="cancel-btn" id="cancelBtn">Cancel</button>
                     </div>
                 </div>
+            </div>
+
             </section>
 
             <!-- POSTS REQUESTS -->
@@ -401,15 +407,15 @@ $u_id = $_SESSION['u_id'];
                                         <button class="remove-btn">Remove image</button>
                                     </div>
                                 </div>
-                        
+                       
                                 <!-- Profile Form Section -->
-                                <form>
+                                <form action="/change.php" method="POST">
                                     <label>Username<i class='bx bxs-pencil'></i></label>
 
-                                    <input type="text" value="Angel" class="input-field">
-                                    
+                                    <input type="text"  name="new_username" value="<?php echo($username)?>" class="input-field">
+                                    <input type="hidden" name="action" value="change_username">
                                     <label>Role</label>
-                                    <input type="text" value="Team Leader" class="input-field" disabled>
+                                    <input type="text" value="<?php echo($u_type)?>" class="input-field" disabled>
                                     
                                     <label>Bio</label>
                                     <textarea placeholder="Write a short introduction..." class="textarea-field"></textarea>
@@ -422,25 +428,30 @@ $u_id = $_SESSION['u_id'];
                             </div>
                         </div>
                         
-                    
+                        <?php
+                        $nameParts = explode(' ', $name);
+                        $firstName = $nameParts[0];
+                        $lastName = isset($nameParts[1]) ? $nameParts[1] : ''; 
+                        ?>
+
                         <!-- Account Settings Section -->
                         <div id="account-section" class="ss_section hidden">
                             <h3>Account Settings</h3>
                             <form>
                                 <!-- Name Section -->
                                 <div class="s-full">
-                                    <h4 class="namee">Name</h4>
+                                <h4 class="namee">Name</h4>
                                     <div class="form-row">
-                                        <div class="form-group">
-                                            <p>First name</p>
-                                            <input type="text" value="Angel" class="f-input-field">
+                                    <div class="form-group">
+                                        <p>First name</p>
+                                        <input type="text" value="<?php echo ($firstName); ?>" class="f-input-field">
+                                    </div>
+                                    <div class="form-group">
+                                        <p>Last name</p>
+                                        <div class="s-name">
+                                            <input type="text" value="<?php echo ($lastName); ?>" class="l-input-field">
                                         </div>
-                                        <div class="form-group">
-                                            <p>Last name</p>
-                                            <div class="s-name">
-                                                <input type="text" value="Canete" class="l-input-field">
-                                            </div>
-                                        </div>
+                                    </div>
                                     </div>
                                 </div>
                                 
@@ -449,7 +460,7 @@ $u_id = $_SESSION['u_id'];
                                     <div class="s-em">
                                         <label>Email Address</label>
                                         <div class="email">
-                                            <p class="email-display">Your email is <strong>angelbaby@gmail.com</strong></p>
+                                            <p class="email-display">Your email is <strong><?php echo ($email)?></strong></p>
                                             <!-- <a href="#" class="change-link">Change</a> -->
                                         </div>
                                     </div>

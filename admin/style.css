@@ -485,6 +485,9 @@ canvas {
   text-align: center;
   padding: 10px;
   font-size: 1rem;
+  align-items: center;
+  justify-content: center;
+ 
 }
 
 .user-table thead th {
@@ -499,6 +502,20 @@ canvas {
 
 .user-table tbody tr:last-child {
   border-bottom: none;
+}
+.status.inactive {
+  color: gray;
+  font-weight: bold;
+}
+
+.status.active {
+  color: green;
+  font-weight: bold;
+}
+
+.status.banned {
+  color: red;
+  font-weight: bold;
 }
 
 .user-photo {
@@ -532,15 +549,13 @@ canvas {
   }
 
 /* Action Buttons */
-.bx-trash-alt {
-    font-size: 1.5rem;
-    cursor: pointer;
+.bx-archive-in{
+  font-size: 1.5rem;
 }
-
-.bx-trash-alt:hover {
-    color: #b20f29;
+.bx-archive-in:hover{
+  color: red;
+  cursor: pointer;
 }
-
 /* Popup Styles */
 .popup {
     display: none;
@@ -1003,6 +1018,7 @@ canvas {
 .form-buttons {
   margin-block: 30px;
   margin-inline: auto;
+
 }
 
 .save-btn {
@@ -1046,12 +1062,8 @@ canvas {
 }
 
 .s-full {
-  position: fixed;
-  margin-top: -60px;
-}
 
-.s-em {
-  margin-top: 150px;
+  margin-top: 60px;
 }
 
 /* Form Layout */
