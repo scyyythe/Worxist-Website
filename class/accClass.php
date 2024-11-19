@@ -12,21 +12,36 @@ class AccountManager
   
     public function login($username, $password)
     {
-        $statement = $this->conn->prepare("SELECT u_id, u_name, username, email, password FROM accounts WHERE username = :username");
+        $statement = $this->conn->prepare("SELECT u_id, u_name, username, email, password, u_type FROM accounts WHERE username = :username");
         $statement->bindValue(':username', $username);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
-        
+    
         if ($user && password_verify($password, $user['password'])) {
+          
             $_SESSION['u_id'] = $user['u_id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['name'] = $user['u_name'];
             $_SESSION['email'] = $user['email'];
+            $_SESSION['u_type'] = $user['u_type'];
+
             $_SESSION['loggedin'] = true;
-            header("Location: dashboard.php");
+    
+           
+            if ($user['u_type'] === 'Admin') {
+                header("Location:admin/admin.php");
+            } elseif ($user['u_type'] === 'User') {
+                header("Location: dashboard.php");
+            } elseif ($user['u_type'] === 'Organizer') {
+                header("Location: organizer.php");
+            }
             die;
+        } else {
+            
+            echo "Invalid username or password.";
         }
     }
+    
 
    
     public function register($name, $email, $username, $password)

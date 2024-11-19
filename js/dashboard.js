@@ -375,6 +375,17 @@ document.querySelector('.favorite-icon').onclick = () => {
 
     updateDatabase('addToFavorites', artworkId, newFavoriteCount);
 };
+
+// Close the popup when clicking outside
+function closePopup(event) {
+  if (!popup.contains(event.target) && !element.contains(event.target)) {
+    popup.style.display = 'none';
+    blur.classList.remove('active');
+    document.removeEventListener('click', closePopup); // Remove the event listener
+  }
+}
+
+document.addEventListener('click', closePopup);
 }
 
 //interaction sa like favorited andsaved
