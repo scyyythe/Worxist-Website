@@ -25,6 +25,21 @@ $user = new AccountManager($conn);
 $infos = $user->getAccountInfo($u_id);
 $users = $user->getUsers();
 
+$artManager = new ArtManager($conn);
+if (isset($_GET['action'], $_GET['a_id'])) {
+    $action = $_GET['action'];
+    $a_id = $_GET['a_id'];
+
+    // Call the method to handle the request and store the result
+    $result = $artManager->handleArtworkRequest($action, $a_id);
+
+    // Ensure the result is a proper array and return it as a JSON response
+    echo json_encode($result);
+}
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -287,93 +302,69 @@ $users = $user->getUsers();
             </section>
 
             <!-- POSTS REQUESTS -->
-            <section class="content-wrapper3" id="posts" >
-                <div class="posts-wrapper">
-                    <div class="card">
-                        <img src="pics/a1.jpg" class="banner-image">
-                        <div class="card-content">
-                            <p class="art-title">Title</p>
-                            <div class="profile">
-                                <img src="pics/mona.jpg" alt="Profile Picture" class="profile-picture">
-                                <div class="profile-info">
-                                  <h3 class="name">Jai Anoba</h3>
-                                </div>
-                            </div>
-                            <div class="actions">
-                                <button class="btn approve-btn">Approve</button>
-                                <button class="btn decline-btn">Decline</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img src="pics/a2.jpg" alt="Banner" class="banner-image">
-                        <div class="card-content">
-                            <p class="art-title">Title</p>
-                            <div class="profile">
-                                <img src="pics/mona.jpg" alt="Profile Picture" class="profile-picture">
-                                <div class="profile-info">
-                                  <h3 class="name">Jai Anoba</h3>
-                                </div>
-                            </div>
-                            <div class="actions">
-                                <button class="btn approve-btn">Approve</button>
-                                <button class="btn decline-btn">Decline</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img src="pics/a3.jpg" alt="Banner" class="banner-image">
-                        <div class="card-content">
-                            <p class="art-title">Title</p>
-                            <div class="profile">
-                                <img src="pics/mona.jpg" alt="Profile Picture" class="profile-picture">
-                                <div class="profile-info">
-                                  <h3 class="name">Jai Anoba</h3>
-                                </div>
-                            </div>
-                            <div class="actions">
-                                <button class="btn approve-btn">Approve</button>
-                                <button class="btn decline-btn">Decline</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img src="pics/a1.jpg" alt="Banner" class="banner-image">
-                        <div class="card-content">
-                            <p class="art-title">Title</p>
-                            <div class="profile">
-                                <img src="pics/mona.jpg" alt="Profile Picture" class="profile-picture">
-                                <div class="profile-info">
-                                  <h3 class="name">Jai Anoba</h3>
-                                </div>
-                            </div>
-                            <div class="actions">
-                                <button class="btn approve-btn">Approve</button>
-                                <button class="btn decline-btn">Decline</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <section class="content-wrapper3" id="posts">
+    <div class="posts-wrapper">
+        <?php
+        $artManage = new artManager($conn);
+        $pendingRequests = $artManage->getPendingRequests();
 
-                <!-- Modal -->
-                <div class="modal" id="image-modal">
-                    <button class="nav-btn left-btn">&lt;</button>
-                    <button class="nav-btn right-btn">&gt;</button>
-                    <div class="modal-content">
-                        <img src="" class="modal-image">
+        foreach ($pendingRequests as $request) {
+            $profilePath = '../profile_pics/' . $request['artist_profile'];
+            if (file_exists($profilePath) && !empty($request['artist_profile'])) {
+                $profileImage = $profilePath;
+            } else {
+                $profileImage = '../gallery/head.png';
+            }
+
+            $imagePath = '../' . $request['file'];
+            if (file_exists($imagePath) && !empty($request['file'])) {
+                $imageToShow = $imagePath;
+            } else {
+                $imageToShow = '../gallery/head.png';
+            }
+
+            echo '
+            <div class="card">
+                <img src="' . htmlspecialchars($imageToShow, ENT_QUOTES) . '" class="banner-image" alt="Artwork">
+                <div class="card-content">
+                    <p class="art-title">' . htmlspecialchars($request['title'], ENT_QUOTES) . '</p>
+                    <div class="profile">
+                        <img src="' . htmlspecialchars($profileImage, ENT_QUOTES) . '" alt="Profile Picture" class="profile-picture">
+                        <div class="profile-info">
+                            <h3 class="name">' . htmlspecialchars($request['artist_name'], ENT_QUOTES) . '</h3>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn approve-btn" data-id="' . htmlspecialchars($request['a_id'], ENT_QUOTES) . '">Approve</button>
+                        <button class="btn decline-btn" data-id="' . htmlspecialchars($request['a_id'], ENT_QUOTES) . '">Decline</button>
                     </div>
                 </div>
-                <!-- Popup Container -->
-                <div id="p-popup-container" class="p-popup">
-                    <div class="p-popup-content">
-                      <p id="p-popup-message" class="p-popup-message"></p>
-                      <div class="p-popup-actions">
-                        <button id="p-confirm-btn" class="btn p-confirm-btn">Confirm</button>
-                        <button id="p-cancel-btn" class="btn p-cancel-btn">Cancel</button>
-                      </div>
-                    </div>
-                </div>
-            </section>
+            </div>';
+        }
+        ?>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="image-modal">
+        <button class="nav-btn left-btn">&lt;</button>
+        <button class="nav-btn right-btn">&gt;</button>
+        <div class="modal-content">
+            <img src="" class="modal-image">
+        </div>
+    </div>
+
+    <!-- Popup Container -->
+    <div id="p-popup-container" class="p-popup">
+        <div class="p-popup-content">
+            <p id="p-popup-message" class="p-popup-message"></p>
+            <div class="p-popup-actions">
+                <button id="p-confirm-btn" class="btn p-confirm-btn">Confirm</button>
+                <button id="p-cancel-btn" class="btn p-cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+</section>
+
 
             <!-- SETTINGS -->
              <section class="content-wrapper4" id="settings">

@@ -81,24 +81,27 @@ class artManager
     
     public function getAllArtworks($category = null) {
         $query = "
-            SELECT 
-                accounts.u_id, 
-                art_info.file, 
-                accounts.u_name, 
-                art_info.a_id, 
-                art_info.title, 
-                art_info.description, 
-                art_info.date, 
-                art_info.category,
-                COALESCE(COUNT(DISTINCT likes.u_id), 0) AS likes_count,
-                COALESCE(COUNT(DISTINCT saved.u_id), 0) AS saved_count,
-                COALESCE(COUNT(DISTINCT favorite.u_id), 0) AS favorites_count
-            FROM art_info
-            JOIN accounts ON art_info.u_id = accounts.u_id
-            LEFT JOIN likes ON art_info.a_id = likes.a_id
-            LEFT JOIN saved ON art_info.a_id = saved.a_id
-            LEFT JOIN favorite ON art_info.a_id = favorite.a_id
-        ";
+           SELECT 
+    accounts.u_id, 
+    art_info.file, 
+    accounts.u_name, 
+    art_info.a_id, 
+    art_info.title, 
+    art_info.description, 
+    art_info.date, 
+    art_info.category,
+    COUNT(DISTINCT likes.u_id) AS likes_count,
+    COUNT(DISTINCT saved.u_id) AS saved_count,
+    COUNT(DISTINCT favorite.u_id) AS favorites_count
+FROM art_info
+JOIN accounts ON art_info.u_id = accounts.u_id
+LEFT JOIN likes ON art_info.a_id = likes.a_id
+LEFT JOIN saved ON art_info.a_id = saved.a_id
+LEFT JOIN favorite ON art_info.a_id = favorite.a_id
+WHERE art_info.a_status = 'approved'
+GROUP BY art_info.a_id;
+'";
+        
     
         if ($category) {
             $query .= " WHERE art_info.category = :category";
@@ -113,6 +116,35 @@ class artManager
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    public function getPendingRequests() {
+        $statement = $this->conn->prepare("
+            SELECT art_info.a_id, art_info.file, art_info.title, accounts.u_name AS artist_name, accounts.profile AS artist_profile
+            FROM art_info
+            INNER JOIN accounts ON art_info.u_id = accounts.u_id
+            WHERE art_info.a_status = 'Pending'
+        ");
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+ public function handleArtworkRequest($action, $a_id) {
+
+    $status = ($action === 'approve') ? 'approved' : 'declined';
+
+    try {
+        $stmt = $this->conn->prepare("UPDATE art_info SET a_status = :status WHERE a_id = :a_id");
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':a_id', $a_id);
+        $stmt->execute();
+           
+    } catch (Exception $e) {
+        return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+    }
+}
+
+    
+    
     
     
 

@@ -551,46 +551,56 @@ const declineButtons = document.querySelectorAll('.decline-btn');
 // Variables to track the selected card and action
 let selectedCard = null;
 let selectedAction = null;
+let selectedAId = null;
 
-for (let i = 0; i < approveButtons.length; i++) {
-    approveButtons[i].addEventListener('click', function () {
-      selectedCard = this.closest('.card');
-      selectedAction = 'approve';
-      popupMessage.textContent = 'Are you sure you want to approve this post?';
-      popupContainer.style.display = 'flex';
+approveButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        selectedCard = this.closest('.card');
+        selectedAction = 'approve';
+        selectedAId = this.getAttribute('data-id');
+        popupMessage.textContent = 'Are you sure you want to approve this post?';
+        popupContainer.style.display = 'flex';
+        console.log(selectedAId);
     });
-}
+});
 
-for (let i = 0; i < declineButtons.length; i++) {
-    declineButtons[i].addEventListener('click', function () {
-      selectedCard = this.closest('.card');
-      selectedAction = 'decline';
-      popupMessage.textContent =
-        'Declining this post will ban the user for 14 days. Are you sure?';
-      popupContainer.style.display = 'flex'; // Show the popup
+declineButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        selectedCard = this.closest('.card');
+        selectedAction = 'decline';
+        selectedAId = this.getAttribute('data-id'); 
+        console.log(selectedAId);
+        popupMessage.textContent = 'Declining this post will ban the user for 14 days. Are you sure?';
+        popupContainer.style.display = 'flex';
     });
-}
+});
 
 // Confirm button click
-confirmButton.addEventListener('click', function () {
-    if (selectedAction === 'approve' || selectedAction === 'decline') {
-        // Remove the selected card
-        selectedCard.remove();
+confirmButton.addEventListener('click', async function() {
+  if (selectedAction === 'approve' || selectedAction === 'decline') {
+    try {
+      const response = await fetch(`admin.php?action=${selectedAction}&a_id=${selectedAId}`, {
+        method: 'GET',
+      });
 
-        // Alert message
-        if (selectedAction === 'approve') {
-          alert('Post has been approved.');
-        } else if (selectedAction === 'decline') {
-          alert('Post has been declined. User banned for 14 days.');
-        }
+      const data = await response.json(); 
+      if (data.success) {
+        alert(data.message); 
+        window.location.href = "admin.php";  
+      } else {
+        alert(data.message); 
+      }
+    } catch (error) {
+      console.log('Error occurred while processing your request.');
     }
+  }
 
-    // Hide the popup
-    popupContainer.style.display = 'none';
+  // Hide the popup
+  popupContainer.style.display = 'none';
 });
 
 // Cancel button click
-cancelButton.addEventListener('click', function () {
+cancelButton.addEventListener('click', function() {
     // Hide the popup
     popupContainer.style.display = 'none';
 });
