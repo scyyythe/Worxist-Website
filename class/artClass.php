@@ -128,20 +128,41 @@ GROUP BY art_info.a_id;
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
- public function handleArtworkRequest($action, $a_id) {
 
-    $status = ($action === 'approve') ? 'approved' : 'declined';
 
-    try {
-        $stmt = $this->conn->prepare("UPDATE art_info SET a_status = :status WHERE a_id = :a_id");
-        $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':a_id', $a_id);
-        $stmt->execute();
-           
-    } catch (Exception $e) {
-        return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+
+
+    public function handleArtworkRequest($action, $a_id) {
+        $status = ($action === 'approve') ? 'Approved' : 'Declined'; 
+
+        try {   
+            $stmt = $this->conn->prepare("UPDATE art_info SET a_status = :status WHERE a_id = :a_id");
+            $stmt->bindValue(':status', $status); 
+            $stmt->bindValue(':a_id', $a_id);  
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                return [
+                    'success' => true,
+                    'message' => 'Post has been ' . $status
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'message' => 'No changes made. Please try again.'
+                ];
+            }
+        } catch (Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ];
+        }
     }
-}
+
+  
+    
+    
 
     
     

@@ -21,12 +21,7 @@ $title = isset($_SESSION['title']) ? $_SESSION['title'] : 'Default Title';
 
 $accountManager = new AccountManager($conn);
 $userInfo = $accountManager->getAccountInfo($u_id);
-$profilePic = $userInfo['profile'];
-$imagePath = '../profile_pics/' . $profilePic;
-if (!file_exists($imagePath)) {
-    $profilePic = 'gallery/girl.jpg';  
-}
-
+$imagePath = $accountManager->getProfilePicture(); 
 
 if (isset($_POST['uploadProfilePic'])) {
     $accountManager=new AccountManager($conn);
@@ -228,7 +223,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
             <h5>Comments</h5>
             <div class="user-image">
                 <div class="profile-pic"> 
-                <img src="<?php echo $profilePic; ?>" alt="Profile Picture"> 
+                <img src="<?php echo $imagePath; ?>" alt="Profile Picture">
                 </div> 
                 <h5>Angel Canete</h5>                             
             </div>
@@ -289,7 +284,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
           
             <div class="profile">
                 <div class="profile-pic"  onclick="toggleEditProfile()" > 
-                    <img src="<?php echo $profilePic; ?>" alt="Profile Picture">
+                <img src="<?php echo $imagePath; ?>" alt="Profile Picture">
                 </div>
                 <p class="to-edit-profile-btn" onclick="toggleEditProfile()"><b><?php echo $username;?> </b></p>
             </div>
@@ -804,7 +799,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                 <div class="top-myprofile">
                     <div class="profile-picture">
                     <div class="image-profile">
-    <img src="<?php echo $profilePic; ?>" alt="Profile Picture">
+                    <img src="<?php echo $imagePath; ?>" alt="Profile Picture">
 </div>
 
                         <div class="text-image">

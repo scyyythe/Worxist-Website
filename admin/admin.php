@@ -14,7 +14,10 @@ if (!isset($_SESSION['u_type']) || $_SESSION['u_type'] !== 'Admin') {
     header("Location: /login-register.php");
     die;
 }
-
+if (isset($_POST['uploadProfilePic'])) {
+    $accountManager=new AccountManager($conn);
+    $accountManager->uploadProfilePicture($_FILES['profilePicture']);
+}
 $name= $_SESSION['name'];
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
@@ -25,20 +28,36 @@ $user = new AccountManager($conn);
 $infos = $user->getAccountInfo($u_id);
 $users = $user->getUsers();
 
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+
 $artManager = new ArtManager($conn);
+
 if (isset($_GET['action'], $_GET['a_id'])) {
     $action = $_GET['action'];
     $a_id = $_GET['a_id'];
-
-    // Call the method to handle the request and store the result
     $result = $artManager->handleArtworkRequest($action, $a_id);
-
-    // Ensure the result is a proper array and return it as a JSON response
-    echo json_encode($result);
+    header('Content-Type: application/json');  
+    echo json_encode($result); 
+    exit(); 
 }
 
+//ARCHIVED USER
+if (isset($_POST['archive_user']) && $_POST['archive_user'] == true) {
+    $accountManager = new AccountManager($conn);
+    $u_id = $_POST['archive_user_id'];
+    $result = $accountManager->archiveUser($u_id);
+    header('Content-Type: application/json');
 
-
+    if ($result) {
+        echo json_encode(["success" => true]);
+    } else {
+        echo json_encode(["success" => false, "error" => "Failed to archive user"]);
+    }
+    exit(); 
+}
 
 ?>
 
@@ -55,7 +74,14 @@ if (isset($_GET['action'], $_GET['a_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    
     <main class="dashboard"> 
+    <div id="custom-alert" class="alert-container">
+  <div class="alert-box">
+    <span id="alert-message"></span>
+    <button id="close-alert" class="close-btn">OK</button>
+  </div>
+</div>
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
@@ -240,8 +266,9 @@ if (isset($_GET['action'], $_GET['a_id'])) {
                       <i class='bx bx-filter'><p class="filter-btn">Filter</p></i>
                     </div>
                 </div>
+
             <!-- Table -->
-         <table class="user-table">
+<table class="user-table">
     <thead>
         <tr>
             <th>Photo</th>
@@ -255,23 +282,30 @@ if (isset($_GET['action'], $_GET['a_id'])) {
     <tbody>
         <?php if (!empty($users)): ?>
             <?php foreach ($users as $user): ?>
-                <tr>
-                <td>
-                    <?php
-                    $imagePath = '../profile_pics/' . $user['profile'];  
-                    if (file_exists($imagePath) && !empty($user['profile'])) {
-                        echo "<img src=\"$imagePath\" alt=\"Profile Photo\" class=\"user-photo\">";
-                    } else {
-                        echo "<img src=\"../gallery/head.png\" alt=\"Default Profile Photo\" class=\"user-photo\">";
-                    }
-                    ?>
-                </td>
+                <tr data-id="<?= $user['u_id']; ?>">
+                    <td>
+                        <?php
+                        $imagePath = '../profile_pics/' . $user['profile'];  
+                        if (file_exists($imagePath) && !empty($user['profile'])) {
+                            echo "<img src=\"$imagePath\" alt=\"Profile Photo\" class=\"user-photo\">";
+                        } else {
+                            echo "<img src=\"../gallery/head.png\" alt=\"Default Profile Photo\" class=\"user-photo\">";
+                        }
+                        ?>
+                    </td>
                     <td class="name"><?= $user['u_name']; ?></td>
                     <td class="mobile"><?= $user['username']; ?></td>
                     <td class="email"><?= $user['email']; ?></td>
                     <td><span class="status <?= strtolower($user['u_status']); ?>"><?= $user['u_status']; ?></span></td>
+
                     <td>
-                        <i class='bx bx-archive-in archive-icon' data-user-id="<?= $user['u_id']; ?>"></i>
+                        <!-- Archive Form -->
+                        <form action="" method="POST" class="archive-form" id="archiveForm_<?= $user['u_id']; ?>">
+                            <input type="hidden" name="archive_user_id" value="<?= $user['u_id']; ?>">
+                            <button type="button" class="archive-btn" onclick="openPopup(<?= $user['u_id']; ?>)">
+                                <i class='bx bx-archive-in archive-icon'></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -281,23 +315,20 @@ if (isset($_GET['action'], $_GET['a_id'])) {
     </tbody>
 </table>
 
+<!-- Popup for Archive Action -->
+<div class="popup" id="popup" style="display: none;">
+    <div class="popup-content">
+        <i class='bx bxs-archive'></i>
+        <h2>Archive User?</h2>
+        <p>Are you sure you want to archive this user? This action is reversible.</p>
+        <div class="popup-btns">
+            <button class="continue-btn" id="continueBtn">Continue</button>
+            <button class="cancel-btn" id="cancelBtn">Cancel</button>
+        </div>
+    </div>
+</div>
 
 
-
-
-                <!-- Popup Message for Archive Icon -->
-            <div class="popup" id="popup">
-                <div class="popup-content">
-                    <i class='bx bxs-archive' ></i>
-                    <h2>Archive User?</h2>
-                    <p>Are you sure you want to archive this user? 
-                        <br>This action is reversible and will temporarily archive the user's data.</p>
-                    <div class="popup-btns">
-                        <button class="continue-btn" id="continueBtn">Continue</button>
-                        <button class="cancel-btn" id="cancelBtn">Cancel</button>
-                    </div>
-                </div>
-            </div>
 
             </section>
 
@@ -324,22 +355,24 @@ if (isset($_GET['action'], $_GET['a_id'])) {
             }
 
             echo '
-            <div class="card">
-                <img src="' . htmlspecialchars($imageToShow, ENT_QUOTES) . '" class="banner-image" alt="Artwork">
-                <div class="card-content">
-                    <p class="art-title">' . htmlspecialchars($request['title'], ENT_QUOTES) . '</p>
-                    <div class="profile">
-                        <img src="' . htmlspecialchars($profileImage, ENT_QUOTES) . '" alt="Profile Picture" class="profile-picture">
-                        <div class="profile-info">
-                            <h3 class="name">' . htmlspecialchars($request['artist_name'], ENT_QUOTES) . '</h3>
+                <div class="card" data-id="' . $request['a_id'] . '">
+                    <img src="' . $imageToShow . '" class="banner-image" alt="Artwork">
+                    <div class="card-content">
+                        <p class="art-title">' . $request['title'] . '</p>
+                        <div class="profile">
+                            <img src="' . $profileImage . '" alt="Profile Picture" class="profile-picture">
+                            <div class="profile-info">
+                                <h3 class="name">' . $request['artist_name'] . '</h3>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn approve-btn" data-id="' . $request['a_id'] . '">Approve</button>
+                            <button class="btn decline-btn" data-id="' . $request['a_id'] . '">Decline</button>
                         </div>
                     </div>
-                    <div class="actions">
-                        <button class="btn approve-btn" data-id="' . htmlspecialchars($request['a_id'], ENT_QUOTES) . '">Approve</button>
-                        <button class="btn decline-btn" data-id="' . htmlspecialchars($request['a_id'], ENT_QUOTES) . '">Decline</button>
-                    </div>
-                </div>
-            </div>';
+                </div>';
+
+            
         }
         ?>
     </div>
@@ -363,6 +396,8 @@ if (isset($_GET['action'], $_GET['a_id'])) {
             </div>
         </div>
     </div>
+
+
 </section>
 
 
@@ -385,7 +420,7 @@ if (isset($_GET['action'], $_GET['a_id'])) {
                         <div id="s-profile-section" class="ss_section active">
                             <h3>My Profile</h3>
                             <div class="s_profile">
-                                <!-- Profile Image Section -->
+                               <!-- Profile Image Section -->
                                 <div class="s_profile-image">
                                     <div class="profile-pic2"></div>
                                     <input type="file" id="file-input" accept="image/*" style="display: none;">
@@ -394,11 +429,13 @@ if (isset($_GET['action'], $_GET['a_id'])) {
                                         <p class="file-size">Max file size - 10mb</p>
                                     </div>
                                     <div class="image-buttons">
-                                        <button class="upload-btn">Upload</button>
-                                        <button class="remove-btn">Remove image</button>
+                                        <button class="upload-btn" name="uploadProfilePic">Upload</button>
+                                        <button class="remove-btn" style="display: none;">Remove image</button>
                                     </div>
                                 </div>
-                       
+
+                              
+        </form>
                                 <!-- Profile Form Section -->
                                 <form action="/change.php" method="POST">
                                     <label>Username<i class='bx bxs-pencil'></i></label>

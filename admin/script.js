@@ -268,40 +268,67 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
-// POPUP DELETE MESSAGE IN MANAGE ACOUNTS
+//POP UP ARCHVED USER
 document.addEventListener('DOMContentLoaded', function () {
-    const trashIcons = document.querySelectorAll('.bx-archive-in');
-    const popup = document.getElementById('popup');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const continueBtn = document.getElementById('continueBtn');
-  
-    for (let i = 0; i < trashIcons.length; i++) {
-      trashIcons[i].addEventListener('click', function () {
-        // Show the popup 
-        if (popup.style.display === 'none' || popup.style.display === '') {
-          popup.style.display = 'flex';
-        }
-      });
+  const popup = document.getElementById('popup');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const continueBtn = document.getElementById('continueBtn');
+  let currentUserId = null;
+
+  window.openPopup = function (userId) {
+      currentUserId = userId;
+      console.log('User ID to archive:', currentUserId); // Add this line to debug
+      popup.style.display = 'flex';
+  };
+
+  // Cancel the action and close the popup
+  cancelBtn.addEventListener('click', function () {
+      popup.style.display = 'none';
+  });
+
+  continueBtn.addEventListener('click', function () {
+    if (currentUserId) {
+        const formData = new FormData();
+        formData.append('archive_user_id', currentUserId);
+        formData.append('archive_user', true);
+
+        fetch('admin.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            console.log('Response status:', response.status); 
+            return response.text(); 
+        })
+        .then(text => {
+            console.log('Response text:', text); 
+            try {
+                const data = JSON.parse(text);  
+                if (data.success) {
+                    showCustomAlert('Successfully Archived');
+                    
+                    const row = document.querySelector(`tr[data-id="${currentUserId}"]`);
+                    if (row) {
+                        row.remove(); 
+                    }
+                    popup.style.display = 'none';
+                } else {
+                    showCustomAlert('Failed to archive user: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                showCustomAlert('Failed to parse server response. Response content: ' + text);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showCustomAlert('An error occurred while archiving the user.');
+        });
     }
-  
-    // Cancel button click event
-    cancelBtn.addEventListener('click', function () {
-      // Hide the popup
-      if (popup.style.display === 'flex') {
-        popup.style.display = 'none';
-      }
-    });
-  
-    // Continue button click event
-    continueBtn.addEventListener('click', function () {
-      alert('User deleted successfully!');
-  
-      if (popup.style.display === 'flex') {
-        popup.style.display = 'none';
-      }
-    });
 });
+
+});
+
 
 
 //FILTER IN SORTING USER NAMES
@@ -539,7 +566,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
   
 
-//POPUP MSG FOR APPOVE & DECLINE
+// POPUP MSG FOR APPROVE & DECLINE
 const popupContainer = document.getElementById('p-popup-container');
 const popupMessage = document.getElementById('p-popup-message');
 const confirmButton = document.getElementById('p-confirm-btn');
@@ -548,34 +575,32 @@ const cancelButton = document.getElementById('p-cancel-btn');
 const approveButtons = document.querySelectorAll('.approve-btn');
 const declineButtons = document.querySelectorAll('.decline-btn');
 
-// Variables to track the selected card and action
 let selectedCard = null;
 let selectedAction = null;
 let selectedAId = null;
 
 approveButtons.forEach(button => {
-    button.addEventListener('click', function() {
-        selectedCard = this.closest('.card');
-        selectedAction = 'approve';
-        selectedAId = this.getAttribute('data-id');
-        popupMessage.textContent = 'Are you sure you want to approve this post?';
-        popupContainer.style.display = 'flex';
-        console.log(selectedAId);
-    });
+  button.addEventListener('click', function() {
+    selectedCard = this.closest('.card'); 
+    selectedAction = 'approve';
+    selectedAId = this.getAttribute('data-id');
+    popupMessage.textContent = 'Are you sure you want to approve this post?';
+    popupContainer.style.display = 'flex';
+    console.log(selectedCard); 
+  });
 });
 
 declineButtons.forEach(button => {
-    button.addEventListener('click', function() {
-        selectedCard = this.closest('.card');
-        selectedAction = 'decline';
-        selectedAId = this.getAttribute('data-id'); 
-        console.log(selectedAId);
-        popupMessage.textContent = 'Declining this post will ban the user for 14 days. Are you sure?';
-        popupContainer.style.display = 'flex';
-    });
+  button.addEventListener('click', function() {
+    selectedCard = this.closest('.card'); 
+    selectedAction = 'decline';
+    selectedAId = this.getAttribute('data-id');
+    popupMessage.textContent = 'Declining this post will ban the user for 14 days. Are you sure?';
+    popupContainer.style.display = 'flex';
+    console.log(selectedCard);  
+  });
 });
 
-// Confirm button click
 confirmButton.addEventListener('click', async function() {
   if (selectedAction === 'approve' || selectedAction === 'decline') {
     try {
@@ -583,28 +608,54 @@ confirmButton.addEventListener('click', async function() {
         method: 'GET',
       });
 
-      const data = await response.json(); 
-      if (data.success) {
-        alert(data.message); 
-        window.location.href = "admin.php";  
+      const textResponse = await response.text();  
+
+      if (textResponse.trim().startsWith("{")) {
+        const data = JSON.parse(textResponse);  
+        console.log('Parsed response:', data);  
+
+        if (data.success) {
+          showCustomAlert(data.message);  
+          if (selectedCard) {
+            selectedCard.remove();  
+          }
+          popupContainer.style.display = 'none';
+        } else {
+          showCustomAlert(data.message);  
+        }
       } else {
-        alert(data.message); 
+        showCustomAlert('Invalid response from server.');
       }
     } catch (error) {
-      console.log('Error occurred while processing your request.');
+      console.error('Error occurred:', error); 
+      showCustomAlert('Error occurred while processing your request.'); 
     }
   }
-
-  // Hide the popup
-  popupContainer.style.display = 'none';
+  popupContainer.style.display = 'none';  
 });
+
 
 // Cancel button click
 cancelButton.addEventListener('click', function() {
-    // Hide the popup
-    popupContainer.style.display = 'none';
+  popupContainer.style.display = 'none';
 });
 
+
+//fucnton alert message
+function showCustomAlert(message) {
+  // Get the alert elements
+  const alertContainer = document.getElementById('custom-alert');
+  const alertMessage = document.getElementById('alert-message');
+  const closeButton = document.getElementById('close-alert');
+
+
+  alertMessage.textContent = message;
+  alertContainer.style.display = 'flex';
+
+  closeButton.addEventListener('click', function() {
+    alertContainer.style.display = 'none'; 
+  });
+}
 
 // SETTINGS
 document.getElementById("profile-link").addEventListener("click", function() {

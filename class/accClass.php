@@ -74,17 +74,18 @@ class AccountManager
     }
 
     public function getUsers() {
-        $query = "SELECT u_id,profile, u_name, username, email, u_status FROM accounts WHERE u_type = 'User'";
-        $statement = $this->conn->prepare($query);
-        $statement->execute();
-    
-        $users = [];
-        while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-            $users[] = $row; 
+        try {
+            $query = "SELECT u_id, profile, u_name, username, email, u_status FROM accounts 
+                      WHERE u_type = 'User' AND u_status IN ('Active', 'Banned', 'Inactive')";
+            $statement = $this->conn->prepare($query);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log('Error fetching users: ' . $e->getMessage());
+            return []; 
         }
-    
-        return $users;
     }
+    
     
 
     public function getAccountInfo($u_id)
@@ -141,6 +142,16 @@ class AccountManager
         $stmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+  public function archiveUser($u_id) {
+        $sql = "UPDATE accounts SET u_status = 'Archived' WHERE u_id = :u_id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
+        return $stmt->execute();  
+    }
+    
+    
+
     
     public function uploadProfilePicture($file) {
 
@@ -185,7 +196,21 @@ class AccountManager
         }
     }
     
-    
+    public function getProfilePicture() {
+      
+        $userId = $_SESSION['u_id']; 
+
+        $statement = $this->conn->prepare("SELECT profile FROM accounts WHERE u_id = :u_id");
+        $statement->bindValue(':u_id', $userId);
+        $statement->execute();
+        $userInfo = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Check if the profile picture exists
+        $profilePic = isset($userInfo['profile']) ? $userInfo['profile'] : null;
+        $imagePath = $profilePic ? 'profile_pics/' . $profilePic : 'gallery/girl.jpg'; // Fallback to default image
+
+        return $imagePath;
+    }
     
     public function removeProfilePicture() {
         
