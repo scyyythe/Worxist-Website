@@ -23,6 +23,7 @@ $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 $u_type=$_SESSION['u_type'];    
 $u_id = $_SESSION['u_id'];
+$password=$_SESSION['hashed_password'];
 
 $user = new AccountManager($conn);
 $infos = $user->getAccountInfo($u_id);
@@ -32,9 +33,8 @@ $users = $user->getUsers();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-
+//ARTWORK REQUEST
 $artManager = new ArtManager($conn);
-
 if (isset($_GET['action'], $_GET['a_id'])) {
     $action = $_GET['action'];
     $a_id = $_GET['a_id'];
@@ -57,6 +57,21 @@ if (isset($_POST['archive_user']) && $_POST['archive_user'] == true) {
         echo json_encode(["success" => false, "error" => "Failed to archive user"]);
     }
     exit(); 
+}
+
+
+//EDIT USERNAME
+$userName = new AccountManager($conn);
+if (isset($_POST['changeUser'])) { 
+    $new_username = trim($_POST['new_username']); 
+    $u_id = $_SESSION['u_id']; 
+
+    try {
+        $userName->changeUsername($u_id, $new_username); 
+        $_SESSION['username'] = $new_username;
+        $username = $_SESSION['username'];
+    } catch (Exception $e) {
+    }
 }
 
 ?>
@@ -434,25 +449,23 @@ if (isset($_POST['archive_user']) && $_POST['archive_user'] == true) {
                                     </div>
                                 </div>
 
-                              
-        </form>
                                 <!-- Profile Form Section -->
-                                <form action="/change.php" method="POST">
+                                <form action="" method="POST">
                                     <label>Username<i class='bx bxs-pencil'></i></label>
-
-                                    <input type="text"  name="new_username" value="<?php echo($username)?>" class="input-field">
-                                    <input type="hidden" name="action" value="change_username">
+                                    <input type="text" name="new_username" value="<?php echo($username) ?>" class="input-field">
+                                    <input type="hidden" name="action" value="change_username"> 
                                     <label>Role</label>
-                                    <input type="text" value="<?php echo($u_type)?>" class="input-field" disabled>
+                                    <input type="text" value="<?php echo($u_type) ?>" class="input-field" disabled>
                                     
                                     <label>Bio</label>
                                     <textarea placeholder="Write a short introduction..." class="textarea-field"></textarea>
                                     
                                     <div class="form-buttons">
-                                        <button type="submit" class="save-btn">Save Changes</button>
+                                        <button type="submit" name="changeUser" class="save-btn">Save Changes</button>
                                         <button type="reset" class="clear-btn">Clear all</button>
                                     </div>
                                 </form>
+
                             </div>
                         </div>
                         
@@ -498,7 +511,7 @@ if (isset($_POST['archive_user']) && $_POST['archive_user'] == true) {
                                 <div class="form-group">
                                     <label>Password</label>
                                     <div id="password-view" class="p-pass">
-                                        <input type="password" value="********" class="p-input-field" disabled>
+                                        <input type="password" value="<?php echo($password)?>" class="p-input-field" disabled>
                                         <a href="#" id="change-link" class="change-link">Change</a>
                                     </div>
                                     <div id="password-edit" class="p-hidden">

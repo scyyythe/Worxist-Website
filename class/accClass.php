@@ -127,12 +127,30 @@ class AccountManager
     }
 
     public function changeUsername($u_id, $new_username) {
-        $sql = "UPDATE accounts SET username = :new_username WHERE u_id = :u_id";
-        $stmt = $this->conn->prepare($sql);
+        if (empty($new_username) || strlen($new_username) < 3) {
+            throw new Exception('Username must be at least 3 characters.');
+        }
+    
+        // Check if username exists
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM accounts WHERE username = :new_username");
+        $stmt->bindValue(':new_username', $new_username, PDO::PARAM_STR);
+        $stmt->execute();
+        if ($stmt->fetchColumn() > 0) {
+            throw new Exception('Username already exists.');
+        }
+    
+        // Update username
+        $stmt = $this->conn->prepare("UPDATE accounts SET username = :new_username WHERE u_id = :u_id");
         $stmt->bindValue(':new_username', $new_username, PDO::PARAM_STR);
         $stmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
-        return $stmt->execute();
+        if ($stmt->execute()) {
+            return true;
+        }
+    
+        throw new Exception('Failed to update username.');
     }
+    
+    
     
 
     public function deleteAccount($u_id)

@@ -634,7 +634,6 @@ confirmButton.addEventListener('click', async function() {
   popupContainer.style.display = 'none';  
 });
 
-
 // Cancel button click
 cancelButton.addEventListener('click', function() {
   popupContainer.style.display = 'none';
@@ -683,58 +682,82 @@ document.getElementById(sectionId).classList.add('active');
 
 
 // CHANGE & HIDE PASSWORD
+// Show password edit view when 'Change' is clicked
 document.getElementById('change-link').addEventListener('click', function(e) {
-e.preventDefault();
-document.getElementById('password-view').style.display = 'none';  // Hides the "Change" view
-document.getElementById('password-edit').style.display = 'block'; // Shows the "Edit" view
+  e.preventDefault();
+  document.getElementById('password-view').style.display = 'none';  // Hide the "Change" view
+  document.getElementById('password-edit').style.display = 'block'; // Show the "Edit" view
 });
 
+// Hide password edit view when 'Hide' is clicked
 document.getElementById('hide-link').addEventListener('click', function(e) {
-e.preventDefault();
-document.getElementById('password-view').style.display = 'flex'; // Shows the "Change" view
-document.getElementById('password-edit').style.display = 'none'; // Hides the "Edit" view
+  e.preventDefault();
+  document.getElementById('password-view').style.display = 'flex';  // Show the "Change" view
+  document.getElementById('password-edit').style.display = 'none'; // Hide the "Edit" view
 });
 
+// Handle save password functionality
 document.getElementById('save-password-btn').addEventListener('click', function() {
-var newPassword = document.getElementById('new-password').value;
-var currentPassword = document.getElementById('current-password').value;
+  var currentPassword = document.getElementById('current-password').value;
+  var newPassword = document.getElementById('new-password').value;
 
-if (!newPassword || !currentPassword) {
-    alert('Please fill in both fields.');
-    return;
-}
+  // Validate the inputs
+  if (!currentPassword || !newPassword) {
+      showCustomAlert('Please fill in both fields.');
+      return;
+  }
 
-if (newPassword.length < 8) {
-    alert('New password must be at least 8 characters long.');
-    return;
-}
+  if (newPassword.length < 8) {
+      showCustomAlert('New password must be at least 8 characters long.');
+      return;
+  }
 
-if (!/[A-Z]/.test(newPassword)) {
-    alert('New password must contain at least one uppercase letter.');
-    return;
-}
+  if (!/[A-Z]/.test(newPassword)) {
+      showCustomAlert('New password must contain at least one uppercase letter.');
+      return;
+  }
 
-if (!/[a-z]/.test(newPassword)) {
-    alert('New password must contain at least one lowercase letter.');
-    return;
-}
+  if (!/[a-z]/.test(newPassword)) {
+      showCustomAlert('New password must contain at least one lowercase letter.');
+      return;
+  }
 
-if (!/[0-9]/.test(newPassword)) {
-    alert('New password must contain at least one number.');
-    return;
-}
+  if (!/[0-9]/.test(newPassword)) {
+      showCustomAlert('New password must contain at least one number.');
+      return;
+  }
 
-if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
-    alert('New password must contain at least one special character.');
-    return;
-}
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
+      showCustomAlert('New password must contain at least one special character.');
+      return;
+  }
 
-alert('Password successfully changed!');
 
-document.getElementById('password-view').style.display = 'flex';  // Shows the "Change" view
-document.getElementById('password-edit').style.display = 'none';  // Hides the "Edit" view
+  fetch('updatePassword.php', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          currentPassword: currentPassword,
+          newPassword: newPassword
+      })
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.success) {
+          showCustomAlert('Password successfully changed!');
+          document.getElementById('password-view').style.display = 'flex';  // Show the "Change" view
+          document.getElementById('password-edit').style.display = 'none';  // Hide the "Edit" view
+      } else {
+          showCustomAlert('Error: ' + data.error);
+      }
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      showCustomAlert('An error occurred while updating the password.');
+  });
 });
-
 
 //DELETE ACC POP-UP
 document.addEventListener("DOMContentLoaded", function () {
@@ -849,6 +872,7 @@ textareaField.disabled = true;
 
 const formElements = [inputField, textareaField, formButtons];
 
+// When pencil icon is clicked, enable the fields and show the save button
 pencilIcon.addEventListener('click', function() {
     for (let i = 0; i < formElements.length; i++) {
         if (formElements[i] === formButtons) {
@@ -867,15 +891,12 @@ pencilIcon.addEventListener('click', function() {
 
 
 saveButton.addEventListener('click', function(event) {
-    event.preventDefault(); 
-
-    console.log('Saved Username:', inputField.value);
-    console.log('Saved Bio:', textareaField.value);
+    document.querySelector('form').submit(); 
 });
+
 
 clearButton.addEventListener('click', function(event) {
     event.preventDefault(); 
-
     inputField.value = '';
     textareaField.value = '';
 });
