@@ -33,7 +33,7 @@ class AccountManager
             } elseif ($user['u_type'] === 'User') {
                 header("Location: dashboard.php");
             } elseif ($user['u_type'] === 'Organizer') {
-                header("Location: organizer.php");
+                header("Location: organizer/org.php");
             }
             die;
         } else {

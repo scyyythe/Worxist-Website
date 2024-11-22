@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizer</title>
+    <link rel="shortcut icon" href="/gallery/image/vags-logo.png" type="image/x-icon">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="org.css">
+</head>
+<body>
+    <main class="exhibits"> 
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="pics/worxist.png" alt="Logo">
+            </div>
+            <ul class="nav">
+                <li><i class='bx bx-merge'></i><a href="exhibits">Exhibits</a></li>
+                <li><i class='bx bxs-cog'></i><a href="settings">Settings</a></li>
+            </ul>
+            <a href="/login-register.php" class="logout"><i class='bx bxs-log-out'></i>Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <section class="main-wrapper">
+            <section class="header-wrapper" id="header">
+                <header class="header">
+                    <div class="header-title">
+                        <h1>Review an exhibit today!</h1>
+                        <span class="date" id="current-date"></span>
+                    </div>
+                    <div class="notifications">
+                        <span class="bell-icon" id="notification-bell"><i class='bx bxs-bell' undefined ></i></span>
+                        <div class="profile-pic1"></div>
+                        <div class="dropdown">
+                            <div class="nam">
+                                <h4>Angel</h4>
+                                <p>angelbaby123@gmail.com</p>
+                            </div>
+                            <ul>
+                                <li>
+                                    <i class='bx bx-user'></i>
+                                    My Profile
+                                </li>
+                                <li>
+                                    <i class='bx bx-cog' ></i>
+                                    Account Settings
+                                </li>
+                                <li>
+                                    <i class='bx bx-devices' ></i>
+                                    Device Management
+                                </li>
+                                <li>
+                                    <a href="signin.html">
+                                        <i class='bx bx-log-out' ></i>
+                                        Sign Out
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </header>
+            </section>   
+
+            <!-- EXHIBITS REQUESTS -->
+            <section class="content-wrapper1" id="exhibits" >
+                <div class="posts-wrapper" >
+                    <div class="card">
+                        <img src="pics/banner.png" class="banner-image">
+                        <div class="card-content">
+                            <p class="art-title">(Title)</p>
+                            <p class="description">"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- PANEL INSIDE THE EXHBIT CARD -->
+                <section id="panel"  class="panel" style="display: none;">
+                    <i class='bx bx-chevron-left'></i>
+                    <!-- Header -->
+                    <div class="e-header">
+                        <div class="e-date">12/01/2024</div>
+                        <h1>Modern Arts</h1>
+                        <p class="e-description">
+                          "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
+                        </p>
+                    </div>
+
+                    <!-- Content Section -->
+                    <div class="e-content">
+                        <!-- Admin Section -->
+                        <div class="admin">
+                            <h2>Admin</h2>
+                            <p>Jimuel</p>
+                            <div class="admin-card">
+                                <div class="art-collage">
+                                    <div class="artworks">
+                                        <img src="pics/a1.jpg" alt="Art 1">
+                                        <img src="pics/a3.jpg" alt="Art 2">
+                                    </div>
+                                    <div class="artwork">
+                                        <img src="pics/a2.jpg" alt="Art 3">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Collaborators Section -->
+                        <div class="collaborators">
+                            <h2>Collaborators</h2>
+                            <div class="collaborator-cards">
+                                <div class="collab-wrapper1">
+                                    <p class="collab-name1">Angel</p>
+                                    <div class="collaborator">
+                                        <div class="art-collage">
+                                            <div class="c-artworks">
+                                                <img src="pics/a1.jpg" alt="Art 1">
+                                                <img src="pics/a3.jpg" alt="Art 2">
+                                            </div>
+                                            <div class="c-artwork">
+                                                <img src="pics/a2.jpg" alt="Art 3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="collab-name1">Jeralyn</p>
+                                    <div class="collaborator">
+                                        <div class="art-collage">
+                                            <div class="c-artworks">
+                                                <img src="pics/a1.jpg" alt="Art 1">
+                                                <img src="pics/a3.jpg" alt="Art 2">
+                                            </div>
+                                            <div class="c-artwork">
+                                                <img src="pics/a2.jpg" alt="Art 3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="collab-name1">Genesis</p>
+                                    <div class="collaborator">
+                                        <div class="art-collage">
+                                            <div class="c-artworks">
+                                                <img src="pics/a1.jpg" alt="Art 1">
+                                                <img src="pics/a3.jpg" alt="Art 2">
+                                            </div>
+                                            <div class="c-artwork">
+                                                <img src="pics/a2.jpg" alt="Art 3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="collab-wrapper2">
+                                    <p class="collab-name2">Janah</p>
+                                    <div class="collaborator">
+                                        <div class="art-collage">
+                                            <div class="c-artworks">
+                                                <img src="pics/a1.jpg" alt="Art 1">
+                                                <img src="pics/a3.jpg" alt="Art 2">
+                                            </div>
+                                            <div class="c-artwork">
+                                                <img src="pics/a2.jpg" alt="Art 3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="collab-name2">Jamaica</p>
+                                    <div class="collaborator">
+                                        <div class="art-collage">
+                                            <div class="c-artworks">
+                                                <img src="pics/a1.jpg" alt="Art 1">
+                                                <img src="pics/a3.jpg" alt="Art 2">
+                                            </div>
+                                            <div class="c-artwork">
+                                                <img src="pics/a2.jpg" alt="Art 3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal" id="image-modal">
+                        <button class="nav-btn left-btn">&lt;</button>
+                        <button class="nav-btn right-btn">&gt;</button>
+                        <div class="modal-content">
+                            <img src="" class="modal-image">
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn approve-btn">Approve</button>
+                        <button class="btn decline-btn">Decline</button>
+                    </div>
+                    <!-- Popup Container -->
+                    <div id="p-popup-container" class="p-popup">
+                        <div class="p-popup-content">
+                          <p id="p-popup-message" class="p-popup-message"></p>
+                          <div class="p-popup-actions">
+                            <button id="p-confirm-btn" class="btn p-confirm-btn">Confirm</button>
+                            <button id="p-cancel-btn" class="btn p-cancel-btn">Cancel</button>
+                          </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- SETTINGS -->
+            <section class="content-wrapper2" id="settings">
+                <div class="settings-container">
+                    <!-- Sidebar -->
+                    <div class="s_sidebar">
+                        <h1>Settings</h1>
+                        <ul>
+                            <li><a href="#s-profile-section" id="profile-link">Public Profile</a></li>
+                            <li><a href="#account-section" id="account-link">Account Settings</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="s_content" id="content">
+                        <!-- Public Profile Section -->
+                        <div id="s-profile-section" class="ss_section active">
+                            <h3>My Profile</h3>
+                            <div class="s_profile">
+                                <!-- Profile Image Section -->
+                                <div class="s_profile-image">
+                                    <div class="profile-pic2"></div>
+                                    <input type="file" id="file-input" accept="image/*" style="display: none;">
+                                    <div class="s_text">
+                                        <h4>Upload new image</h4>
+                                        <p class="file-size">Max file size - 10mb</p>
+                                    </div>
+                                    <div class="image-buttons">
+                                        <button class="upload-btn">Upload</button>
+                                        <button class="remove-btn">Remove image</button>
+                                    </div>
+                                </div>
+                        
+                                <!-- Profile Form Section -->
+                                <form>
+                                    <label>Username<i class='bx bxs-pencil'></i></label>
+
+                                    <input type="text" value="Angel" class="input-field">
+                                    
+                                    <label>Role</label>
+                                    <input type="text" value="Team Leader" class="input-field" disabled>
+                                    
+                                    <label>Bio</label>
+                                    <textarea placeholder="Write a short introduction..." class="textarea-field"></textarea>
+                                    
+                                    <div class="form-buttons">
+                                        <button type="submit" class="save-btn">Save Changes</button>
+                                        <button type="reset" class="clear-btn">Clear all</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        
+                    
+                        <!-- Account Settings Section -->
+                        <div id="account-section" class="ss_section hidden">
+                            <h3>Account Settings</h3>
+                            <form>
+                                <!-- Name Section -->
+                                <div class="s-full">
+                                    <h4 class="namee">Name</h4>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <p>First name</p>
+                                            <input type="text" value="Angel" class="f-input-field">
+                                        </div>
+                                        <div class="form-group">
+                                            <p>Last name</p>
+                                            <div class="s-name">
+                                                <input type="text" value="Canete" class="l-input-field">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Email Address Section -->
+                                <div class="form-group">
+                                    <div class="s-em">
+                                        <label>Email Address</label>
+                                        <div class="email">
+                                            <p class="email-display">Your email is <strong>angelbaby@gmail.com</strong></p>
+                                            <!-- <a href="#" class="change-link">Change</a> -->
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <!-- Password Section -->
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <div id="password-view" class="p-pass">
+                                        <input type="password" value="********" class="p-input-field" disabled>
+                                        <a href="#" id="change-link" class="change-link">Change</a>
+                                    </div>
+                                    <div id="password-edit" class="p-hidden">
+                                        <div class="pass">
+                                            <div class="p-current">
+                                                <p>Current Password</p>
+                                                <input type="password" id="new-password" class="p--input-field" placeholder="Enter new password">
+                                            </div>
+                                            <div class="p-new">
+                                                <p>New Password</p>
+                                                <input type="password" id="current-password" class="p--input-field" placeholder="Enter current password">
+                                            </div>
+                                            <a href="#" id="hide-link" class="change-link">Hide</a>
+                                        </div>
+                                        <div class="reset">
+                                            <p>Can't remember your current password? <a href="#">Reset your password</a></p>
+                                            <button type="button" id="save-password-btn">Save password</button>
+                                        </div>
+                                    </div>    
+                                </div>
+                        
+                                <!-- Delete Account Section -->
+                                <div class="delete-account">
+                                    <label>Delete Account</label>
+                                    <div class="del">
+                                        <p class="d-text">Would you like to delete your account? Deleting your account will remove all the content associated with it.</p>
+                                        <a href="#" class="delete-link">I want to delete my account</a>
+                                    </div>
+                                </div>
+                                <div class="s-popup-overlay" id="s-popup">
+                                    <div class="s-popup-content">
+                                        <div class="s-popup-header">
+                                            <i class='bx bx-trash'></i>
+                                            <h2>Delete Account?</h2>
+                                        </div>
+                                        <p>Deleting your account is irreversible and will erase all your data. This action cannot be undone.</p>
+                                        <div class="popup-actions">
+                                            <button id="s-continueButton" class="s-continue-button">Continue</button>
+                                            <button id="s-cancelButton" class="s-cancel-button">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+            </section>            
+
+        </section>
+    </main>
+    
+    <script src="org.js"></script>
+</body>
+</html>
