@@ -23,7 +23,7 @@ $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 $u_type=$_SESSION['u_type'];    
 $u_id = $_SESSION['u_id'];
-$password=$_SESSION['hashed_password'];
+
 
 $user = new AccountManager($conn);
 $infos = $user->getAccountInfo($u_id);

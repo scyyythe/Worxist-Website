@@ -50,43 +50,111 @@ function formatDate() {
 document.getElementById("current-date").innerText = formatDate();
 
 
-//NAVIGATION BETWEEN .posts-wrapper AND .panel
+
+
+// NAVIGATION BETWEEN .posts-wrapper AND .panel
 document.addEventListener("DOMContentLoaded", function () {
   const cards = document.querySelectorAll(".card");
   const panel = document.getElementById("panel"); 
   const postsWrapper = document.querySelector(".posts-wrapper"); 
   const headerWrapper = document.querySelector(".header-wrapper");
-  const backButton = document.querySelector(".bx-chevron-left"); 
+  const backButton = document.querySelector(".bx-chevron-left");
+
+  // Solo and Collaborator Sections
+  const soloRequest = document.getElementById("soloRequest");
+  const collabRequest = document.getElementById("collabRequest");
+
+  // Check exhibit type and show/hide the respective sections
+  if (exhibitType === "Solo") {
+    document.getElementById("soloRequest").style.display = "block";
+    document.getElementById("collabRequest").style.display = "none";
+} else if (exhibitType === "Collaborate") {
+    document.getElementById("soloRequest").style.display = "none";
+    document.getElementById("collabRequest").style.display = "block";
+}
+  console.log("Exhibit Type:", exhibitType);
 
   for (let i = 0; i < cards.length; i++) {
     cards[i].addEventListener("click", function () {
-      if (postsWrapper && headerWrapper) {
-        postsWrapper.style.display = "none";
-        headerWrapper.style.display = "none";
-      }
+      const exhibitId = cards[i].getAttribute("data-exhibit-id");
+      console.log("Exhibit ID:", exhibitId);
 
-      if (panel) {
-        panel.style.display = "block";
-      }
+      fetchExhibitData(exhibitId).then(exhibit => {
+        if (exhibit.error) {
+          console.error('Exhibit not found');
+          alert('Exhibit not found');
+          return;
+        }
+
+        // Populate panel with fetched exhibit data
+        document.getElementById("exhibit-date").innerText = exhibit.exbt_date;
+        document.getElementById("exhibit-title").innerText = exhibit.exbt_title;
+        document.getElementById("exhibit-description").innerText = exhibit.exbt_descrip;
+        
+        // Hide posts wrapper and header when exhibit details are displayed
+        if (postsWrapper && headerWrapper) {
+          postsWrapper.style.display = "none";
+          headerWrapper.style.display = "none";
+        }
+
+        if (panel) {
+          panel.style.display = "block";
+        }
+
+        // Show/hide Solo or Collab sections based on the fetched exhibit type
+        const fetchedExhibitType = exhibit.exbt_type;
+        if (fetchedExhibitType === "Solo") {
+          soloRequest.style.display = "block";
+          collabRequest.style.display = "none";
+        } else if (fetchedExhibitType === "Collab") {
+          soloRequest.style.display = "none";
+          collabRequest.style.display = "block";
+        }
+      }).catch(error => {
+        console.error('Error fetching exhibit data:', error);
+        alert('An error occurred while fetching exhibit details.');
+      });
     });
   }
 
-
   if (backButton) {
     backButton.addEventListener("click", function () {
-      // Hide the panel
+      // Hide the panel and show the posts wrapper and header again
       if (panel) {
         panel.style.display = "none";
       }
 
-      // Show posts-wrapper and header-wrapper
       if (postsWrapper && headerWrapper) {
         postsWrapper.style.display = "block";
         headerWrapper.style.display = "block";
       }
+      window.location.reload(); // Optionally reload the page
     });
   }
 });
+
+// Fetch exhibit data function
+function fetchExhibitData(exhibitId) {
+  return new Promise((resolve, reject) => {
+    fetch(`org.php?id=${exhibitId}`)
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+      try {
+        const exhibit = JSON.parse(data); // Assuming the data is JSON formatted
+        resolve(exhibit);
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+        reject(error);
+      }
+    })
+    .catch(error => reject(error));
+  });
+}
+
+
+
+
 
 
 //POPUP MSG FOR APPOVE & DECLINE
@@ -226,59 +294,84 @@ document.getElementById(sectionId).classList.add('active');
 }
 
 
-
 // CHANGE & HIDE PASSWORD
+// Show password edit view when 'Change' is clicked
 document.getElementById('change-link').addEventListener('click', function(e) {
-e.preventDefault();
-document.getElementById('password-view').style.display = 'none';  // Hides the "Change" view
-document.getElementById('password-edit').style.display = 'block'; // Shows the "Edit" view
+  e.preventDefault();
+  document.getElementById('password-view').style.display = 'none';  // Hide the "Change" view
+  document.getElementById('password-edit').style.display = 'block'; // Show the "Edit" view
 });
 
+// Hide password edit view when 'Hide' is clicked
 document.getElementById('hide-link').addEventListener('click', function(e) {
-e.preventDefault();
-document.getElementById('password-view').style.display = 'flex'; // Shows the "Change" view
-document.getElementById('password-edit').style.display = 'none'; // Hides the "Edit" view
+  e.preventDefault();
+  document.getElementById('password-view').style.display = 'flex';  // Show the "Change" view
+  document.getElementById('password-edit').style.display = 'none'; // Hide the "Edit" view
 });
 
+// Handle save password functionality
 document.getElementById('save-password-btn').addEventListener('click', function() {
-var newPassword = document.getElementById('new-password').value;
-var currentPassword = document.getElementById('current-password').value;
+  var currentPassword = document.getElementById('current-password').value;
+  var newPassword = document.getElementById('new-password').value;
 
-if (!newPassword || !currentPassword) {
-    alert('Please fill in both fields.');
-    return;
-}
+  // Validate the inputs
+  if (!currentPassword || !newPassword) {
+      showCustomAlert('Please fill in both fields.');
+      return;
+  }
 
-if (newPassword.length < 8) {
-    alert('New password must be at least 8 characters long.');
-    return;
-}
+  if (newPassword.length < 8) {
+      showCustomAlert('New password must be at least 8 characters long.');
+      return;
+  }
 
-if (!/[A-Z]/.test(newPassword)) {
-    alert('New password must contain at least one uppercase letter.');
-    return;
-}
+  if (!/[A-Z]/.test(newPassword)) {
+      showCustomAlert('New password must contain at least one uppercase letter.');
+      return;
+  }
 
-if (!/[a-z]/.test(newPassword)) {
-    alert('New password must contain at least one lowercase letter.');
-    return;
-}
+  if (!/[a-z]/.test(newPassword)) {
+      showCustomAlert('New password must contain at least one lowercase letter.');
+      return;
+  }
 
-if (!/[0-9]/.test(newPassword)) {
-    alert('New password must contain at least one number.');
-    return;
-}
+  if (!/[0-9]/.test(newPassword)) {
+      showCustomAlert('New password must contain at least one number.');
+      return;
+  }
 
-if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
-    alert('New password must contain at least one special character.');
-    return;
-}
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(newPassword)) {
+      showCustomAlert('New password must contain at least one special character.');
+      return;
+  }
 
-alert('Password successfully changed!');
 
-document.getElementById('password-view').style.display = 'flex';  // Shows the "Change" view
-document.getElementById('password-edit').style.display = 'none';  // Hides the "Edit" view
+  fetch('updatePassword.php', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          currentPassword: currentPassword,
+          newPassword: newPassword
+      })
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.success) {
+          showCustomAlert('Password successfully changed!');
+          document.getElementById('password-view').style.display = 'flex';  // Show the "Change" view
+          document.getElementById('password-edit').style.display = 'none';  // Hide the "Edit" view
+      } else {
+          showCustomAlert('Error: ' + data.error);
+      }
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      showCustomAlert('An error occurred while updating the password.');
+  });
 });
+
 
 
 //DELETE ACC POP-UP
@@ -380,6 +473,7 @@ removeButton.addEventListener('click', function () {
 });
 
 
+
 //SETTINGS-PROFILE FORM
 const pencilIcon = document.querySelector('.bxs-pencil');
 const formButtons = document.querySelector('.form-buttons');
@@ -394,6 +488,7 @@ textareaField.disabled = true;
 
 const formElements = [inputField, textareaField, formButtons];
 
+// When pencil icon is clicked, enable the fields and show the save button
 pencilIcon.addEventListener('click', function() {
     for (let i = 0; i < formElements.length; i++) {
         if (formElements[i] === formButtons) {
@@ -412,15 +507,12 @@ pencilIcon.addEventListener('click', function() {
 
 
 saveButton.addEventListener('click', function(event) {
-    event.preventDefault(); 
-
-    console.log('Saved Username:', inputField.value);
-    console.log('Saved Bio:', textareaField.value);
+    document.querySelector('form').submit(); 
 });
+
 
 clearButton.addEventListener('click', function(event) {
     event.preventDefault(); 
-
     inputField.value = '';
     textareaField.value = '';
 });

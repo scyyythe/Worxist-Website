@@ -166,8 +166,14 @@ class ExhibitManager {
             exit;
         }
     }
+    public function getExhibitDetails($exhibitId) {
+        $statement = $this->conn->prepare("SELECT * FROM exhibit_tbl WHERE exbt_id = ?");
+        $statement->bindValue(1, $exhibitId, PDO::PARAM_INT);
+        $statement->execute();
     
- 
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+    
     public function getAcceptedExhibits(){
         $statement = $this->conn->prepare("
             SELECT 
@@ -187,6 +193,49 @@ class ExhibitManager {
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getPendingExhibits() {
+        $statement = $this->conn->prepare("
+            SELECT 
+                exhibit_tbl.exbt_id, 
+                exhibit_tbl.exbt_title, 
+                exhibit_tbl.exbt_descrip, 
+                exhibit_tbl.exbt_date, 
+                exhibit_tbl.exbt_type, 
+                accounts.u_name AS organizer_name, 
+                art_info.title AS artwork_title, 
+                art_info.description AS artwork_description, 
+                art_info.file AS artwork_file, 
+                art_info.u_id AS artist_id 
+            FROM exhibit_tbl
+            INNER JOIN accounts ON exhibit_tbl.u_id = accounts.u_id
+            INNER JOIN exhibit_artworks ON exhibit_tbl.exbt_id = exhibit_artworks.exbt_id
+            INNER JOIN art_info ON exhibit_artworks.a_id = art_info.a_id
+            WHERE exhibit_tbl.exbt_status = 'Pending'
+        ");
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    // public function getPendingExhibits() {
+    //     $statement = $this->conn->prepare("
+    //         SELECT 
+    //             exhibit_tbl.exbt_id, 
+    //             exhibit_tbl.exbt_title, 
+    //             exhibit_tbl.exbt_descrip, 
+    //             exhibit_tbl.exbt_date, 
+    //             exhibit_tbl.exbt_type, 
+    //             accounts.u_name AS organizer_name
+    //         FROM exhibit_tbl
+    //         INNER JOIN accounts ON exhibit_tbl.u_id = accounts.u_id
+    //         WHERE exhibit_tbl.exbt_status = 'Pending'
+    //     ");
+    //     $statement->execute();
+    //     return $statement->fetchAll(PDO::FETCH_ASSOC);
+    // }
+    
+
+    
+    
+    
     
 //search collaborators
     public function searchCollaborators($query) {
