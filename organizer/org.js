@@ -264,7 +264,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 // show custom alert
 function showCustomAlert(message) {
   const alertBox = document.getElementById('customAlert');

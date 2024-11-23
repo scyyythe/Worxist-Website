@@ -188,28 +188,32 @@ class ExhibitManager {
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    //retrieve exhibit details
     public function getExhibitDetails($exhibitId) {
         $statement = $this->conn->prepare("
             SELECT 
                 exhibit_tbl.*, 
                 accounts.u_name AS organizer_name, 
-                art_info.file AS artwork_file
+                art_info.file AS artwork_file,
+                collaborators.u_name AS collaborator_name,
+                collaborators.profile AS collaborator_profile  
             FROM exhibit_tbl
             INNER JOIN accounts ON exhibit_tbl.u_id = accounts.u_id
             INNER JOIN exhibit_artworks ON exhibit_tbl.exbt_id = exhibit_artworks.exbt_id
             INNER JOIN art_info ON exhibit_artworks.a_id = art_info.a_id
+            LEFT JOIN collab_exhibit ON exhibit_tbl.exbt_id = collab_exhibit.exbt_id  
+            LEFT JOIN accounts AS collaborators ON collab_exhibit.u_id = collaborators.u_id  
             WHERE exhibit_tbl.exbt_id = ?
         ");
         $statement->bindValue(1, $exhibitId, PDO::PARAM_INT);
         $statement->execute();
         
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-    
-        header('Content-Type: application/json');
-        echo json_encode($result); 
-        exit(); 
+        $result = $statement->fetch(PDO::FETCH_ASSOC); // Fetch all rows
+        
+        return $result;
     }
     
+    //get artworks from exhibit
     public function getExhibitArtwork($exhibitId){
         $statement=$this->conn->prepare("SELECT * FROM exhibit_artworks");
         $statement->bindValue(1, $exhibitId, PDO::PARAM_INT);
@@ -224,6 +228,8 @@ class ExhibitManager {
         
         return $statement->fetchAll(PDO::FETCH_ASSOC); 
     }
+
+    //pending exhibits
     public function getPendingExhibits() {
         $statement = $this->conn->prepare("
             SELECT 
@@ -246,9 +252,9 @@ class ExhibitManager {
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
+    //accept and decline fucntion
     public function updateExhibitStatus($exbt_id, $status) {
-        // Check if the status is valid
         if ($status !== 'Accepted' && $status !== 'Declined') {
             echo json_encode(["status" => "error", "message" => "Invalid status"]);
             exit;
@@ -290,7 +296,6 @@ class ExhibitManager {
         
         $stmt = $this->conn->prepare($query);
         if ($stmt->execute()) {
-            // Optionally, return a success message if needed
             echo "Exhibits marked as Done after 24 hours.";
         } else {
             $errorInfo = $stmt->errorInfo();
@@ -298,8 +303,21 @@ class ExhibitManager {
         }
     }
     
+    // get collab
+    public function getCollab($exhibitId) {
+        $statement = $this->conn->prepare("
+            SELECT accounts.u_name 
+            FROM collab_exhibit
+            INNER JOIN accounts ON collab_exhibit.u_id = accounts.u_id
+            WHERE collab_exhibit.exbt_id = ?
+        ");
+        $statement->bindValue(1, $exhibitId, PDO::PARAM_INT);
+        $statement->execute();
+        
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    }
     
-    
+  
  
 //search collaborators
     public function searchCollaborators($query) {

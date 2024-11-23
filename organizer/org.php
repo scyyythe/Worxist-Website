@@ -52,6 +52,7 @@ if (isset($_POST['changeUser'])) {
 $exhibit= new ExhibitManager($conn);
 $pending=$exhibit->getPendingExhibits();
 $request=$exhibit->getRequestExhibit();
+$exhibitId = 1; // Example exhibit ID
 
 
 if (isset($_GET['id'])) {
