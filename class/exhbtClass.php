@@ -166,13 +166,7 @@ class ExhibitManager {
             exit;
         }
     }
-    public function getExhibitDetails($exhibitId) {
-        $statement = $this->conn->prepare("SELECT * FROM exhibit_tbl WHERE exbt_id = ?");
-        $statement->bindValue(1, $exhibitId, PDO::PARAM_INT);
-        $statement->execute();
-    
-        return $statement->fetch(PDO::FETCH_ASSOC);
-    }
+ 
     
     public function getAcceptedExhibits(){
         $statement = $this->conn->prepare("
@@ -192,6 +186,43 @@ class ExhibitManager {
         ");
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getExhibitDetails($exhibitId) {
+        $statement = $this->conn->prepare("
+            SELECT 
+                exhibit_tbl.*, 
+                accounts.u_name AS organizer_name, 
+                art_info.file AS artwork_file
+            FROM exhibit_tbl
+            INNER JOIN accounts ON exhibit_tbl.u_id = accounts.u_id
+            INNER JOIN exhibit_artworks ON exhibit_tbl.exbt_id = exhibit_artworks.exbt_id
+            INNER JOIN art_info ON exhibit_artworks.a_id = art_info.a_id
+            WHERE exhibit_tbl.exbt_id = ?
+        ");
+        $statement->bindValue(1, $exhibitId, PDO::PARAM_INT);
+        $statement->execute();
+        
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+    
+        header('Content-Type: application/json');
+        echo json_encode($result); 
+        exit(); 
+    }
+    
+    public function getExhibitArtwork($exhibitId){
+        $statement=$this->conn->prepare("SELECT * FROM exhibit_artworks");
+        $statement->bindValue(1, $exhibitId, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
+    }
+    
+    
+    public function getRequestExhibit() {
+        $statement = $this->conn->prepare("SELECT * FROM exhibit_tbl WHERE exbt_status = 'Pending'");
+        $statement->execute();
+        
+        return $statement->fetchAll(PDO::FETCH_ASSOC); 
     }
     public function getPendingExhibits() {
         $statement = $this->conn->prepare("
@@ -215,28 +246,61 @@ class ExhibitManager {
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-    // public function getPendingExhibits() {
-    //     $statement = $this->conn->prepare("
-    //         SELECT 
-    //             exhibit_tbl.exbt_id, 
-    //             exhibit_tbl.exbt_title, 
-    //             exhibit_tbl.exbt_descrip, 
-    //             exhibit_tbl.exbt_date, 
-    //             exhibit_tbl.exbt_type, 
-    //             accounts.u_name AS organizer_name
-    //         FROM exhibit_tbl
-    //         INNER JOIN accounts ON exhibit_tbl.u_id = accounts.u_id
-    //         WHERE exhibit_tbl.exbt_status = 'Pending'
-    //     ");
-    //     $statement->execute();
-    //     return $statement->fetchAll(PDO::FETCH_ASSOC);
-    // }
     
+    public function updateExhibitStatus($exbt_id, $status) {
+        // Check if the status is valid
+        if ($status !== 'Accepted' && $status !== 'Declined') {
+            echo json_encode(["status" => "error", "message" => "Invalid status"]);
+            exit;
+        }
 
+        if ($status === 'Accepted') {
+            // Check if there's already an exhibit with status 'Accepted'
+            $query = "SELECT * FROM exhibit_tbl WHERE exbt_status = 'Accepted' LIMIT 1";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                echo json_encode(["status" => "error", "message" => "There is already an accepted exhibit. Please wait until it is marked as Done."]);
+                exit;
+            }
+        }
+    
+        $statement = $this->conn->prepare("UPDATE exhibit_tbl SET exbt_status = ?, accepted_at = ? WHERE exbt_id = ?");
+    
+        $accepted_at = ($status === 'Accepted') ? date("Y-m-d H:i:s") : null;
+    
+        $statement->bindValue(1, $status, PDO::PARAM_STR);
+        $statement->bindValue(2, $accepted_at, PDO::PARAM_STR); 
+        $statement->bindValue(3, $exbt_id, PDO::PARAM_INT);
+
+        if ($statement->execute()) {
+            echo json_encode(["status" => "success", "message" => "Exhibit status updated to $status"]);
+        } else {
+            $errorInfo = $statement->errorInfo();
+            echo json_encode(["status" => "error", "message" => "Failed to update status. Error: " . $errorInfo[2]]);
+        }
+        exit();
+    }
+    
+    
+    public function autoMarkExhibitsAsDone() {
+        $query = "UPDATE exhibit_tbl SET exbt_status = 'Done' 
+                  WHERE exbt_status = 'Accepted' 
+                  AND TIMESTAMPDIFF(HOUR, accepted_at, NOW()) >= 24";
+        
+        $stmt = $this->conn->prepare($query);
+        if ($stmt->execute()) {
+            // Optionally, return a success message if needed
+            echo "Exhibits marked as Done after 24 hours.";
+        } else {
+            $errorInfo = $stmt->errorInfo();
+            echo "Failed to update exhibits. Error: " . $errorInfo[2];
+        }
+    }
     
     
     
-    
+ 
 //search collaborators
     public function searchCollaborators($query) {
         

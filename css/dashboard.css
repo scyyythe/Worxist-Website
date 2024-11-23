@@ -1205,11 +1205,13 @@ body {
 }
 .right-img{
     margin-left: 50px;
-    opacity: 0.5;
+
+    
 }
 .left-img{
     margin-right: 50px;
-    opacity: 0.5;
+
+    
 }
 .center-container {
     position: relative;
@@ -1221,7 +1223,8 @@ body {
     width: 450px;
     height: 550px;;
     border-radius: 20px;
-    opacity: 0.5;
+
+    
 }
 
 
@@ -1240,6 +1243,7 @@ body {
     width: 100%;
     border-radius: 20px;
     height: 120px;
+
     
 }
 
@@ -1251,7 +1255,7 @@ body {
 
 .center-description p {
     margin: 5px 0;
-    font-size: 1rem;
+    font-size: 12px;
 }
 .above{
     display: flex;

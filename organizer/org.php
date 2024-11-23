@@ -51,6 +51,7 @@ if (isset($_POST['changeUser'])) {
 //retrieveing pending exhibit
 $exhibit= new ExhibitManager($conn);
 $pending=$exhibit->getPendingExhibits();
+$request=$exhibit->getRequestExhibit();
 
 
 if (isset($_GET['id'])) {
@@ -67,6 +68,26 @@ if (isset($_GET['id'])) {
     }
 
     exit(); 
+}
+// approved or declined exhibits
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (isset($_POST['exbt_id']) && !empty($_POST['exbt_id']) && isset($_POST['status']) && !empty($_POST['status'])) {
+        $exbt_id = $_POST['exbt_id'];
+        $status = $_POST['status'];
+
+        // Check if status is either 'Accepted' or 'Declined'
+        if ($status === 'Accepted' || $status === 'Declined') {
+            $exhibit = new ExhibitManager($conn);
+            $update = $exhibit->updateExhibitStatus($exbt_id, $status); 
+            echo json_encode(['status' => 'success', 'message' => 'Exhibit status updated successfully']);
+        } else {
+            echo json_encode(["status" => "error", "message" => "Invalid status"]);
+        }
+    } else {
+        echo json_encode(["status" => "error", "message" => "exbt_id and status are required"]);
+    }
+    exit();
 }
 
 
@@ -89,8 +110,9 @@ if (isset($_GET['id'])) {
                 <img src="pics/worxist.png" alt="Logo">
             </div>
             <ul class="nav">
-                <li><i class='bx bx-merge'></i><a href="exhibits">Exhibits</a></li>
-                <li><i class='bx bxs-cog'></i><a href="settings">Settings</a></li>
+            <li><i class='bx bx-merge'></i><a href="#exhibits" class="exhibitLink">Exhibits</a></li>
+<li><i class='bx bxs-cog'></i><a href="#settings" class="settingLink">Settings</a></li>
+
             </ul>
             <a href="/login-register.php" class="logout"><i class='bx bxs-log-out'></i>Logout</a>
         </aside>
@@ -140,9 +162,18 @@ if (isset($_GET['id'])) {
             
             <!-- EXHIBITS REQUESTS -->
             <section class="content-wrapper1" id="exhibits" >
+                <!-- Custom Alert Box -->
+            <div id="customAlert" class="alert-box">
+                <div class="alert-content">
+                    <p id="alertMessage"></p><br>
+                    <button id="closeAlertBtn" class="close-btn">Close</button>
+                </div>
+            </div>
+
+
             <div class="posts-wrapper">
-                <?php if (!empty($pending)) : ?>
-                    <?php foreach ($pending as $exhibit) : ?>
+                <?php if (!empty($request)) : ?>
+                    <?php foreach ($request as $exhibit) : ?>
                         <div class="card" data-exhibit-id="<?php echo $exhibit['exbt_id']; ?>">
                             <img src="pics/banner.png" class="banner-image">
                             <div class="card-content">
@@ -173,7 +204,7 @@ if (isset($_GET['id'])) {
     <!-- Admin Section -->
     <div class="admin">
         <h2>Admin</h2>
-        <p><?php echo $exhibit['organizer_name']; ?></p>
+        <p id="artist_nameCollab"><?php echo $exhibit['organizer_name']; ?></p>
         <div class="admin-card">
             <div class="art-collage">
                 <div class="artworks">
@@ -262,15 +293,11 @@ if (isset($_GET['id'])) {
 <!-- solo -->
 <div class="solo" id="soloRequest">
     <h2>Exhibit Owner</h2>
-    <p><?php echo $exhibit['organizer_name']; ?></p><br>
-    <div class="admin-card soloCard">
-        <?php foreach ($pending as $exhibit): ?>
-            <img src="../<?php echo htmlspecialchars($exhibit['artwork_file']); ?>" alt="<?php echo htmlspecialchars($exhibit['artwork_title']); ?>">
-        <?php endforeach; ?>
+    <p id="artist_name"><?php echo $exhibit['organizer_name']; ?></p><br>
+    <div class="admin-card soloCard" id="soloCardImages">
+        <!-- Images will be added here dynamically via JS -->
     </div>
 </div>
-
-
 
 </div>
 
@@ -283,8 +310,8 @@ if (isset($_GET['id'])) {
                         </div>
                     </div>
                     <div class="actions">
-                        <button class="btn approve-btn">Approve</button>
-                        <button class="btn decline-btn">Decline</button>
+                    <button class="btn approve-btn" name="approveRequest" data-exhibit-id="<?php echo $exhibit['exbt_id']; ?>">Approve</button>
+                    <button class="btn decline-btn" name="declineRequest" data-exhibit-id="<?php echo $exhibit['exbt_id']; ?>">Decline</button>
                     </div>
                     <!-- Popup Container -->
                     <div id="p-popup-container" class="p-popup">
@@ -300,143 +327,146 @@ if (isset($_GET['id'])) {
             </section>
 
             <!-- SETTINGS -->
-            <section class="content-wrapper2" id="settings">
-                <div class="settings-container">
-                    <!-- Sidebar -->
-                    <div class="s_sidebar">
-                        <h1>Settings</h1>
-                        <ul>
-                            <li><a href="#s-profile-section" id="profile-link">Public Profile</a></li>
-                            <li><a href="#account-section" id="account-link">Account Settings</a></li>
-                        </ul>
+<section class="content-wrapper2" id="settings" style="display: none;">
+    <div class="settings-container">
+        <!-- Sidebar -->
+        <div class="s_sidebar">
+            <h1>Settings</h1>
+            <ul>
+                <li><a href="#s-profile-section" id="profile-link">Public Profile</a></li>
+                <li><a href="#account-section" id="account-link">Account Settings</a></li>
+            </ul>
+        </div>
+        
+        <!-- Content -->
+        <div class="s_content" id="content">
+            <!-- Public Profile Section -->
+            <div id="s-profile-section" class="ss_section active">
+                <h3>My Profile</h3>
+                <div class="s_profile">
+                    <!-- Profile Image Section -->
+                    <div class="s_profile-image">
+                        <div class="profile-pic2"></div>
+                        <input type="file" id="file-input" accept="image/*" style="display: none;">
+                        <div class="s_text">
+                            <h4>Upload new image</h4>
+                            <p class="file-size">Max file size - 10mb</p>
+                        </div>
+                        <div class="image-buttons">
+                            <button class="upload-btn">Upload</button>
+                            <button class="remove-btn">Remove image</button>
+                        </div>
                     </div>
-                    
-                    <!-- Content -->
-                    <div class="s_content" id="content">
-                        <!-- Public Profile Section -->
-                        <div id="s-profile-section" class="ss_section active">
-                            <h3>My Profile</h3>
-                            <div class="s_profile">
-                                <!-- Profile Image Section -->
-                                <div class="s_profile-image">
-                                    <div class="profile-pic2"></div>
-                                    <input type="file" id="file-input" accept="image/*" style="display: none;">
-                                    <div class="s_text">
-                                        <h4>Upload new image</h4>
-                                        <p class="file-size">Max file size - 10mb</p>
-                                    </div>
-                                    <div class="image-buttons">
-                                        <button class="upload-btn">Upload</button>
-                                        <button class="remove-btn">Remove image</button>
-                                    </div>
-                                </div>
+                
+                     <!-- Profile Form Section -->
+                     <form action="" method="POST">
+                        <label>Username<i class='bx bxs-pencil'></i></label>
+                        <input type="text" name="new_username" value="<?php echo($username) ?>" class="input-field">
+                        <input type="hidden" name="action" value="change_username"> 
+                        <label>Role</label>
+                        <input type="text" value="<?php echo($u_type) ?>" class="input-field" disabled>
                         
-                                 <!-- Profile Form Section -->
-                                 <form action="" method="POST">
-                                    <label>Username<i class='bx bxs-pencil'></i></label>
-                                    <input type="text" name="new_username" value="<?php echo($username) ?>" class="input-field">
-                                    <input type="hidden" name="action" value="change_username"> 
-                                    <label>Role</label>
-                                    <input type="text" value="<?php echo($u_type) ?>" class="input-field" disabled>
-                                    
-                                    <label>Bio</label>
-                                    <textarea placeholder="Write a short introduction..." class="textarea-field"></textarea>
-                                    
-                                    <div class="form-buttons">
-                                        <button type="submit" name="changeUser" class="save-btn">Save Changes</button>
-                                        <button type="reset" class="clear-btn">Clear all</button>
-                                    </div>
-                                </form>
+                        <label>Bio</label>
+                        <textarea placeholder="Write a short introduction..." class="textarea-field"></textarea>
+                        
+                        <div class="form-buttons">
+                            <button type="submit" name="changeUser" class="save-btn">Save Changes</button>
+                            <button type="reset" class="clear-btn">Clear all</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <?php
+            $nameParts = explode(' ', $name);
+            $firstName = $nameParts[0];
+            $lastName = isset($nameParts[1]) ? $nameParts[1] : ''; 
+            ?>
+            <!-- Account Settings Section -->
+            <div id="account-section" class="ss_section hidden">
+                <h3>Account Settings</h3>
+                <form>
+                    <!-- Name Section -->
+                    <div class="s-full">
+                    <h4 class="namee">Name</h4>
+                        <div class="form-row">
+                        <div class="form-group">
+                            <p>First name</p>
+                            <input type="text" value="<?php echo ($firstName); ?>" class="f-input-field">
+                        </div>
+                        <div class="form-group">
+                            <p>Last name</p>
+                            <div class="s-name">
+                                <input type="text" value="<?php echo ($lastName); ?>" class="l-input-field">
                             </div>
                         </div>
-                        
-                        <?php
-                        $nameParts = explode(' ', $name);
-                        $firstName = $nameParts[0];
-                        $lastName = isset($nameParts[1]) ? $nameParts[1] : ''; 
-                        ?>
-                        <!-- Account Settings Section -->
-                        <div id="account-section" class="ss_section hidden">
-                            <h3>Account Settings</h3>
-                            <form>
-                                <!-- Name Section -->
-                                <div class="s-full">
-                                <h4 class="namee">Name</h4>
-                                    <div class="form-row">
-                                    <div class="form-group">
-                                        <p>First name</p>
-                                        <input type="text" value="<?php echo ($firstName); ?>" class="f-input-field">
-                                    </div>
-                                    <div class="form-group">
-                                        <p>Last name</p>
-                                        <div class="s-name">
-                                            <input type="text" value="<?php echo ($lastName); ?>" class="l-input-field">
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Email Address Section -->
-                                <div class="form-group">
-                                    <div class="s-em">
-                                        <label>Email Address</label>
-                                        <div class="email">
-                                            <p class="email-display">Your email is <strong><?php echo ($email)?></strong></p>
-                                            <!-- <a href="#" class="change-link">Change</a> -->
-                                        </div>
-                                    </div>
-                                </div>
-                        
-                                <!-- Password Section -->
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <div id="password-view" class="p-pass">
-                                        <input type="password" value="<?php echo($password)?>" class="p-input-field" disabled>
-                                        <a href="#" id="change-link" class="change-link">Change</a>
-                                    </div>
-                                    <div id="password-edit" class="p-hidden">
-                                        <div class="pass">
-                                            <div class="p-current">
-                                                <p>Current Password</p>
-                                                <input type="password" id="new-password" class="p--input-field" placeholder="Enter new password">
-                                            </div>
-                                            <div class="p-new">
-                                                <p>New Password</p>
-                                                <input type="password" id="current-password" class="p--input-field" placeholder="Enter current password">
-                                            </div>
-                                            <a href="#" id="hide-link" class="change-link">Hide</a>
-                                        </div>
-                                        <div class="reset">
-                                            <p>Can't remember your current password? <a href="#">Reset your password</a></p>
-                                            <button type="button" id="save-password-btn">Save password</button>
-                                        </div>
-                                    </div>    
-                                </div>
-                        
-                                <!-- Delete Account Section -->
-                                <div class="delete-account">
-                                    <label>Delete Account</label>
-                                    <div class="del">
-                                        <p class="d-text">Would you like to delete your account? Deleting your account will remove all the content associated with it.</p>
-                                        <a href="#" class="delete-link">I want to delete my account</a>
-                                    </div>
-                                </div>
-                                <div class="s-popup-overlay" id="s-popup">
-                                    <div class="s-popup-content">
-                                        <div class="s-popup-header">
-                                            <i class='bx bx-trash'></i>
-                                            <h2>Delete Account?</h2>
-                                        </div>
-                                        <p>Deleting your account is irreversible and will erase all your data. This action cannot be undone.</p>
-                                        <div class="popup-actions">
-                                            <button id="s-continueButton" class="s-continue-button">Continue</button>
-                                            <button id="s-cancelButton" class="s-cancel-button">Cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
-            </section>            
+                    </div>
+                    
+                    <!-- Email Address Section -->
+                    <div class="form-group">
+                        <div class="s-em">
+                            <label>Email Address</label>
+                            <div class="email">
+                                <p class="email-display">Your email is <strong><?php echo ($email)?></strong></p>
+                                <!-- <a href="#" class="change-link">Change</a> -->
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Password Section -->
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div id="password-view" class="p-pass">
+                            <input type="password" value="<?php echo($password)?>" class="p-input-field" disabled>
+                            <a href="#" id="change-link" class="change-link">Change</a>
+                        </div>
+                        <div id="password-edit" class="p-hidden">
+                            <div class="pass">
+                                <div class="p-current">
+                                    <p>Current Password</p>
+                                    <input type="password" id="new-password" class="p--input-field" placeholder="Enter new password">
+                                </div>
+                                <div class="p-new">
+                                    <p>New Password</p>
+                                    <input type="password" id="current-password" class="p--input-field" placeholder="Enter current password">
+                                </div>
+                                <a href="#" id="hide-link" class="change-link">Hide</a>
+                            </div>
+                            <div class="reset">
+                                <p>Can't remember your current password? <a href="#">Reset your password</a></p>
+                                <button type="button" id="save-password-btn">Save password</button>
+                            </div>
+                        </div>    
+                    </div>
+            
+                    <!-- Delete Account Section -->
+                    <div class="delete-account">
+                        <label>Delete Account</label>
+                        <div class="del">
+                            <p class="d-text">Would you like to delete your account? Deleting your account will remove all the content associated with it.</p>
+                            <a href="#" class="delete-link">I want to delete my account</a>
+                        </div>
+                    </div>
+                    <div class="s-popup-overlay" id="s-popup">
+                        <div class="s-popup-content">
+                            <div class="s-popup-header">
+                                <i class='bx bx-trash'></i>
+                                <h2>Delete Account?</h2>
+                            </div>
+                            <p>Deleting your account is irreversible and will erase all your data. This action cannot be undone.</p>
+                            <div class="popup-actions">
+                                <button id="s-continueButton" class="s-continue-button">Continue</button>
+                                <button id="s-cancelButton" class="s-cancel-button">Cancel</button>
+                            </div>
+                        </div>
+                    </div> <!-- Closing missing div -->
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+          
 
         </section>
     </main>

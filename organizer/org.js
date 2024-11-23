@@ -1,34 +1,32 @@
-// SIDEBAR NAVIGATION
 document.addEventListener('DOMContentLoaded', function() {
-    // Sidebar links
-    const exhibitLink = document.querySelector('a[href="exhibits"]');
-    const settingsLink = document.querySelector('a[href="settings"]');
-  
-    // Section containers
-    const exhibitsSection = document.querySelector('.content-wrapper1');
-    const settingsSection = document.querySelector('.content-wrapper2');
-    const topSection = document.querySelector('.header-wrapper');
+  // Sidebar links
+  const exhibitLink = document.querySelector('.exhibitLink');
+  const settingsLink = document.querySelector('.settingLink');
 
-  
-    // Display exhibits section
-    settingsSection.style.display = 'none';
-    exhibitsSection.style.display = 'flex';
-  
-     // Exhibits section
-     exhibitLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        exhibitsSection.style.display = 'block';
-        settingsSection.style.display = 'none';
-        topSection.style.display = 'flex';
-    });
+  // Section containers
+  const exhibitsSection = document.getElementById('exhibits');
+  const settingsSection = document.getElementById('settings');
+  const topSection = document.querySelector('.header-wrapper');
 
-    // Settings section
-    settingsLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        exhibitsSection.style.display = 'none';
-        settingsSection.style.display = 'block';
-        topSection.style.display = 'none';
-    });
+
+  settingsSection.style.display = 'none';
+  exhibitsSection.style.display = 'flex';
+
+  // Exhibits section
+  exhibitLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      exhibitsSection.style.display = 'block';
+      settingsSection.style.display = 'none';
+      topSection.style.display = 'flex';
+  });
+
+  // Settings section
+  settingsLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      exhibitsSection.style.display = 'none';
+      settingsSection.style.display = 'block';
+      topSection.style.display = 'none';
+  });
 });
 
 
@@ -64,21 +62,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const soloRequest = document.getElementById("soloRequest");
   const collabRequest = document.getElementById("collabRequest");
 
-  // Check exhibit type and show/hide the respective sections
-  if (exhibitType === "Solo") {
-    document.getElementById("soloRequest").style.display = "block";
-    document.getElementById("collabRequest").style.display = "none";
-} else if (exhibitType === "Collaborate") {
-    document.getElementById("soloRequest").style.display = "none";
-    document.getElementById("collabRequest").style.display = "block";
-}
-  console.log("Exhibit Type:", exhibitType);
-
+  // Fetch and display exhibit data when a card is clicked
   for (let i = 0; i < cards.length; i++) {
     cards[i].addEventListener("click", function () {
       const exhibitId = cards[i].getAttribute("data-exhibit-id");
       console.log("Exhibit ID:", exhibitId);
 
+      // Fetch exhibit data
       fetchExhibitData(exhibitId).then(exhibit => {
         if (exhibit.error) {
           console.error('Exhibit not found');
@@ -90,8 +80,26 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("exhibit-date").innerText = exhibit.exbt_date;
         document.getElementById("exhibit-title").innerText = exhibit.exbt_title;
         document.getElementById("exhibit-description").innerText = exhibit.exbt_descrip;
-        
-        // Hide posts wrapper and header when exhibit details are displayed
+
+        //solo
+        document.getElementById('artist_name').textContent = exhibit.organizer_name || 'Unknown Organizer';
+
+        //collab
+        document.getElementById('artist_nameCollab').textContent = exhibit.organizer_name || 'Unknown Organizer';
+        // Handle Solo/Collaborative sections
+        const fetchedExhibitType = exhibit.exbt_type;
+        console.log("Fetched Exhibit Type:", fetchedExhibitType);
+
+        // Show/hide Solo or Collab sections based on the fetched exhibit type
+        if (fetchedExhibitType === "Solo") {
+          soloRequest.style.display = "block";
+          collabRequest.style.display = "none";
+        } else if (fetchedExhibitType === "Collaborate") {
+          soloRequest.style.display = "none";
+          collabRequest.style.display = "block";
+        }
+
+        // Show the panel and hide posts wrapper and header
         if (postsWrapper && headerWrapper) {
           postsWrapper.style.display = "none";
           headerWrapper.style.display = "none";
@@ -101,15 +109,6 @@ document.addEventListener("DOMContentLoaded", function () {
           panel.style.display = "block";
         }
 
-        // Show/hide Solo or Collab sections based on the fetched exhibit type
-        const fetchedExhibitType = exhibit.exbt_type;
-        if (fetchedExhibitType === "Solo") {
-          soloRequest.style.display = "block";
-          collabRequest.style.display = "none";
-        } else if (fetchedExhibitType === "Collab") {
-          soloRequest.style.display = "none";
-          collabRequest.style.display = "block";
-        }
       }).catch(error => {
         console.error('Error fetching exhibit data:', error);
         alert('An error occurred while fetching exhibit details.');
@@ -117,9 +116,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Back button functionality
   if (backButton) {
     backButton.addEventListener("click", function () {
-      // Hide the panel and show the posts wrapper and header again
       if (panel) {
         panel.style.display = "none";
       }
@@ -128,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
         postsWrapper.style.display = "block";
         headerWrapper.style.display = "block";
       }
-      window.location.reload(); // Optionally reload the page
+      window.location.reload();
     });
   }
 });
@@ -139,9 +138,9 @@ function fetchExhibitData(exhibitId) {
     fetch(`org.php?id=${exhibitId}`)
     .then(response => response.text())
     .then(data => {
-      console.log(data);
+      console.log("Raw data:", data);
       try {
-        const exhibit = JSON.parse(data); // Assuming the data is JSON formatted
+        const exhibit = JSON.parse(data); 
         resolve(exhibit);
       } catch (error) {
         console.error('Error parsing JSON:', error);
@@ -157,7 +156,7 @@ function fetchExhibitData(exhibitId) {
 
 
 
-//POPUP MSG FOR APPOVE & DECLINE
+// POPUP MSG FOR APPROVE & DECLINE
 document.addEventListener("DOMContentLoaded", function () {
   const approveButtons = document.querySelectorAll(".approve-btn");
   const declineButtons = document.querySelectorAll(".decline-btn");
@@ -168,51 +167,118 @@ document.addEventListener("DOMContentLoaded", function () {
   const cancelButton = document.getElementById("p-cancel-btn");
 
   let currentAction = ""; 
+  let currentExhibitId = null; // To store the exhibit ID to be updated
 
   // Function to show the popup
-  function showPopup(message, action) {
+  function showPopup(message, action, exhibitId) {
     popupMessage.textContent = message; 
     popupContainer.style.display = "flex"; 
     currentAction = action;
+    currentExhibitId = exhibitId; // Store the exhibit ID for the action
   }
 
   // Function to hide the popup
   function hidePopup() {
     popupContainer.style.display = "none";
     currentAction = ""; 
+    currentExhibitId = null;
   }
 
   // Add click listeners to all approve buttons
   for (let i = 0; i < approveButtons.length; i++) {
     approveButtons[i].addEventListener("click", function () {
-      showPopup("Are you sure you want to approve this exhibit?", "approve");
+      const exhibitId = approveButtons[i].getAttribute("data-exhibit-id"); 
+      showPopup("Are you sure you want to approve this exhibit?", "approve", exhibitId);
     });
   }
 
   // Add click listeners to all decline buttons
   for (let i = 0; i < declineButtons.length; i++) {
     declineButtons[i].addEventListener("click", function () {
-      showPopup("Are you sure you want to decline this exhibit?", "decline");
+      const exhibitId = declineButtons[i].getAttribute("data-exhibit-id");
+      showPopup("Are you sure you want to decline this exhibit?", "decline", exhibitId);
     });
   }
 
-  // Handle confirm button click
   confirmButton.addEventListener("click", function () {
-    if (currentAction === "approve") {
-      alert("Exhibit approved!");
-    } else if (currentAction === "decline") {
-      alert("Exhibit declined!"); 
+    if (currentAction === "approve" && currentExhibitId) {
+      // Approve action
+      fetch('org.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+          exbt_id: currentExhibitId,
+          status: 'Accepted' 
+        }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          showCustomAlert('Exhibit approved!');
+        } else {
+          // Check if the error message indicates there's already an accepted exhibit
+          if (data.message === "There is already an accepted exhibit. Please wait until it is marked as Done.") {
+            showCustomAlert('Cannot accept a new exhibit. Please wait for the current one to be marked as Done.');
+          } else {
+            showCustomAlert('Failed to update exhibit status.');
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showCustomAlert('An error occurred.');
+      });
+    } else if (currentAction === "decline" && currentExhibitId) {
+      // Decline action
+      fetch('org.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+          exbt_id: currentExhibitId,
+          status: 'Declined' 
+        }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          showCustomAlert('Exhibit declined!');
+        } else {
+          showCustomAlert('Failed to update exhibit status.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showCustomAlert('An error occurred.');
+      });
     }
+
     hidePopup(); 
   });
 
-  // Handle cancel button click
   cancelButton.addEventListener("click", function () {
-    hidePopup();
+    hidePopup(); 
   });
 });
 
 
+// show custom alert
+function showCustomAlert(message) {
+  const alertBox = document.getElementById('customAlert');
+  const alertMessage = document.getElementById('alertMessage');
+  const closeButton = document.getElementById('closeAlertBtn');
+
+  alertMessage.textContent = message; 
+  alertBox.classList.add('show'); 
+
+  closeButton.addEventListener('click', function() {
+      alertBox.classList.remove('show'); 
+      window.location.reload() 
+  });
+}
 
 //ADMIN & COLLAB IMG CAROUSEL
 document.addEventListener("DOMContentLoaded", function () {
