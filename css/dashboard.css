@@ -25,7 +25,10 @@ body {
     background: #a20d0d;
 }
 
-
+a {
+    pointer-events: auto;
+  }
+  
 .sidebar header {
     position: relative;
 }
@@ -1380,9 +1383,16 @@ body {
     display: flex;
     align-items: center;
     justify-content: left;  
+    z-index: 5;
     i{
         font-size: 2rem;
     }
+    a {
+        position: relative;
+        z-index: 10;  
+        pointer-events: auto;
+    }
+    
 }
 .requestLink {
     background-color: transparent;
@@ -2572,6 +2582,9 @@ textarea{
 .image-display img.hidden {
     display: none; 
 }
+
+/* solo request page css */
+
 @media (max-width: 768px) {
     .exhibit-container {
         width: 100%;

@@ -8,13 +8,15 @@
 }
 
 .container {
-    width: 1700px;
+    width: 1800px;
     height: 1000px;
     margin: 20px auto;
     background: white;
     border-radius: 8px;
     padding: 20px;
     overflow: hidden;
+
+
 }
 
 /* Header */
@@ -71,7 +73,7 @@
 }
 
 .wrapper {
-    height: 850px;
+    height: 800px;
     padding: 40px;
 }
 
@@ -402,3 +404,34 @@ textarea {
     display: none; 
 }
 
+.update-actions{
+   
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    
+    button{
+        width: 200px;
+        padding: 4px;
+        font-weight: bold;
+        border-radius: 20px;
+        border:none;
+        height: 30px;
+    }
+}
+.update-btn{
+    background-color: #9f1414;
+    color: white;
+}
+.update-btn:hover{
+    background-color: #a70b0b;
+    cursor: pointer;
+}
+.cancel-btn {
+    background-color: #b8bbbd;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }

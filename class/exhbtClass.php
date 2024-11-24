@@ -466,7 +466,17 @@ class ExhibitManager {
             return $stmt->rowCount() > 0; 
         }
         
-        
+        public function updateExhibit($exhibitId, $title, $description, $date) {
+            $query = "UPDATE exhibit_tbl SET exbt_title = ?, exbt_descrip = ?, exbt_date = ? WHERE exbt_id = ?";
+            $statement = $this->conn->prepare($query);
+            $statement->bind_param("sssi", $title, $description, $date, $exhibitId);
+    
+            if ($statement->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
 }
 
