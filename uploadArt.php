@@ -58,10 +58,33 @@ if (isset($_POST['uploadArt']) && $_SERVER['REQUEST_METHOD'] == "POST") {
             
             <label for="title"><b>Category</b></label><br>
             <select name="category" id="category">
-                <option value="Sculpture">Sculpture</option>
-                <option value="Painting">Painting</option>
-                <option value="Sketches">Sketches</option>
-                <option value="Expressionism">Expressionism</option>
+            <option value="Sketches">Sketches</option>
+        <option value="Sculpture">Sculpture</option>
+        <option value="Painting">Painting</option>
+        <option value="Abstract">Abstract</option>
+        <option value="Landscape">Landscape</option>
+        <option value="Portrait">Portrait</option>
+        <option value="Figurative">Figurative</option>
+        <option value="Expressionism">Expressionism</option>
+        <option value="Photography">Photography</option>
+        <option value="Digital Art">Digital Art</option>
+        <option value="Conceptual Art">Conceptual Art</option>
+        <option value="Pop Art">Pop Art</option>
+        <option value="Minimalism">Minimalism</option>
+        <option value="Street Art">Street Art</option>
+        <option value="Fantasy">Fantasy</option>
+        <option value="Crafts">Crafts</option>
+        <option value="Nature">Nature</option>
+        <option value="Architecture">Architecture</option>
+        <option value="Historical">Historical</option>
+        <option value="Political Art">Political Art</option>
+        <option value="Cultural Art">Cultural Art</option>
+        <option value="Installation Art">Installation Art</option>
+        <option value="Performance Art">Performance Art</option>
+        <option value="Renaissance">Renaissance</option>
+        <option value="Baroque">Baroque</option>
+        <option value="Gothic Art">Gothic Art</option>
+        <option value="Contemporary Art">Contemporary Art</option>
             </select>
             <br><br>
 

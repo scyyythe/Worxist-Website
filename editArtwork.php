@@ -100,7 +100,7 @@ $canDelete = !$isPartOfExhibit;
         <?php if (!$isPartOfExhibit): ?>
             <button type="submit" name="deleteArtwork" class="delete-artwork">Delete Artwork</button>
         <?php else: ?>
-            <button type="button" class="delete-artwork" disabled>Cannot Delete.Artwork is in exhibit.</button>
+            <button type="button" class="delete-artwork" disabled>Cannot Delete Artwork. Check Exhibits</button>
         <?php endif; ?>
 
 

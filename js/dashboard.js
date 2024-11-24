@@ -179,6 +179,30 @@ function toggleDropdown() {
   }
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+  const categoryLinks = document.querySelectorAll('#dropdown a'); 
+  const artworks = document.querySelectorAll('.box'); 
+
+  categoryLinks.forEach(function (link) {
+      link.addEventListener('click', function (event) {
+          event.preventDefault();
+          const selectedCategory = link.getAttribute('data-category'); // Get the selected category
+          
+          filterArtworks(selectedCategory, artworks);
+      });
+  });
+
+  function filterArtworks(category, artworks) {
+      artworks.forEach(function (artwork) {
+          if (category === 'all' || artwork.getAttribute('data-category') === category) {
+              artwork.style.display = 'block';
+          } else {
+              artwork.style.display = 'none'; 
+          }
+      });
+  }
+});
+
 
 // FOLLOWERS AND FOLLOWING
 const modal = document.getElementById("followers-modal");

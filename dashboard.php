@@ -290,11 +290,40 @@ if ($pendingExhibit) {
             
             <div class="filter-container">
                 <i class='bx bx-filter filter-icon' onclick="toggleDropdown()"></i>
-                    <div class="dropdown-content" id="dropdown">
-                        <a href="#">Sketches</a>
-                        <a href="#">Sculpture</a>
-                        <a href="#">Painting    </a>
-                    </div>
+                <div class="dropdown">
+    <div class="dropdown-content" id="dropdown">
+        <a href="#" data-category="all">All Categories</a>
+        <a href="#" data-category="Sketches">Sketches</a>
+        <a href="#" data-category="Sculpture">Sculpture</a>
+        <a href="#" data-category="Painting">Painting</a>
+        <a href="#" data-category="Abstract">Abstract</a>
+        <a href="#" data-category="Landscape">Landscape</a>
+        <a href="#" data-category="Landscape">Landscape</a>
+        <a href="#" data-category="Portrait">Portrait</a>
+        <a href="#" data-category="Figurative">Figurative</a>
+        <a href="#" data-category="Expressionism">Expressionism</a>
+        <a href="#" data-category="Photography">Photography</a>
+        <a href="#" data-category="Digital Art">Digital Art</a>
+        <a href="#" data-category="Sculpture">Sculpture</a>
+        <a href="#" data-category="Conceptual Art">Conceptual Art</a>
+        <a href="#" data-category="Pop Art">Pop Art</a>
+        <a href="#" data-category="Minimalism">Minimalism</a>
+        <a href="#" data-category="Street Art">Street Art</a>
+        <a href="#" data-category="Fantasy">Fantasy</a>
+        <a href="#" data-category="Crafts">Crafts</a>
+        <a href="#" data-category="Nature">Nature</a>
+        <a href="#" data-category="Architecture">Architecture</a>
+        <a href="#" data-category="Historical">Historical</a>
+        <a href="#" data-category="Political Art">Political Art</a>
+        <a href="#" data-category="Cultural Art">Cultural Art</a>
+        <a href="#" data-category="Installation Art">Installation Art</a>
+        <a href="#" data-category="Performance Art">Performance Art</a>
+        <a href="#" data-category="Renaissance">Renaissance</a>
+        <a href="#" data-category="Baroque">Baroque</a>
+        <a href="#" data-category="Gothic Art">Gothic Art</a>
+        <a href="#" data-category="Contemporary Art">Contemporary Art</a>
+    </div>
+</div>
             </div>
           
             <div class="profile">
