@@ -108,7 +108,7 @@ if (isset($_POST['changeUser'])) {
                 <li><i class='bx bxs-blanket'></i><a href="posts">Posts</a></li>
                 <li><i class='bx bxs-cog'></i><a href="settings">Settings</a></li>
             </ul>
-            <a href="/login-register.php" class="logout"><i class='bx bxs-log-out'></i>Logout</a>
+            <a href="../logout.php" class="logout"><i class='bx bxs-log-out'></i>Logout</a>
         </aside>
 
             <!-- Main Content -->

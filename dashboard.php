@@ -35,7 +35,7 @@ if (isset($_POST['removeProfilePic'])) {
 $exhibitManager = new artManager($conn);
 $images = $exhibitManager->getUserArtworks();
 $allImages = $exhibitManager->getAllArtworks();
-
+$pendingArtworks=$exhibitManager->getPendingArtworks();
 
 
 $exhibitManager = new ExhibitManager($conn);
@@ -157,7 +157,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
 
             <div class="bottom-content">
                 <li class="nav-link">
-                    <a href="index.php">
+                    <a href="./logout.php">
                         <i class='bx bx-log-out'></i>
                         <span class="text nav-text">
                         Sign Out
@@ -339,10 +339,12 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
         <a class="tablinks" onclick="myOption(event, 'Created')">Created <span></span></a>
         <a class="tablinks" onclick="myOption(event, 'Saved')">Saved <span></span></a>
         <a class="tablinks" onclick="myOption(event, 'Favorites')">Favorites<span></span></a>
+        <a class="tablinks" onclick="myOption(event, 'Pending')">Pending<span></span></a>
 
         </div>
     <!-- Created -->
     <div class="tabcontent" id="Created" >
+
       <h3>My Creations</h3>
     
       <div class="image-artwork created">
@@ -383,7 +385,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                         <?php 
                     }
                 } else {
-                    echo "<p>No Artworks Uploaded</p>";
+                    echo "<p>Empty Creations</p>";
                 }
                 ?>
 </div>
@@ -466,7 +468,52 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                 ?>
             </div>
         </div>
+            
+        <div class="tabcontent" id="Pending" >
+                <div class="head-pending">
+                <h3>Pending Artworks</h3>     
+                <button id="viewExhibit-btn" >View Pending Exhibit</button><br>
+                </div>
+            
+            <div class="image-artwork created">
 
+            <?php 
+    if (!empty($pendingArtworks)) {
+        foreach ($pendingArtworks as $image) { 
+            ?>
+             
+            <div class="box" 
+      
+                onclick="showPopup(this)" 
+                
+                data-image="<?php echo htmlspecialchars($image['file']); ?>"
+                data-title="<?php echo ($image['title']); ?>"
+                data-artist="<?php echo ($image['u_name']); ?>"
+                data-artist-id="<?php echo($image['u_id']); ?>"
+                data-category="<?php echo($image['category']); ?>" 
+                data-description="<?php echo($image['description']); ?>"
+                data-date="<?php echo($image['date']); ?>"
+                data-artwork-id="<?php echo($image['a_id']); ?>" 
+                data-liked="<?php echo ($image['likes_count']); ?>"
+                data-favorite="<?php echo ($image['favorites_count']); ?>"
+                data-saved="<?php echo ($image['saved_count']) ?>">
+
+
+                <img src="<?php echo($image['file']); ?>" alt="Uploaded Image">
+                <div class="artist-name">
+                    <p><span><b><?php echo ($image['u_name']); ?></b></span><br>
+                    <?php echo ($image['title']); ?></p>
+                </div>
+              
+            </div>
+            <?php 
+        }
+    } else {
+        echo "<p>No Artworks Uploaded</p>";
+    }
+    ?>
+</div>
+        </div>
         
 
         <!-- end of tabpande -->
@@ -582,6 +629,22 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                 ?>
             </h3>
         </div>
+        <div class="descriptionExhibit">
+    <p class="viewDescription">View Description</p>
+</div>
+
+<!-- Popup modal for description -->
+<div class="exhibition-description-popup">
+    <div class="exhibition-description-popup-content">
+        <span class="exhibition-close-popup">&times;</span>
+        <p>
+            <?php 
+                echo isset($exhibit[0]['exbt_descrip']) ? $exhibit[0]['exbt_descrip'] : 'No description available.';
+            ?>
+        </p>
+    </div>
+</div>
+
 
         <!-- Carousel navigation icons -->
         <div class="nav-icons">
@@ -621,7 +684,7 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
                 <p>
                     <span>
                         <?php 
-                            echo isset($exhibit[1]['u_name']) ?($exhibit[1]['u_name']) : 'Artist Name'; 
+                           echo isset($exhibit[0]['u_name']) ? $exhibit[0]['u_name'] : 'Artist Name';
                         ?>
                     </span><br>Cebu, Philippines
                 </p>
@@ -1097,6 +1160,8 @@ function updateCarousel() {
 
 
 updateCarousel();
+
+
 </script>
 
    <script src="js/dashboard.js"></script>

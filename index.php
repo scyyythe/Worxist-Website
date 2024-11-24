@@ -2,12 +2,38 @@
 session_start();
 
 include("include/connection.php");
-include 'class/artClass.php'; 
-include 'class/exhbtClass.php';
 
+class Exhibit {
+    private $conn;
 
-$exhibitManager = new ExhibitManager($conn);
-$acceptedExhibits = $exhibitManager->getAcceptedExhibits();
+    public function __construct($conn) {
+        $this->conn = $conn;
+    }
+
+    public function getAcceptedExhibits() {
+        $statement = $this->conn->prepare("
+            SELECT 
+                exhibit_tbl.exbt_title, 
+                exhibit_tbl.exbt_descrip, 
+                art_info.title AS artwork_title, 
+                art_info.description AS artwork_description, 
+                art_info.file AS artwork_file, 
+                art_info.u_id AS artist_id, 
+                accounts.u_name AS u_name 
+            FROM exhibit_tbl
+            INNER JOIN exhibit_artworks ON exhibit_tbl.exbt_id = exhibit_artworks.exbt_id
+            INNER JOIN art_info ON exhibit_artworks.a_id = art_info.a_id
+            INNER JOIN accounts ON art_info.u_id = accounts.u_id
+            WHERE exhibit_tbl.exbt_status = 'Accepted'
+        ");
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
+
+// Instantiate the Exhibit class and fetch accepted exhibits
+$exhibit = new Exhibit($conn);
+$acceptedExhibits = $exhibit->getAcceptedExhibits();
 ?>
 
 <!DOCTYPE html>
@@ -108,56 +134,52 @@ $acceptedExhibits = $exhibitManager->getAcceptedExhibits();
         </div>
 
         <div class="gallery-images">
-            <?php
-          
-            if (empty($acceptedExhibits)) {
-              
-                $defaultImages = [
-                    ["file" => "rose.png", "title" => "Roses", "artist" => "Maya Kulenovic", "description" => "The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to..."],
-                    ["file" => "head.png", "title" => "Sleeper", "artist" => "Maya Kulenovic", "description" => "The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to..."],
-                    ["file" => "paris.png", "title" => "Paris", "artist" => "Maya Kulenovic", "description" => "The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to..."],
-                    ["file" => "guitar.jpg", "title" => "Roses", "artist" => "Maya Kulenovic", "description" => "The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to..."]
-                ];
+        <?php
+                    if (empty($acceptedExhibits)) {
+                        $defaultImages = [
+                            ["file" => "rose.png", "title" => "Roses", "artist" => "Maya Kulenovic", "description" => "The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to..."],
+                            ["file" => "head.png", "title" => "Sleeper", "artist" => "Maya Kulenovic", "description" => "The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to..."],
+                            ["file" => "paris.png", "title" => "Paris", "artist" => "Maya Kulenovic", "description" => "The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to..."],
+                            ["file" => "guitar.jpg", "title" => "Roses", "artist" => "Maya Kulenovic", "description" => "The original sculpture is hand sculpted by the artist in clay or carved in plaster to a polished finish. This master is used to..."]
+                        ];
 
-             
-                foreach ($defaultImages as $image) {
+                        foreach ($defaultImages as $image) {
+                            ?>
+                            <div class="card">
+                                <img src="gallery/<?php echo $image['file']; ?>" alt="Head">
+                                <div class="title-card">
+                                    <p><span><?php echo $image['title']; ?></span><br>by <?php echo $image['artist']; ?></p>
+                                </div>
+                                <div class="description">
+                                    <br>
+                                    <p><?php echo $image['description']; ?></p>
+                                    <button id="explore">Explore</button>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    } else {
+                        foreach ($acceptedExhibits as $exhibit) {
+                            $artworkTitle = htmlspecialchars($exhibit['artwork_title']);
+                            $artworkDescription = htmlspecialchars($exhibit['artwork_description']);
+                            $artworkFile = htmlspecialchars($exhibit['artwork_file']);
+                            $artistName = htmlspecialchars($exhibit['u_name']);
+                            ?>
+                            <div class="card">
+                                <img src="<?php echo $artworkFile; ?>" alt="<?php echo $artworkTitle; ?>">
+                                <div class="title-card">
+                                    <p><span><?php echo $artworkTitle; ?></span><br>by <?php echo $artistName; ?></p>
+                                </div>
+                                <div class="description">
+                                    <br>
+                                    <p><?php echo $artworkDescription; ?></p>
+                                    <button id="explore">Explore</button>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    }
                     ?>
-                    <div class="card">
-                        <img src="gallery/<?php echo $image['file']; ?>" alt="Head">
-                        <div class="title-card">
-                            <p><span><?php echo $image['title']; ?></span><br>by <?php echo $image['artist']; ?></p>
-                        </div>
-                        <div class="description">
-                            <br>
-                            <p><?php echo $image['description']; ?></p>
-                            <button id="explore">Explore</button>
-                        </div>
-                    </div>
-                    <?php
-                }
-            } else {
-                
-                foreach ($acceptedExhibits as $exhibit) {
-                    $artworkTitle = htmlspecialchars($exhibit['artwork_title']);
-                    $artworkDescription = htmlspecialchars($exhibit['artwork_description']);
-                    $artworkFile = htmlspecialchars($exhibit['artwork_file']);
-                    $artistName = htmlspecialchars($exhibit['u_name']);
-                    ?>
-                    <div class="card">
-                        <img src="<?php echo $artworkFile; ?>" alt="<?php echo $artworkTitle; ?>">
-                        <div class="title-card">
-                            <p><span><?php echo $artworkTitle; ?></span><br>by <?php echo $artistName; ?></p>
-                        </div>
-                        <div class="description">
-                            <br>
-                            <p><?php echo $artworkDescription; ?></p>
-                            <button id="explore">Explore</button>
-                        </div>
-                    </div>
-                    <?php
-                }
-            }
-            ?>
         </div>
     </div>
 </section>

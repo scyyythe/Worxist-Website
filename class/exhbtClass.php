@@ -209,7 +209,7 @@ class ExhibitManager {
         $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
     
         if (!$rows) {
-            return null; 
+            return null;
         }
     
         $result = [
@@ -227,17 +227,29 @@ class ExhibitManager {
     
         // Collect unique collaborator names and format them (first name only)
         foreach ($rows as $row) {
-            if (!empty($row['collaborator_name']) && !in_array($row['collaborator_name'], $result['collaborator_names'])) {
-                // Extract first name of each collaborator
+            if (!empty($row['collaborator_name'])) {
                 $fullName = $row['collaborator_name'];
-                $firstName = explode(' ', trim($fullName))[0]; // Extract first name
-                $result['collaborator_names'][] = $firstName;
+                $firstName = explode(' ', trim($fullName))[0]; 
+                if (!in_array($firstName, $result['collaborator_names'])) {
+                    $result['collaborator_names'][] = $firstName;
+                }
             }
         }
     
         return $result;
     }
     
+    
+    
+    public function myPendingExhibits($u_id) {
+        $statement = $this->conn->prepare("
+            SELECT * FROM exhibit_tbl 
+            WHERE u_id = :u_id AND exbt_status = 'Pending'
+        ");
+        $statement->bindValue(':u_id', $u_id);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
     
     
     //get artworks from exhibit
@@ -264,16 +276,19 @@ class ExhibitManager {
                 exhibit_tbl.exbt_title, 
                 exhibit_tbl.exbt_descrip, 
                 exhibit_tbl.exbt_date, 
-                exhibit_tbl.exbt_type, 
+                exhibit_tbl.exbt_type,
                 accounts.u_name AS organizer_name, 
                 art_info.title AS artwork_title, 
                 art_info.description AS artwork_description, 
                 art_info.file AS artwork_file, 
-                art_info.u_id AS artist_id 
+                art_info.u_id AS artist_id ,
+                 collaborators.u_name AS collaborator_name
             FROM exhibit_tbl
             INNER JOIN accounts ON exhibit_tbl.u_id = accounts.u_id
             INNER JOIN exhibit_artworks ON exhibit_tbl.exbt_id = exhibit_artworks.exbt_id
             INNER JOIN art_info ON exhibit_artworks.a_id = art_info.a_id
+             LEFT JOIN collab_exhibit ON exhibit_tbl.exbt_id = collab_exhibit.exbt_id  
+            LEFT JOIN accounts AS collaborators ON collab_exhibit.u_id = collaborators.u_id  
             WHERE exhibit_tbl.exbt_status = 'Pending'
         ");
         $statement->execute();

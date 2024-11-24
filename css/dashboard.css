@@ -834,7 +834,26 @@ body {
     cursor: pointer;
  }
 
+/* Pedning Artowkr */
+.head-pending{
+    display: flex;
+    justify-content: space-between;
+    button{
+        padding: 2px;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        position: relative;
+        border: none;
+        text-decoration: underline;
+        left: 35%;
+        top: 5%;
+    }
 
+    button:hover{
+        color: #9f1414;
+    }
+}
 /* messages */
 .messages-container {
   
@@ -1115,10 +1134,6 @@ body {
     margin-inline: auto;
     position: relative;
     right: 50px;
-    /* border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1144,8 +1159,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
-
+.description{
+    position: absolute;
+    top: 10%;
+}
 .nav-icons {
     display: flex;
     justify-content: space-between;
@@ -1334,8 +1353,7 @@ body {
 .top-req{
     display: flex;
     align-items: center;
-    justify-content: left;
-
+    justify-content: left;  
     i{
         font-size: 2rem;
     }
@@ -1376,6 +1394,7 @@ body {
     width: 40%;
     z-index: 2;
     form{
+        margin-top: 20px;
         line-height: 1;
         padding: 20px;
     }
@@ -1408,6 +1427,45 @@ body {
         border: none;
         background-color: #f8f8f8;
     }
+}
+.display-collaborators{
+    position: relative;
+    bottom: 10%;
+    height: 30%;
+    padding: 5px;
+    overflow-y: scroll;
+}
+.update-actions{
+    position: relative;
+    left: 120%;
+    top: 130px;
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    button{
+        width: 200px;
+        padding: 4px;
+        font-weight: bold;
+        border-radius: 20px;
+        border:none;
+        height: 30px;
+    }
+}
+.update-btn{
+    background-color: #9f1414;
+    color: white;
+}
+.update-btn:hover{
+    background-color: #a70b0b;
+    cursor: pointer;
+}
+.cancel-btn{
+    background-color: #e0dddd;
+    cursor: pointer;
+}
+.cancel-btn:hover{
+    cursor: pointer;
+    background-color: #888;
 }
 /* validaiton on requesting an exhibit */
 .artwork-modal {
@@ -1710,7 +1768,63 @@ body {
     background-color: #f0f0f0;
     color: red;
 }
+.descriptionExhibit{
+    position: relative;
+    top: 5%;
+}
+.viewDescription:hover{
+    cursor: pointer;
+}
+.exhibition-description-popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
 
+.exhibition-description-popup-content {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    left: 37%;
+    top: 30%;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    position: relative;
+    font-family: Arial, sans-serif;
+    color: #333;
+    backdrop-filter: blur(15px) brightness(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.exhibition-close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.exhibition-close-popup:hover {
+    color: #ddd;
+}
+
+.exhibition-description-popup-content p {
+    margin: 0;
+    line-height: 1.5;
+    font-size: 16px;
+    text-align: center;
+    color: #fff;
+}
 
 
 /* settings css */

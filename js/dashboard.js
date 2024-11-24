@@ -135,6 +135,10 @@ document.addEventListener("DOMContentLoaded", function() {
   firstTab.click(); 
 });
 
+//view peding exhibits
+document.getElementById("viewExhibit-btn").addEventListener("click", function() {
+  window.location.href = "pendingExhibit.php";  // Redirect to the pending exhibits page
+});
 
 // dropdown filter
 function toggleDropdown() {
@@ -275,6 +279,29 @@ settingLink.addEventListener('click', function(e) {
  
 });
 
+
+document.addEventListener('DOMContentLoaded', () => {
+  const descriptionTrigger = document.querySelector('.viewDescription');
+  const popup = document.querySelector('.exhibition-description-popup');
+  const closePopup = document.querySelector('.exhibition-close-popup');
+
+  // Show the popup when the trigger is clicked
+  descriptionTrigger.addEventListener('click', () => {
+      popup.style.display = 'block';
+  });
+
+  // Close the popup when the close button is clicked
+  closePopup.addEventListener('click', () => {
+      popup.style.display = 'none';
+  });
+
+  // Close the popup when clicking outside the content
+  window.addEventListener('click', (event) => {
+      if (event.target === popup) {
+          popup.style.display = 'none';
+      }
+  });
+});
 
 
 // pop up modal para sa clicked na artworks

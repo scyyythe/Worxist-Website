@@ -329,6 +329,11 @@ form{
     image-orientation: flip;
 
 }
+.success-message {
+    color: green;
+    font-size: 16px;
+    font-weight: bold;
+}
 
 
 /* LOGIN CSS */

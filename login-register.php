@@ -4,6 +4,7 @@ include("include/connection.php");
 include 'class/accClass.php';
 
 $errorMessage = ''; 
+$successMessage='';
 
 if (isset($_POST['login'])) {
     $accountManager = new AccountManager($conn);
@@ -18,6 +19,7 @@ if (isset($_POST['login'])) {
     }
 }
 
+
 if (isset($_POST['register'])) {
     $accountManager = new AccountManager($conn);
     $name = $_POST['name'];
@@ -29,9 +31,17 @@ if (isset($_POST['register'])) {
         $errorMessage = "All fields are required for registration.";
     } else {
         $accountManager->register($name, $email, $username, $password);
-    }
+        $successMessage='Registration Complete';
+    }   
 }
 
+// Store the messages in session for later use
+if ($errorMessage) {
+    $_SESSION['errorMessage'] = $errorMessage;
+}
+if ($successMessage) {
+    $_SESSION['successMessage'] = $successMessage;
+}
 ?>
 
 
@@ -48,8 +58,9 @@ if (isset($_POST['register'])) {
 </head>
 <body>
     <div class="wrapper" id="wrapper">
-    <!-- Display success message -->
 
+
+    <!-- Display success message -->
     <div id="validationModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -76,7 +87,7 @@ if (isset($_POST['register'])) {
 
         <!-- CREATE ACCOUNT -->
         <div class="form-container" id="form-container">
-          
+      
             <div class="to-login">
                 <p> <i id="returnTo" class='bx bx-chevron-left'></i></p>
                 <p>Already a member? <a href="#" id="show-login">Sign in</a></p>
@@ -174,46 +185,58 @@ if (isset($_POST['register'])) {
     </div>
     <script src="js/dashboard.js" ></script>
     <script>
-         const errorMessage = "<?php echo $errorMessage; ?>";
-         
-
     document.addEventListener("DOMContentLoaded", () => {
-        const modal = document.getElementById("validationModal");
-        const span = document.getElementsByClassName("close")[0];
-        const modalMessage = document.getElementById("modalMessage");
+    // Fetch success and error messages from PHP session variables
+    const errorMessage = "<?php echo isset($_SESSION['errorMessage']) ? $_SESSION['errorMessage'] : ''; ?>";
+    const successMessage = "<?php echo isset($_SESSION['successMessage']) ? $_SESSION['successMessage'] : ''; ?>";
 
-        
-        span.onclick = function() {
+    const modal = document.getElementById("validationModal");
+    const span = document.getElementsByClassName("close")[0];
+    const modalMessage = document.getElementById("modalMessage");
+
+    // Close modal when clicking on the close button
+    span.onclick = function() {
+        modal.style.display = "none";
+    };
+
+    // Close modal if clicking outside of it
+    window.onclick = function(event) {
+        if (event.target == modal) {
             modal.style.display = "none";
-        };
+        }
+    };
 
-   
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        };
+    // Show the modal for error message
+    if (errorMessage) {
+        modalMessage.innerText = errorMessage;
+        modal.style.display = "block"; 
+        <?php unset($_SESSION['errorMessage']); ?>  // Clear error message after showing it
+    }
 
-        
-        if (errorMessage) {
-            modalMessage.innerText = errorMessage;
+    // Show the modal for success message
+    if (successMessage) {
+        modalMessage.innerText = successMessage;
+        modal.style.display = "block"; 
+        <?php unset($_SESSION['successMessage']); ?>  // Clear success message after showing it
+    }
+    
+    // Handle form submission for login validation
+    const loginForm = document.forms["login"];
+    loginForm.addEventListener("submit", (e) => {
+        const username = loginForm["username"].value;
+        const password = loginForm["password"].value;
+
+        if (!username || !password) {
+            e.preventDefault(); 
+            modalMessage.innerText = "Please enter both username and password.";
             modal.style.display = "block"; 
         }
-
-       
-        const loginForm = document.forms["login"];
-        loginForm.addEventListener("submit", (e) => {
-            const username = loginForm["username"].value;
-            const password = loginForm["password"].value;
-
-            if (!username || !password) {
-                e.preventDefault(); 
-                modalMessage.innerText = "Please enter both username and password.";
-                modal.style.display = "block"; 
-            }
-        });
     });
+});
+
+    
 
     </script>
+    
 </body>
 </html>

@@ -36,9 +36,6 @@ class AccountManager
                 header("Location: organizer/org.php");
             }
             die;
-        } else {
-            
-            echo "Invalid username or password.";
         }
     }
     
@@ -68,6 +65,7 @@ class AccountManager
             $_SESSION['accStatus'] = $accStatus;
           
             header("Location: login-register.php");
+
             die;
         }
         return false;
