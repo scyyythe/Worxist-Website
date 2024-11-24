@@ -6,6 +6,11 @@ include '../class/accclass.php';
 include '../class/artClass.php';
 include '../class/exhbtClass.php';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: /login-register.php");
     die;
@@ -52,7 +57,8 @@ if (isset($_POST['changeUser'])) {
 $exhibit= new ExhibitManager($conn);
 $pending=$exhibit->getPendingExhibits();
 $request=$exhibit->getRequestExhibit();
-$exhibitId = 1; // Example exhibit ID
+$exhibitId = 1; 
+$collaborator=$exhibit->getCollab($exhibitId);
 
 
 if (isset($_GET['id'])) {
@@ -205,87 +211,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Admin Section -->
     <div class="admin">
         <h2>Admin</h2>
-        <p id="artist_nameCollab"><?php echo $exhibit['organizer_name']; ?></p>
+        <p id="artist_nameCollab"></p>
         <div class="admin-card">
             <div class="art-collage">
                 <div class="artworks">
-                    <img src="pics/a1.jpg" alt="Art 1">
-                    <img src="pics/a3.jpg" alt="Art 2">
+                    <!-- two images  -->
                 </div>
                 <div class="artwork">
-                    <img src="pics/a2.jpg" alt="Art 3">
+                    <!-- one image e -->
                 </div>
             </div>
         </div>
+
     </div>
     <!-- Collaborators Section -->
     <div class="collaborators">
         <h2>Collaborators</h2>
-        <div class="collaborator-cards">
-            <div class="collab-wrapper1">
-                <p class="collab-name1">Angel</p>
-                <div class="collaborator">
-                    <div class="art-collage">
-                        <div class="c-artworks">
-                            <img src="pics/a1.jpg" alt="Art 1">
-                            <img src="pics/a3.jpg" alt="Art 2">
-                        </div>
-                        <div class="c-artwork">
-                            <img src="pics/a2.jpg" alt="Art 3">
-                        </div>
-                    </div>
-                </div>
-                <p class="collab-name1">Jeralyn</p>
-                <div class="collaborator">
-                    <div class="art-collage">
-                        <div class="c-artworks">
-                            <img src="pics/a1.jpg" alt="Art 1">
-                            <img src="pics/a3.jpg" alt="Art 2">
-                        </div>
-                        <div class="c-artwork">
-                            <img src="pics/a2.jpg" alt="Art 3">
+        <div class="collaborator-cards" id="collaborators-cards">
+        
+            <div class="collab-details">
+                    <p class="collab-name1" id="collab_name">Angel</p>
+                    <div class="collaborator">
+                        <div class="art-collage">
+                            <div class="c-artworks">
+                                <img src="pics/a1.jpg" alt="Art 1">
+                                <img src="pics/a3.jpg" alt="Art 2">
+                            </div>
+                            <div class="c-artwork">
+                                <img src="pics/a2.jpg" alt="Art 3">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <p class="collab-name1">Genesis</p>
-                <div class="collaborator">
-                    <div class="art-collage">
-                        <div class="c-artworks">
-                            <img src="pics/a1.jpg" alt="Art 1">
-                            <img src="pics/a3.jpg" alt="Art 2">
-                        </div>
-                        <div class="c-artwork">
-                            <img src="pics/a2.jpg" alt="Art 3">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="collab-wrapper2">
-                <p class="collab-name2">Janah</p>
-                <div class="collaborator">
-                    <div class="art-collage">
-                        <div class="c-artworks">
-                            <img src="pics/a1.jpg" alt="Art 1">
-                            <img src="pics/a3.jpg" alt="Art 2">
-                        </div>
-                        <div class="c-artwork">
-                            <img src="pics/a2.jpg" alt="Art 3">
-                        </div>
-                    </div>
-                </div>
-                <p class="collab-name2">Jamaica</p>
-                <div class="collaborator">
-                    <div class="art-collage">
-                        <div class="c-artworks">
-                            <img src="pics/a1.jpg" alt="Art 1">
-                            <img src="pics/a3.jpg" alt="Art 2">
-                        </div>
-                        <div class="c-artwork">
-                            <img src="pics/a2.jpg" alt="Art 3">
-                        </div>
-                    </div>
-                </div>
-            </div>
+                </div>             
+        
         </div>
     </div>
 
@@ -294,9 +252,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- solo -->
 <div class="solo" id="soloRequest">
     <h2>Exhibit Owner</h2>
-    <p id="artist_name"><?php echo $exhibit['organizer_name']; ?></p><br>
+    <p id="artist_name"></p><br>
     <div class="admin-card soloCard" id="soloCardImages">
-        <!-- Images will be added here dynamically via JS -->
+
     </div>
 </div>
 

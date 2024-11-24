@@ -188,15 +188,13 @@ class ExhibitManager {
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //retrieve exhibit details
     public function getExhibitDetails($exhibitId) {
         $statement = $this->conn->prepare("
             SELECT 
                 exhibit_tbl.*, 
                 accounts.u_name AS organizer_name, 
                 art_info.file AS artwork_file,
-                collaborators.u_name AS collaborator_name,
-                collaborators.profile AS collaborator_profile  
+                collaborators.u_name AS collaborator_name
             FROM exhibit_tbl
             INNER JOIN accounts ON exhibit_tbl.u_id = accounts.u_id
             INNER JOIN exhibit_artworks ON exhibit_tbl.exbt_id = exhibit_artworks.exbt_id
@@ -207,11 +205,40 @@ class ExhibitManager {
         ");
         $statement->bindValue(1, $exhibitId, PDO::PARAM_INT);
         $statement->execute();
-        
-        $result = $statement->fetch(PDO::FETCH_ASSOC); // Fetch all rows
-        
+    
+        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+        if (!$rows) {
+            return null; 
+        }
+    
+        $result = [
+            'exhibit' => $rows[0], 
+            'artwork_files' => [],
+            'collaborator_names' => [],
+        ];
+    
+        // Collect unique artwork files
+        foreach ($rows as $row) {
+            if (!empty($row['artwork_file']) && !in_array($row['artwork_file'], $result['artwork_files'])) {
+                $result['artwork_files'][] = $row['artwork_file'];
+            }
+        }
+    
+        // Collect unique collaborator names and format them (first name only)
+        foreach ($rows as $row) {
+            if (!empty($row['collaborator_name']) && !in_array($row['collaborator_name'], $result['collaborator_names'])) {
+                // Extract first name of each collaborator
+                $fullName = $row['collaborator_name'];
+                $firstName = explode(' ', trim($fullName))[0]; // Extract first name
+                $result['collaborator_names'][] = $firstName;
+            }
+        }
+    
         return $result;
     }
+    
+    
     
     //get artworks from exhibit
     public function getExhibitArtwork($exhibitId){

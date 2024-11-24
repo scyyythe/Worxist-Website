@@ -77,18 +77,104 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Populate panel with fetched exhibit data
-        document.getElementById("exhibit-date").innerText = exhibit.exbt_date;
-        document.getElementById("exhibit-title").innerText = exhibit.exbt_title;
-        document.getElementById("exhibit-description").innerText = exhibit.exbt_descrip;
+        document.getElementById("exhibit-date").innerText = exhibit.exhibit.exbt_date;
+        document.getElementById("exhibit-title").innerText = exhibit.exhibit.exbt_title;
+        document.getElementById("exhibit-description").innerText = exhibit.exhibit.exbt_descrip;
 
         //solo
-        document.getElementById('artist_name').textContent = exhibit.organizer_name || 'Unknown Organizer';
+        document.getElementById('artist_name').textContent = exhibit.exhibit.organizer_name || 'Unknown Organizer';
+        const artworkFiles = exhibit.artwork_files;
 
+        const soloCardImages = document.getElementById('soloCardImages');
+        soloCardImages.innerHTML = '';
+        
+        artworkFiles.forEach(file => {
+            const img = document.createElement('img');
+            img.src =  `../${file}`;
+            img.alt = 'Artwork'; 
+            img.style.width = '100%';
+            img.style.margin = '10px';
+        
+            soloCardImages.appendChild(img);
+        });
+        
         //collab
-        document.getElementById('artist_nameCollab').textContent = exhibit.organizer_name || 'Unknown Organizer';
-        // Handle Solo/Collaborative sections
-        const fetchedExhibitType = exhibit.exbt_type;
-        console.log("Fetched Exhibit Type:", fetchedExhibitType);
+        document.getElementById('artist_nameCollab').textContent = exhibit.exhibit.organizer_name || 'Unknown Organizer';
+  
+        const collaboratorsContainer = document.getElementById('collaborators-cards');
+        const collaboratorNames = exhibit.collaborator_names || ['Unknown Collaborator'];
+        collaboratorsContainer.innerHTML = '';
+        
+        collaboratorNames.forEach((name, index) => {
+          const collabDetails = document.createElement('div');
+          collabDetails.classList.add('collab-details');
+        
+          const collabNameElement = document.createElement('p');
+          collabNameElement.classList.add('collab-name1');
+          collabNameElement.textContent = name;
+        
+          const collaboratorContainer = document.createElement('div');
+          collaboratorContainer.classList.add('collaborator');
+        
+          const artCollage = document.createElement('div');
+          artCollage.classList.add('art-collage');
+        
+          const cArtworks = document.createElement('div');
+          cArtworks.classList.add('c-artworks');
+        
+          for (let i = 0; i < 2; i++) {
+            if (exhibit.artwork_files[i]) {
+              const image = document.createElement('img');
+              image.src = exhibit.artwork_files[i];
+              // image.alt = `Art ${i + 1} by ${name}`;
+              // cArtworks.appendChild(image);
+            }
+          }
+        
+          const cArtwork = document.createElement('div');
+          cArtwork.classList.add('c-artwork');
+          if (exhibit.artwork_files[2]) {
+            const image = document.createElement('img');
+            image.src = exhibit.artwork_files[2];
+            // image.alt = `Art 3 by ${name}`;
+            // cArtwork.appendChild(image);
+          } else if (exhibit.artwork_files.length === 0) {
+            const noImagesText = document.createElement('p');
+            noImagesText.textContent = 'No images';
+            cArtwork.appendChild(noImagesText);
+          }
+        
+          artCollage.appendChild(cArtworks);
+          artCollage.appendChild(cArtwork);
+        
+          collaboratorContainer.appendChild(artCollage);
+        
+          collabDetails.appendChild(collabNameElement);
+          collabDetails.appendChild(collaboratorContainer);
+        
+          collaboratorsContainer.appendChild(collabDetails);
+        });
+        
+
+        //admin
+        const artworksContainer = document.querySelector('.artworks');
+        const artworkContainer = document.querySelector('.artwork');
+        artworkFiles.slice(0, 3).forEach((file, index) => {
+          const img = document.createElement('img');
+          img.src = `../${file}`; 
+          img.alt = `Art ${index + 1}`;
+          
+          if (index < 2) {
+              artworksContainer.appendChild(img);
+          } else {
+              artworkContainer.appendChild(img);
+          }
+        });
+
+        // get the exhibit type
+const fetchedExhibitType = exhibit.exhibit.exbt_type; 
+console.log("Fetched Exhibit Type:", fetchedExhibitType);
+
 
         // Show/hide Solo or Collab sections based on the fetched exhibit type
         if (fetchedExhibitType === "Solo") {
