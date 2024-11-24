@@ -26,13 +26,24 @@ class artManager
 
 
     public function deleteArtwork($a_id) {
-        $statement = $this->conn->prepare("
-            DELETE FROM art_info 
-            WHERE a_id = :a_id
-        ");
-        $statement->bindValue(':a_id', $a_id);
-        return $statement->execute();
+        try {
+            $statement = $this->conn->prepare("DELETE FROM art_info WHERE a_id = :a_id");
+            $statement->bindValue(':a_id', $a_id);
+    
+            // Debug: Check the SQL query and the bound parameters
+            if ($statement->execute()) {
+                return true;
+            } else {
+                // Debug: Log the error message
+                echo "Error: Could not delete artwork. " . implode(", ", $statement->errorInfo());
+                return false;
+            }
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
     }
+    
     public function getArtworkById($artworkId) {
         $statement = $this->conn->prepare("
             SELECT art_info.file, art_info.title, art_info.description, art_info.category
@@ -109,26 +120,26 @@ class artManager
     public function getAllArtworks($category = null) {
         $query = "
            SELECT 
-    accounts.u_id, 
-    art_info.file, 
-    accounts.u_name, 
-    art_info.a_id, 
-    art_info.title, 
-    art_info.description, 
-    art_info.date, 
-    art_info.category,
-    COUNT(DISTINCT likes.u_id) AS likes_count,
-    COUNT(DISTINCT saved.u_id) AS saved_count,
-    COUNT(DISTINCT favorite.u_id) AS favorites_count
-FROM art_info
-JOIN accounts ON art_info.u_id = accounts.u_id
-LEFT JOIN likes ON art_info.a_id = likes.a_id
-LEFT JOIN saved ON art_info.a_id = saved.a_id
-LEFT JOIN favorite ON art_info.a_id = favorite.a_id
-WHERE art_info.a_status = 'approved'
-GROUP BY art_info.a_id;
-'";
-        
+            accounts.u_id, 
+            art_info.file, 
+            accounts.u_name, 
+            art_info.a_id, 
+            art_info.title, 
+            art_info.description, 
+            art_info.date, 
+            art_info.category,
+            COUNT(DISTINCT likes.u_id) AS likes_count,
+            COUNT(DISTINCT saved.u_id) AS saved_count,
+            COUNT(DISTINCT favorite.u_id) AS favorites_count
+        FROM art_info
+        JOIN accounts ON art_info.u_id = accounts.u_id
+        LEFT JOIN likes ON art_info.a_id = likes.a_id
+        LEFT JOIN saved ON art_info.a_id = saved.a_id
+        LEFT JOIN favorite ON art_info.a_id = favorite.a_id
+        WHERE art_info.a_status = 'approved'
+        GROUP BY art_info.a_id;
+        '";
+                
     
         if ($category) {
             $query .= " WHERE art_info.category = :category";

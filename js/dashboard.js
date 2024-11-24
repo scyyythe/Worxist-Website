@@ -136,15 +136,28 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 //view peding exhibits
-
 document.addEventListener("DOMContentLoaded", function () {
   const button = document.getElementById("viewExhibit-btn");
-  if (button) {
+   const button2 = document.getElementById("viewExhibit");
+  if (button&&button2) {
     button.addEventListener("click", function(event) {
-      event.preventDefault(); // Prevent any default behavior like form submission
+      event.preventDefault(); 
 
       const exbtType = this.getAttribute("data-exbt-type"); 
-      console.log(exbtType);  // Debugging to check which type is selected
+      console.log(exbtType); 
+
+      if (exbtType === 'Solo') {
+        window.location.href = "soloRequest.php";
+      } else if (exbtType === 'Collaborate') {
+        window.location.href = "pendingCollab/collabRequest.php";
+      }
+    });
+
+    button2.addEventListener("click", function(event) {
+      event.preventDefault(); 
+
+      const exbtType = this.getAttribute("data-exbt-type"); 
+      console.log(exbtType); 
 
       if (exbtType === 'Solo') {
         window.location.href = "soloRequest.php";

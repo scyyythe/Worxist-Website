@@ -14,9 +14,6 @@ if (isset($_GET['a_id']) && filter_var($_GET['a_id'])) {
 
 $artManager = new artManager($conn);
 
-$artManager = new artManager($conn);
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['deleteArtwork'])) {
         if ($artManager->deleteArtwork($artworkId)) {
@@ -47,6 +44,9 @@ $description = ($artworkDetails['description']);
 $category = ($artworkDetails['category']);
 $imageSrc = ($artworkDetails['file']);
 
+$exhibitManager = new ExhibitManager($conn);
+$isPartOfExhibit = $exhibitManager->isArtworkInExhibit($artworkId); 
+$canDelete = !$isPartOfExhibit;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +72,7 @@ $imageSrc = ($artworkDetails['file']);
         </div>
  
 </header>
-    
+
     <div class="artwork-upload">
     <form action="" method="POST" name="uploadArt" enctype="multipart/form-data">
         <input type="hidden" name="a_id" value="<?php echo $artworkId; ?>"> 
@@ -97,11 +97,37 @@ $imageSrc = ($artworkDetails['file']);
             </div>    
         </div> 
         <button type="submit" name="uploadArt">Save Changes</button><br>
-        <button type="submit" name="deleteArtwork" class="delete-artwork">Delete Artwork</button>
+        <?php if (!$isPartOfExhibit): ?>
+            <button type="submit" name="deleteArtwork" class="delete-artwork">Delete Artwork</button>
+        <?php else: ?>
+            <button type="button" class="delete-artwork" disabled>Cannot Delete.Artwork is in exhibit.</button>
+        <?php endif; ?>
+
+
     </form>
     </div>
 
     <script>
+     document.addEventListener('DOMContentLoaded', function () {
+        console.log("JavaScript loaded and ready");
+
+        document.querySelector('.delete-artwork').addEventListener('click', function(event) {
+            console.log("Delete button clicked");
+            var isPartOfExhibit = <?php echo json_encode($isPartOfExhibit); ?>; 
+
+            if (isPartOfExhibit) {
+                event.preventDefault(); 
+                var confirmation = confirm("This artwork cannot be deleted because it is part of an exhibit.");
+                if (confirmation) {
+                    window.location.href = 'editArtwork.php';
+                }
+            } else {
+                if (confirm("Are you sure you want to delete this artwork?")) {
+                    document.forms['uploadArt'].submit(); 
+                }
+            }
+        });
+    });
         function returnArt() {
         window.location.href = 'dashboard.php';
     }
@@ -122,6 +148,10 @@ $imageSrc = ($artworkDetails['file']);
 
         updateDateTime();
         setInterval(updateDateTime, 60000); 
+
+     
+
+
     </script>
 </body>
 </html>

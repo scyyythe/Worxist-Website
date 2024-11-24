@@ -76,6 +76,16 @@ $statement = $conn->prepare($query);
 $statement->bindParam(':u_id', $u_id, PDO::PARAM_INT);
 $statement->execute();
 $pendingRequest = $statement->fetch(PDO::FETCH_ASSOC);
+
+//check if already schedule an exhibit
+$query = $conn->prepare("SELECT exbt_status FROM exhibit_tbl WHERE u_id = :u_id AND exbt_status = 'Pending'");
+$query->execute(['u_id' => $u_id]);
+$pendingExhibit = $query->fetch(PDO::FETCH_ASSOC);
+if ($pendingExhibit) {
+    $hasPendingExhibit = true;
+} else {
+    $hasPendingExhibit = false;
+}
 ?> 
 
 <!DOCTYPE html>
@@ -704,15 +714,19 @@ $pendingRequest = $statement->fetch(PDO::FETCH_ASSOC);
     </div>
 </div>
 
-
-
-        <!-- Solo Exhibit Request -->
+        <!--  Exhibit Request -->
         <div id="reqExhibit-con" class="reqExhibit-con">
             <div class="top-req">
                 <i class='bx bx-chevron-left' onclick="toggleExhibit()"></i>
                 <p>Schedule Your Exhibition Now</p>
             </div>
-
+            <?php if ($hasPendingExhibit): ?>
+        <div class="pending-exhibit-message">
+            <p>You already have a pending exhibit.</p><br>
+            <button class="viewExhibit" id="viewExhibit" data-exbt-type="<?php echo htmlspecialchars($pendingRequest['exbt_type']); ?>">View Pending Exhibit</button>
+        </div>
+        
+    <?php else: ?>
             <div class="tab-btn">
                 <button class="requestLink" onclick="openPage('Solo')" id="defaultOpen">Solo</button>
                 <button class="requestLink" onclick="openPage('Collaborative')" >Collaborate</button>
@@ -851,7 +865,7 @@ $pendingRequest = $statement->fetch(PDO::FETCH_ASSOC);
 </div>
 
 </div>
-
+<?php endif; ?>
 
         </div>
 
@@ -1117,15 +1131,15 @@ $pendingRequest = $statement->fetch(PDO::FETCH_ASSOC);
     <!-- end of wrapper -->
    </div>
    <script>
-// Sample PHP data injected into the JavaScript array, grouped by collaborator
+console.log(<?php echo json_encode($collaborators); ?>);
+
+
 const collaborators = [
-    <?php foreach ($collaborators as $collaborator): ?>
-    {
+    <?php foreach ($collaborators as $collaborator): ?>{
         artistName: "<?php echo htmlspecialchars($collaborator['u_name']); ?>",
-        artistImage: "<?php echo htmlspecialchars($collaborator['profile_image']); ?>",
+        artistImage: "<?php echo 'profile_pics/' . $collaborator['profile_image']; ?>",
         artworks: [
-            <?php foreach ($collaborator['artworks'] as $artwork): ?>
-            {
+            <?php foreach ($collaborator['artworks'] as $artwork): ?>{
                 src: "<?php echo htmlspecialchars($artwork['artwork_file']); ?>",
                 title: "<?php echo htmlspecialchars($artwork['artwork_title']); ?>",
                 description: "<?php echo htmlspecialchars($artwork['artwork_description']); ?>"
@@ -1136,25 +1150,36 @@ const collaborators = [
     <?php endforeach; ?>
 ];
 
-let currentCollaboratorIndex = 0; // Tracks the current collaborator
-let currentArtworkIndex = 0; // Tracks the current artwork of the selected collaborator
+let currentCollaboratorIndex = 0; 
+let currentArtworkIndex = 0; 
 
-// Event listeners for artist navigation
+
 document.querySelector('.next-icon2').addEventListener('click', () => {
+    console.log('Collaborators array:', collaborators);
+    console.log('Collaborators length:', collaborators.length);
+    console.log("Collaborators Array:", collaborators);
+
+    if (collaborators.length <= 1) return; 
+
+    console.log('Current index before update:', currentCollaboratorIndex);
     currentCollaboratorIndex = (currentCollaboratorIndex + 1) % collaborators.length;
-    currentArtworkIndex = 0; // Reset artwork index when switching collaborators
+    console.log('Current index after update:', currentCollaboratorIndex);
+
+    currentArtworkIndex = 0;
+    console.log('Next collaborator index:', currentCollaboratorIndex);
     updateArtist();
     updateCarousel();
 });
+
 
 document.querySelector('.prev-icon2').addEventListener('click', () => {
     currentCollaboratorIndex = (currentCollaboratorIndex - 1 + collaborators.length) % collaborators.length;
-    currentArtworkIndex = 0; // Reset artwork index when switching collaborators
+    currentArtworkIndex = 0;
+    console.log('Previous collaborator index:', currentCollaboratorIndex);
     updateArtist();
     updateCarousel();
 });
 
-// Event listeners for artwork navigation within the current collaborator
 document.querySelector('.next-icon').addEventListener('click', () => {
     const artworks = collaborators[currentCollaboratorIndex].artworks;
     currentArtworkIndex = (currentArtworkIndex + 1) % artworks.length;
@@ -1167,7 +1192,7 @@ document.querySelector('.prev-icon').addEventListener('click', () => {
     updateCarousel();
 });
 
-// Function to update the artist information
+
 function updateArtist() {
     const artistInfo = document.querySelector('.artist-info');
     const collaborator = collaborators[currentCollaboratorIndex];
@@ -1180,10 +1205,14 @@ function updateArtist() {
     artistNameElement.textContent = collaborator.artistName;
 }
 
-// Function to update the carousel with the current artwork
 function updateCarousel() {
     const collaborator = collaborators[currentCollaboratorIndex];
     const artworks = collaborator.artworks;
+
+    if (artworks.length === 0) {
+        console.log('No artworks available for current collaborator');
+        return;
+    }
 
     const leftImg = document.querySelector('.left-img img');
     const centerImg = document.querySelector('.center-img img');
@@ -1196,15 +1225,10 @@ function updateCarousel() {
     const rightIndex = (currentArtworkIndex + 1) % artworks.length;
 
     leftImg.src = artworks[leftIndex].src;
-    leftImg.alt = artworks[leftIndex].title;
-
     centerImg.src = artworks[centerIndex].src;
-    centerImg.alt = artworks[centerIndex].title;
     centerTitle.textContent = artworks[centerIndex].title;
     centerDesc.textContent = artworks[centerIndex].description;
-
     rightImg.src = artworks[rightIndex].src;
-    rightImg.alt = artworks[rightIndex].title;
 }
 
 // Initialize the display

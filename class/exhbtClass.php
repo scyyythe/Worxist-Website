@@ -189,6 +189,7 @@ class ExhibitManager {
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    //para sa carousel
     public function fetchCollaboratorsWithArtworks()
     {
         $statement = $this->conn->prepare("
@@ -200,43 +201,63 @@ class ExhibitManager {
                 art_info.file AS artwork_file, 
                 art_info.u_id AS artist_id, 
                 accounts.u_name AS u_name,
-                accounts.profile AS profile_image
+                accounts.profile AS profile_image,
+                GROUP_CONCAT(collaborators.u_name) AS collaborator_names,
+                GROUP_CONCAT(collab_exhibit.u_id) AS collaborator_ids
             FROM exhibit_tbl
             INNER JOIN exhibit_artworks ON exhibit_tbl.exbt_id = exhibit_artworks.exbt_id
             INNER JOIN art_info ON exhibit_artworks.a_id = art_info.a_id
             INNER JOIN accounts ON art_info.u_id = accounts.u_id
+            LEFT JOIN collab_exhibit ON exhibit_tbl.exbt_id = collab_exhibit.exbt_id
+            LEFT JOIN accounts AS collaborators ON collab_exhibit.u_id = collaborators.u_id
             WHERE exhibit_tbl.exbt_status = 'Accepted'
+            GROUP BY exhibit_tbl.exbt_id, art_info.a_id;
         ");
         
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     
-        // Group artworks by collaborator (artist)
         $collaborators = [];
         foreach ($results as $row) {
             $artistId = $row['artist_id'];
-            
-            // Check if this artist is already added to the collaborators array
+
             if (!isset($collaborators[$artistId])) {
                 $collaborators[$artistId] = [
                     'u_name' => $row['u_name'],
                     'profile_image' => $row['profile_image'],
-                    'artworks' => []
+                    'artworks' => [],
+                    'collaborators' => [] 
                 ];
             }
     
-            // Add the artwork to the artist's artworks list
+            // Add the artwork
             $collaborators[$artistId]['artworks'][] = [
                 'artwork_title' => $row['artwork_title'],
                 'artwork_description' => $row['artwork_description'],
                 'artwork_file' => $row['artwork_file']
             ];
+    
+            // Split the collaborator names and IDs into arrays
+            $collaboratorNames = explode(',', $row['collaborator_names']);
+            $collaboratorIds = explode(',', $row['collaborator_ids']);
+    
+            // Add collaborators if they exist and prevent duplicates
+            foreach ($collaboratorNames as $index => $collaboratorName) {
+                // Only add the collaborator if not already added
+                if (!in_array($collaboratorName, array_column($collaborators[$artistId]['collaborators'], 'collaborator_name'))) {
+                    $collaborators[$artistId]['collaborators'][] = [
+                        'collaborator_name' => $collaboratorName,
+                        'collaborator_id' => $collaboratorIds[$index]
+                    ];
+                }
+            }
         }
     
-        // Reset numeric indexes
         return array_values($collaborators);
     }
     
+    
+    //para sa oragniser/admin or sag asa
     public function getExhibitDetails($exhibitId) {
         $statement = $this->conn->prepare("
             SELECT 
@@ -289,7 +310,7 @@ class ExhibitManager {
     }
     
     
-    
+    //
     public function myPendingExhibits($u_id) {
         $statement = $this->conn->prepare("
             SELECT * FROM exhibit_tbl 
@@ -434,6 +455,18 @@ class ExhibitManager {
         }
         return json_encode($response);
     }
+
+
+        // check if nainfclue ba ang artwork sa exhibti para ni sa delete
+        public function isArtworkInExhibit($artworkId) {
+            $query = "SELECT * FROM exhibit_artworks WHERE a_id = :a_id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindValue(':a_id', $artworkId, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->rowCount() > 0; 
+        }
+        
+        
 
 }
 

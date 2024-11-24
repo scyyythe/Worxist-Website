@@ -1127,7 +1127,30 @@ body {
 .schedule-now:hover {
     background-color: rgba(255, 255, 255, 0.562); 
 }
-
+.pending-exhibit-message {
+    color: rgb(143, 5, 5);
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    width: 50%;
+   margin-inline: auto;
+}
+.viewExhibit{
+    margin-inline: auto;
+    padding: 5px;
+    border-radius: 20px;
+    background-color: #9f1414;
+    color: white;
+    border: none;
+    width: 30%;
+    
+}
+.viewExhibit:hover{
+    cursor: pointer;
+    background-color: #dd1c1cdc;
+}
 .gallery-container {
     border-radius: 20px;
     width: 80%;
@@ -2455,6 +2478,52 @@ textarea{
     cursor: pointer;
     background-color: #f11111; ;
 }
+/* modal delete */
+.deleteModal {
+    display: none; 
+    position: fixed;
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.deleteModal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 20px;
+    width: 500px;
+
+    h5{
+        font-weight: bold;
+    }
+}
+
+.deleteModal-btn {
+    background-color: #a20d0d; 
+    color: white;
+    padding: 5px;
+    border: none;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 20px;
+    width: 200px;
+}
+#cancel-delete{
+    background-color: #888 !important;
+    color: black !important;
+}
+#cancel-delete:hover{
+    background-color: #b3b0b0 !important;
+}
+.deleteModal-btn:hover {
+    background-color: #d32f2f;
+}
+
 
 /* image display */
 
