@@ -98,7 +98,22 @@ document.addEventListener("DOMContentLoaded", function () {
             soloCardImages.appendChild(img);
         });
         
-        //collab
+        //COLLABORATE
+        //admin collab retrieve sa images
+        const artworksContainer = document.querySelector('.artworks');
+        const artworkContainer = document.querySelector('.artwork');
+        artworkFiles.slice(0, 3).forEach((file, index) => {
+          const img = document.createElement('img');
+          img.src = `../${file}`; 
+          img.alt = `Art ${index + 1}`;
+          
+          if (index < 2) {
+              artworksContainer.appendChild(img);
+          } else {
+              artworkContainer.appendChild(img);
+          }
+        });
+        //collaborators retrieve data and images
         document.getElementById('artist_nameCollab').textContent = exhibit.exhibit.organizer_name || 'Unknown Organizer';
   
         const collaboratorsContainer = document.getElementById('collaborators-cards');
@@ -155,21 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
           collaboratorsContainer.appendChild(collabDetails);
         });
         
-
-        //admin
-        const artworksContainer = document.querySelector('.artworks');
-        const artworkContainer = document.querySelector('.artwork');
-        artworkFiles.slice(0, 3).forEach((file, index) => {
-          const img = document.createElement('img');
-          img.src = `../${file}`; 
-          img.alt = `Art ${index + 1}`;
-          
-          if (index < 2) {
-              artworksContainer.appendChild(img);
-          } else {
-              artworkContainer.appendChild(img);
-          }
-        });
 
         // get the exhibit type
 const fetchedExhibitType = exhibit.exhibit.exbt_type; 
