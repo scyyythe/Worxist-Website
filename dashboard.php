@@ -40,6 +40,7 @@ $pendingArtworks=$exhibitManager->getPendingArtworks();
 
 $exhibitManager = new ExhibitManager($conn);
 $exhibit = $exhibitManager->getAcceptedExhibits();
+$collaborators = $exhibitManager->fetchCollaboratorsWithArtworks();
 
 
 $artInteract=new artInteraction($conn);
@@ -70,7 +71,11 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
     exit; 
 }
 
-
+$query = "SELECT * FROM exhibit_tbl WHERE u_id = :u_id AND exbt_status = 'Pending'";
+$statement = $conn->prepare($query);
+$statement->bindParam(':u_id', $u_id, PDO::PARAM_INT);
+$statement->execute();
+$pendingRequest = $statement->fetch(PDO::FETCH_ASSOC);
 ?> 
 
 <!DOCTYPE html>
@@ -472,7 +477,14 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
         <div class="tabcontent" id="Pending" >
                 <div class="head-pending">
                 <h3>Pending Artworks</h3>     
-                <button id="viewExhibit-btn" >View Pending Exhibit</button><br>
+                <?php
+    if ($pendingRequest) {
+        echo "<button id='viewExhibit-btn' data-exbt-type='" . htmlspecialchars($pendingRequest['exbt_type']) . "'>View Pending Exhibit</button><br>";
+    } else {
+       
+    }
+    ?>
+
                 </div>
             
             <div class="image-artwork created">
@@ -679,16 +691,13 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
             <div class="prev-icon2">&#10094;</div>
             <div class="next-icon2">&#10095;</div>
          </div>
-            <div class="artist-info">
-                <img src="gallery/eyes.jpg" alt="Artist Profile Image" class="artist-img">
-                <p>
-                    <span>
-                        <?php 
-                           echo isset($exhibit[0]['u_name']) ? $exhibit[0]['u_name'] : 'Artist Name';
-                        ?>
-                    </span><br>Cebu, Philippines
-                </p>
-            </div>
+         <div class="artist-info">
+    <img src="gallery/eyes.jpg" alt="Artist Profile Image" class="artist-img">
+    <p>
+        <span></span><br>Cebu, Philippines
+    </p>
+</div>
+
         </div>
 
         
@@ -1108,57 +1117,98 @@ if (isset($_GET['query']) && !empty($_GET['query'])) {
     <!-- end of wrapper -->
    </div>
    <script>
- const images = [
-        <?php foreach ($exhibit as $exhibits): ?>
-        {
-            src: "<?php echo htmlspecialchars($exhibits['artwork_file']); ?>",
-            title: "<?php echo htmlspecialchars($exhibits['artwork_title']); ?>",
-            description: "<?php echo htmlspecialchars($exhibits['artwork_description']); ?>"
-        },
-        <?php endforeach; ?>
-    ];
+// Sample PHP data injected into the JavaScript array, grouped by collaborator
+const collaborators = [
+    <?php foreach ($collaborators as $collaborator): ?>
+    {
+        artistName: "<?php echo htmlspecialchars($collaborator['u_name']); ?>",
+        artistImage: "<?php echo htmlspecialchars($collaborator['profile_image']); ?>",
+        artworks: [
+            <?php foreach ($collaborator['artworks'] as $artwork): ?>
+            {
+                src: "<?php echo htmlspecialchars($artwork['artwork_file']); ?>",
+                title: "<?php echo htmlspecialchars($artwork['artwork_title']); ?>",
+                description: "<?php echo htmlspecialchars($artwork['artwork_description']); ?>"
+            },
+            <?php endforeach; ?>
+        ]
+    },
+    <?php endforeach; ?>
+];
 
+let currentCollaboratorIndex = 0; // Tracks the current collaborator
+let currentArtworkIndex = 0; // Tracks the current artwork of the selected collaborator
 
+// Event listeners for artist navigation
+document.querySelector('.next-icon2').addEventListener('click', () => {
+    currentCollaboratorIndex = (currentCollaboratorIndex + 1) % collaborators.length;
+    currentArtworkIndex = 0; // Reset artwork index when switching collaborators
+    updateArtist();
+    updateCarousel();
+});
 
-let currentIndex = 0; 
+document.querySelector('.prev-icon2').addEventListener('click', () => {
+    currentCollaboratorIndex = (currentCollaboratorIndex - 1 + collaborators.length) % collaborators.length;
+    currentArtworkIndex = 0; // Reset artwork index when switching collaborators
+    updateArtist();
+    updateCarousel();
+});
 
-
+// Event listeners for artwork navigation within the current collaborator
 document.querySelector('.next-icon').addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % images.length; // move sa next index
+    const artworks = collaborators[currentCollaboratorIndex].artworks;
+    currentArtworkIndex = (currentArtworkIndex + 1) % artworks.length;
     updateCarousel();
 });
 
 document.querySelector('.prev-icon').addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + images.length) % images.length; // move sa previous index
+    const artworks = collaborators[currentCollaboratorIndex].artworks;
+    currentArtworkIndex = (currentArtworkIndex - 1 + artworks.length) % artworks.length;
     updateCarousel();
 });
 
+// Function to update the artist information
+function updateArtist() {
+    const artistInfo = document.querySelector('.artist-info');
+    const collaborator = collaborators[currentCollaboratorIndex];
 
+    const artistImageElement = artistInfo.querySelector('img');
+    const artistNameElement = artistInfo.querySelector('span');
+
+    artistImageElement.src = collaborator.artistImage;
+    artistImageElement.alt = collaborator.artistName;
+    artistNameElement.textContent = collaborator.artistName;
+}
+
+// Function to update the carousel with the current artwork
 function updateCarousel() {
+    const collaborator = collaborators[currentCollaboratorIndex];
+    const artworks = collaborator.artworks;
+
     const leftImg = document.querySelector('.left-img img');
     const centerImg = document.querySelector('.center-img img');
     const centerTitle = document.querySelector('.center-description h3');
     const centerDesc = document.querySelector('.center-description p');
     const rightImg = document.querySelector('.right-img img');
 
+    const leftIndex = (currentArtworkIndex - 1 + artworks.length) % artworks.length;
+    const centerIndex = currentArtworkIndex;
+    const rightIndex = (currentArtworkIndex + 1) % artworks.length;
 
-    const leftIndex = (currentIndex - 1 + images.length) % images.length;
-    const centerIndex = currentIndex;
-    const rightIndex = (currentIndex + 1) % images.length;
+    leftImg.src = artworks[leftIndex].src;
+    leftImg.alt = artworks[leftIndex].title;
 
-    leftImg.src = images[leftIndex].src;
-    leftImg.alt = images[leftIndex].title;
+    centerImg.src = artworks[centerIndex].src;
+    centerImg.alt = artworks[centerIndex].title;
+    centerTitle.textContent = artworks[centerIndex].title;
+    centerDesc.textContent = artworks[centerIndex].description;
 
-    centerImg.src = images[centerIndex].src;
-    centerImg.alt = images[centerIndex].title;
-    centerTitle.textContent = images[centerIndex].title;
-    centerDesc.textContent = images[centerIndex].description;
-
-    rightImg.src = images[rightIndex].src;
-    rightImg.alt = images[rightIndex].title;
+    rightImg.src = artworks[rightIndex].src;
+    rightImg.alt = artworks[rightIndex].title;
 }
 
-
+// Initialize the display
+updateArtist();
 updateCarousel();
 
 

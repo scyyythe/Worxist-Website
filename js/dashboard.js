@@ -136,9 +136,25 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 //view peding exhibits
-document.getElementById("viewExhibit-btn").addEventListener("click", function() {
-  window.location.href = "pendingExhibit.php";  // Redirect to the pending exhibits page
+
+document.addEventListener("DOMContentLoaded", function () {
+  const button = document.getElementById("viewExhibit-btn");
+  if (button) {
+    button.addEventListener("click", function(event) {
+      event.preventDefault(); // Prevent any default behavior like form submission
+
+      const exbtType = this.getAttribute("data-exbt-type"); 
+      console.log(exbtType);  // Debugging to check which type is selected
+
+      if (exbtType === 'Solo') {
+        window.location.href = "soloRequest.php";
+      } else if (exbtType === 'Collaborate') {
+        window.location.href = "pendingCollab/collabRequest.php";
+      }
+    });
+  }
 });
+
 
 // dropdown filter
 function toggleDropdown() {

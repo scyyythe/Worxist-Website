@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
         //admin collab retrieve sa images
         const artworksContainer = document.querySelector('.artworks');
   const artworkContainer = document.querySelector('.artwork');
-  const allImagesContainer = document.querySelector(".all-images-container"); 
+
 
   artworkFiles.slice(0, 3).forEach((file, index) => {
     const img = document.createElement('img');

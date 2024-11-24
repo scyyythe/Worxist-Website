@@ -1261,7 +1261,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.5);
     width: 100%;
     border-radius: 20px;
-    height: 120px;
+    height: 100px;
 
     
 }
@@ -1386,6 +1386,8 @@ body {
 }
   #Solo{
     display: flex;
+    position: relative;
+    bottom: 50px;
   }
 /* solo exibit */
 .exhibit-inputs{
@@ -1438,10 +1440,11 @@ body {
 .update-actions{
     position: relative;
     left: 120%;
-    top: 130px;
+    top: 250px;
     width: 500px;
     display: flex;
     justify-content: space-between;
+    
     button{
         width: 200px;
         padding: 4px;
@@ -1587,7 +1590,7 @@ body {
 
 .image-exhibit{
     position: relative;
-    bottom: 90px;
+    bottom: 100px;
 
  
 }
@@ -1803,12 +1806,17 @@ body {
     color: #333;
     backdrop-filter: blur(15px) brightness(1.2);
     border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 5px;
+
+    p{
+        padding: 20px;
+        text-align: justify;
+    }
 }
 
 .exhibition-close-popup {
     position: absolute;
-    top: 10px;
-    right: 15px;
+    right: 10px;
     font-size: 24px;
     color: #fff;
     cursor: pointer;

@@ -64,8 +64,7 @@ $collaborator=$exhibit->getCollab($exhibitId);
 if (isset($_GET['id'])) {
     $exhibit= new ExhibitManager($conn);
     $exhibitId = $_GET['id'];
-    $pendingDetails = $exhibit->getExhibitDetails
-    ($exhibitId);
+    $pendingDetails = $exhibit->getExhibitDetails($exhibitId);
 
     header('Content-Type: application/json');
     if ($pendingDetails) {

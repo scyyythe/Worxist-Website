@@ -168,7 +168,7 @@ class ExhibitManager {
     }
  
     
-    public function getAcceptedExhibits(){
+    public function getAcceptedExhibits() {
         $statement = $this->conn->prepare("
             SELECT 
                 exhibit_tbl.exbt_title, 
@@ -177,7 +177,8 @@ class ExhibitManager {
                 art_info.description AS artwork_description, 
                 art_info.file AS artwork_file, 
                 art_info.u_id AS artist_id, 
-                accounts.u_name AS u_name 
+                accounts.u_name AS u_name,
+                accounts.profile AS profile_image  -- Add profile image
             FROM exhibit_tbl
             INNER JOIN exhibit_artworks ON exhibit_tbl.exbt_id = exhibit_artworks.exbt_id
             INNER JOIN art_info ON exhibit_artworks.a_id = art_info.a_id
@@ -187,7 +188,55 @@ class ExhibitManager {
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    
+    public function fetchCollaboratorsWithArtworks()
+    {
+        $statement = $this->conn->prepare("
+            SELECT 
+                exhibit_tbl.exbt_title, 
+                exhibit_tbl.exbt_descrip, 
+                art_info.title AS artwork_title, 
+                art_info.description AS artwork_description, 
+                art_info.file AS artwork_file, 
+                art_info.u_id AS artist_id, 
+                accounts.u_name AS u_name,
+                accounts.profile AS profile_image
+            FROM exhibit_tbl
+            INNER JOIN exhibit_artworks ON exhibit_tbl.exbt_id = exhibit_artworks.exbt_id
+            INNER JOIN art_info ON exhibit_artworks.a_id = art_info.a_id
+            INNER JOIN accounts ON art_info.u_id = accounts.u_id
+            WHERE exhibit_tbl.exbt_status = 'Accepted'
+        ");
+        
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+        // Group artworks by collaborator (artist)
+        $collaborators = [];
+        foreach ($results as $row) {
+            $artistId = $row['artist_id'];
+            
+            // Check if this artist is already added to the collaborators array
+            if (!isset($collaborators[$artistId])) {
+                $collaborators[$artistId] = [
+                    'u_name' => $row['u_name'],
+                    'profile_image' => $row['profile_image'],
+                    'artworks' => []
+                ];
+            }
+    
+            // Add the artwork to the artist's artworks list
+            $collaborators[$artistId]['artworks'][] = [
+                'artwork_title' => $row['artwork_title'],
+                'artwork_description' => $row['artwork_description'],
+                'artwork_file' => $row['artwork_file']
+            ];
+        }
+    
+        // Reset numeric indexes
+        return array_values($collaborators);
+    }
+    
     public function getExhibitDetails($exhibitId) {
         $statement = $this->conn->prepare("
             SELECT 
