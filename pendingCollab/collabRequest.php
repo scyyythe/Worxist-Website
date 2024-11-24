@@ -42,6 +42,31 @@ if (isset($_POST['updateRequest'])) {
         echo "Error: " . $e->getMessage();
     }
 }
+
+if (isset($_POST['cancelRequest'])) {
+    // Get the exhibit ID and update the status to "Cancelled"
+    $exbt_id = $pending[0]['exbt_id']; // You can replace this with dynamic logic to fetch the exhibit ID
+    
+    try {
+        // Update the status to 'Cancelled' for the specific exhibit
+        $query = "UPDATE exhibit_tbl SET exbt_status = 'Cancelled' WHERE exbt_id = :exbt_id AND u_id = :u_id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
+        $stmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
+        
+        if ($stmt->execute()) {
+            // Send a success response
+            echo json_encode(['success' => true]);
+        } else {
+            // If the update fails, send an error response
+            echo json_encode(['success' => false, 'error' => 'Could not cancel the request.']);
+        }
+    } catch (PDOException $e) {
+        // Catch any database errors
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    exit();
+}
 ?>
 
 
@@ -57,6 +82,24 @@ if (isset($_POST['updateRequest'])) {
 </head>
 <body>
     <section class="container">
+        <!-- Cancel Confirmation Modal -->
+<div id="cancelConfirmationModal" class="modal">
+    <div class="modal-content">
+        <p>Are you sure you want to cancel the request?</p>
+        <button id="confirmCancel" class="confirm-btn">Yes</button>
+        <button id="closeCancel" class="close-btn">No</button>
+    </div>
+</div>
+
+<!-- Custom Alert Box -->
+<div id="customAlert" class="alert-box">
+    <div class="alert-content">
+        <span id="alertMessage"></span>
+        <button id="alertClose" class="alert-close-btn">Close</button>
+    </div>
+</div>
+
+
         <div class="header">
         <a style="text-decoration: none;color:black; font-weight:bold; font-size:25px;" href="/dashboard.php"><</a>
             <span class="title">Pending Exhibit</span>
@@ -176,6 +219,6 @@ if (isset($_POST['updateRequest'])) {
         </div>
     </section>
     <script src="script.js"></script>
- 
+    
 </body>
 </html>

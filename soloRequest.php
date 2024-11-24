@@ -42,6 +42,30 @@ if (isset($_POST['updateRequest'])) {
         echo "Error: " . $e->getMessage();
     }
 }
+// Cancel Request Logic
+if (isset($_POST['cancelRequest']) && $_POST['cancelRequest'] === 'true') {
+    $exbt_id = $pending[0]['exbt_id']; // Ensure this is dynamically fetched if needed
+
+    try {
+        // Update the status to 'Cancelled' for the specific exhibit
+        $query = "UPDATE exhibit_tbl SET exbt_status = 'Cancelled' WHERE exbt_id = :exbt_id AND u_id = :u_id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
+        $stmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            // Send a success response as JSON
+            echo json_encode(['success' => true]);
+        } else {
+            // If the update fails, send an error response
+            echo json_encode(['success' => false, 'error' => 'Could not cancel the request.']);
+        }
+    } catch (PDOException $e) {
+        // Handle database error and send it as a JSON error response
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    }
+    exit();
+}
 
 ?>
 
@@ -56,7 +80,23 @@ if (isset($_POST['updateRequest'])) {
     <title>Pending Exhibits</title>
 </head>
 <body style="background-color: white;">
-      
+              <!-- Cancel Confirmation Modal -->
+<div id="cancelConfirmationModal" class="modal">
+    <div class="modal-content">
+        <p>Are you sure you want to cancel the request?</p>
+        <button id="confirmCancel" class="confirm-btn">Yes</button>
+        <button id="closeCancel" class="close-btn">No</button>
+    </div>
+</div>
+
+<!-- Custom Alert Box -->
+<div id="customAlert" class="alert-box">
+    <div class="alert-content">
+        <span id="alertMessage"></span>
+        <button id="alertClose" class="alert-close-btn">Close</button>
+    </div>
+</div>
+
         <!-- Solo Exhibit Request -->
         <div id="reqExhibit-con" class="reqExhibit-con">
             <div class="top-req">
@@ -94,8 +134,8 @@ if (isset($_POST['updateRequest'])) {
                     <input type="hidden" name="selected_artworks" id="selectedArtworks" value="">
 
                     <div class="update-actions">
-                        <button class="update-btn" id="update-btn" name="updateRequest">Save Changes</button>
-                        <button class="cancel-btn" id="cancel-btn" name="cancelRequest">Cancel Request</button>
+                        <button type="submit" class="update-btn" id="update-btn" name="updateRequest">Save Changes</button>
+                        <button type="button" class="cancel-btn" id="cancel-btn" name="cancelRequest">Cancel Request</button>
                     </div>
                 </form>
 
@@ -131,6 +171,43 @@ if (isset($_POST['updateRequest'])) {
         </div>
 <script src="js/dashboard.js"></script>
 
+<script>
+    
+document.getElementById("cancel-btn").addEventListener("click", function() {
+  document.getElementById("cancelConfirmationModal").style.display = "flex";
+});
+document.getElementById("closeCancel").addEventListener("click", function() {
+  document.getElementById("cancelConfirmationModal").style.display = "none";
+});
 
+document.getElementById("confirmCancel").addEventListener("click", function() {
+  document.getElementById("cancelConfirmationModal").style.display = "none";
+  
+  let formData = new FormData();
+  formData.append('cancelRequest', 'true'); 
+
+  fetch(window.location.href, {
+      method: "POST",
+      body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.success) {
+          document.getElementById("alertMessage").textContent = "Exhibit request cancelled successfully.";
+          document.getElementById("customAlert").style.display = "block";
+           document.getElementById("customAlert").style.display = "none";
+        window.location.href = "dashboard.php"; 
+      } else {
+          document.getElementById("alertMessage").textContent = "Error: " + data.error;
+          document.getElementById("customAlert").style.display = "block";
+      }
+  })
+  .catch(error => {
+      document.getElementById("alertMessage").textContent = "An error occurred: " + error;
+      document.getElementById("customAlert").style.display = "block";
+  });
+});
+
+</script>
 </body>
 </html>

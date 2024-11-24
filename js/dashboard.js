@@ -858,3 +858,4 @@ function removeProfilePic() {
     fileInput.value = "";
 }
 
+// soloReuqest page

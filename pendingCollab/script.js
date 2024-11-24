@@ -114,3 +114,42 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+// cancel request
+document.getElementById("cancel-btn").addEventListener("click", function() {
+    document.getElementById("cancelConfirmationModal").style.display = "flex";
+});
+document.getElementById("closeCancel").addEventListener("click", function() {
+    document.getElementById("cancelConfirmationModal").style.display = "none";
+});
+
+document.getElementById("confirmCancel").addEventListener("click", function() {
+    document.getElementById("cancelConfirmationModal").style.display = "none";
+    let formData = new FormData();
+    formData.append('cancelRequest', true);
+
+    fetch("collabRequest.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById("alertMessage").textContent = "Exhibit request cancelled successfully.";
+            document.getElementById("customAlert").style.display = "block";
+        } else {
+            document.getElementById("alertMessage").textContent = "Error: " + data.error;
+            document.getElementById("customAlert").style.display = "block";
+        }
+    })
+    .catch(error => {
+        document.getElementById("alertMessage").textContent = "An error occurred: " + error;
+        document.getElementById("customAlert").style.display = "block";
+    });
+});
+
+document.getElementById("alertClose").addEventListener("click", function() {
+    document.getElementById("customAlert").style.display = "none";
+    window.location.href = "../dashboard.php";  
+});
+
