@@ -7,6 +7,11 @@ include 'class/artClass.php';
 include 'class/exhbtClass.php'; 
 include 'class/interactClass.php'; 
 
+// Enable error reporting (for debugging)
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: login-register.php");
     die;
@@ -18,75 +23,72 @@ $name = isset($_SESSION['name']) ? $_SESSION['name'] : 'User';
 $u_id = $_SESSION['u_id']; 
 $title = isset($_SESSION['title']) ? $_SESSION['title'] : 'Default Title';
 
-
 $accountManager = new AccountManager($conn);
 $userInfo = $accountManager->getAccountInfo($u_id);
 $imagePath = $accountManager->getProfilePicture(); 
 
 if (isset($_POST['uploadProfilePic'])) {
-    $accountManager=new AccountManager($conn);
     $accountManager->uploadProfilePicture($_FILES['profilePicture']);
 }
 if (isset($_POST['removeProfilePic'])) {
-    $accountManager=new AccountManager($conn);
     $accountManager->removeProfilePicture();
 }
 
 $exhibitManager = new artManager($conn);
 $images = $exhibitManager->getUserArtworks();
 $allImages = $exhibitManager->getAllArtworks();
-$pendingArtworks=$exhibitManager->getPendingArtworks();
-
+$pendingArtworks = $exhibitManager->getPendingArtworks();
 
 $exhibitManager = new ExhibitManager($conn);
 $exhibit = $exhibitManager->getAcceptedExhibits();
 $collaborators = $exhibitManager->fetchCollaboratorsWithArtworks();
+$notifications = $exhibitManager->getNotifications($u_id);
 
+$artInteract = new artInteraction($conn);
+$artSaved = $artInteract->getSavedArtworks($u_id);
+$artFave = $artInteract->getFavoriteArtworks($u_id);
 
-$artInteract=new artInteraction($conn);
-$artSaved=$artInteract->getSavedArtworks($u_id);
-$artFave=$artInteract->getFavoriteArtworks($u_id);
-// request exhibit
-        if (isset($_POST['requestSolo'])) {
-            $exhibitManager = new ExhibitManager($conn);
-            $exhibit_title = $_POST['exhibit-title'];
-            $exhibit_description = $_POST['exhibit-description'];
-            $exhibit_date = $_POST['exhibit-date'];
-            $selected_artworks = $_POST['selected_artworks']; 
-            $exhibitManager->requestSoloExhibit($exhibit_title, $exhibit_description, $exhibit_date, $selected_artworks);
-        }
+// Exhibit Requests
+if (isset($_POST['requestSolo'])) {
+    $exhibit_title = $_POST['exhibit-title'];
+    $exhibit_description = $_POST['exhibit-description'];
+    $exhibit_date = $_POST['exhibit-date'];
+    $selected_artworks = $_POST['selected_artworks']; 
+    $exhibitManager->requestSoloExhibit($exhibit_title, $exhibit_description, $exhibit_date, $selected_artworks);
+}
 
-        if (isset($_POST['requestCollab'])) {
-            $exhibitManager = new ExhibitManager($conn);
-            $exbt_title = $_POST['exhibit-title'];
-            $exbt_descrip = $_POST['exhibit-description'];
-            $exbt_date = $_POST['exhibit-date'];
-            $selected_artworks = $_POST ['selected_artworks_collab']; 
-            $selected_collaborators = $_POST['selected_collaborators']; 
-            $exhibitManager->requestCollabExhibit($exbt_title, $exbt_descrip, $exbt_date, $selected_artworks, $selected_collaborators);
-        }
+if (isset($_POST['requestCollab'])) {
+    $exbt_title = $_POST['exhibit-title'];
+    $exbt_descrip = $_POST['exhibit-description'];
+    $exbt_date = $_POST['exhibit-date'];
+    $selected_artworks = $_POST['selected_artworks_collab']; 
+    $selected_collaborators = $_POST['selected_collaborators']; 
+    $exhibitManager->requestCollabExhibit($exbt_title, $exbt_descrip, $exbt_date, $selected_artworks, $selected_collaborators);
+}
 
+// search Collaborators
 if (isset($_GET['query']) && !empty($_GET['query'])) { 
     echo $exhibitManager->searchCollaborators($_GET['query']);
     exit; 
 }
 
+// Pending Exhibit Requests
 $query = "SELECT * FROM exhibit_tbl WHERE u_id = :u_id AND exbt_status = 'Pending'";
 $statement = $conn->prepare($query);
 $statement->bindParam(':u_id', $u_id, PDO::PARAM_INT);
 $statement->execute();
 $pendingRequest = $statement->fetch(PDO::FETCH_ASSOC);
 
-//check if already schedule an exhibit
+// if Already Scheduled an Exhibit
 $query = $conn->prepare("SELECT exbt_status FROM exhibit_tbl WHERE u_id = :u_id AND exbt_status = 'Pending'");
 $query->execute(['u_id' => $u_id]);
 $pendingExhibit = $query->fetch(PDO::FETCH_ASSOC);
-if ($pendingExhibit) {
-    $hasPendingExhibit = true;
-} else {
-    $hasPendingExhibit = false;
-}
-?> 
+$hasPendingExhibit = $pendingExhibit ? true : false;
+   
+
+
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -271,21 +273,35 @@ if ($pendingExhibit) {
             </div>
            
             <div class="notification-wrapper">
-                <div class="notification-icon" onclick="toggleNotifications()">
-                    <i class='bx bxs-bell'></i>
-                    <span class="badge">3</span> 
-                </div>
+    <div class="notification-icon" onclick="toggleNotifications()">
+        <i class='bx bxs-bell'></i>
+        <span class="badge"><?php echo count($notifications); ?></span>
+    </div>
 
-            <div class="notification-center" id="notificationCenter">
-                <h5>Notifications</h5>
-                <ul>
-                    <li><a href="#">New comment on your post</a></li>
-                    <li><a href="#">You have a new follower</a></li>
-                    <li><a href="#">Jerald just posted an artwork</a></li>
-                </ul>
-                <a href="#" class="view-all">View all notifications</a>
-            </div>
+    <div class="notification-center" id="notificationCenter">
+    <h5>Notifications</h5>
+    <ul>
+        <?php if (!empty($notifications)): ?>
+            <?php foreach ($notifications as $notification): ?>
+                <li>
+                    <a href="uploadCollab.php?exbt_id=<?php echo $notification['exbt_id']; ?>">
+                        <?php echo htmlspecialchars($notification['message']); ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <li>No new notifications.</li>
+        <?php endif; ?>
+    </ul>
+    <a href="#" class="view-all">View all notifications</a>
 </div>
+
+</div>
+
+
+
+
+
 
             
             <div class="filter-container">
@@ -687,7 +703,7 @@ if ($pendingExhibit) {
 <!-- Popup modal for description -->
 <div class="exhibition-description-popup">
     <div class="exhibition-description-popup-content">
-        <span class="exhibition-close-popup">&times;</span>
+        <span class="exhibition-close-popup" hidden>&times;</span>
         <p>
             <?php 
                 echo isset($exhibit[0]['exbt_descrip']) ? $exhibit[0]['exbt_descrip'] : 'No description available.';

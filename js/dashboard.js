@@ -110,11 +110,7 @@ sidebarItems.forEach(item => {
     });
 });
 
-//notification
-function toggleNotifications() {
-  var notificationCenter = document.getElementById("notificationCenter");
-  notificationCenter.classList.toggle("active");
-}
+
 
 // tabpane in Artwork Dashboard
 function myOption(evt, option) {
@@ -603,8 +599,10 @@ window.onload = function() {
   openDefaultTab();
 };
 
-
-
+function toggleNotifications() {
+  var notificationCenter = document.getElementById("notificationCenter");
+  notificationCenter.classList.toggle("active"); 
+}
 
 //select an artworkkk
 document.querySelectorAll('.display-creations img').forEach((img) => {

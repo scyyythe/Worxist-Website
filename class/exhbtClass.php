@@ -76,13 +76,14 @@ class ExhibitManager {
         }
     }
 
-    public function requestCollabExhibit($exbt_title, $exbt_descrip, $exbt_date, $selected_artworks, $selected_collaborators) { 
+    public function requestCollabExhibit($exbt_title, $exbt_descrip, $exbt_date, $selected_artworks, $selected_collaborators) {
         $exbt_type = 'Collaborate';  
         $exbt_status = 'Pending';
     
         $this->conn->beginTransaction();
     
         try {
+            // Insert into exhibit_tbl
             $statement = $this->conn->prepare("
                 INSERT INTO exhibit_tbl (u_id, exbt_title, exbt_descrip, exbt_date, exbt_type, exbt_status)
                 VALUES (:u_id, :exbt_title, :exbt_descrip, :exbt_date, :exbt_type, :exbt_status)
@@ -100,17 +101,16 @@ class ExhibitManager {
     
             $exbt_id = $this->conn->lastInsertId();
     
+            // Process selected artworks
             error_log("Selected Artworks: " . print_r($selected_artworks, true));
             $selectedArtworks = json_decode($selected_artworks, true);
             if (!empty($selectedArtworks) && is_array($selectedArtworks)) {
                 foreach ($selectedArtworks as $a_id) {
-                    
                     $checkStmt = $this->conn->prepare("SELECT COUNT(*) FROM art_info WHERE a_id = :a_id");
                     $checkStmt->bindValue(':a_id', $a_id, PDO::PARAM_INT);
                     $checkStmt->execute();
     
                     if ($checkStmt->fetchColumn()) {
-                        
                         $artworkStmt = $this->conn->prepare("
                             INSERT INTO exhibit_artworks (exbt_id, a_id)
                             VALUES (:exbt_id, :a_id)
@@ -122,23 +122,21 @@ class ExhibitManager {
                             throw new Exception("Failed to insert into exhibit_artworks for artwork ID $a_id: " . implode(", ", $artworkStmt->errorInfo()));
                         }
                     } else {
-                      
                         error_log("Invalid artwork ID: " . $a_id);
                     }
                 }
             } else {
                 error_log("No artworks selected or invalid format.");
             }
-          
+    
+            // Process collaborators
             $collaborators = explode(',', $selected_collaborators);
             foreach ($collaborators as $u_id) {
-                
                 $checkStmt = $this->conn->prepare("SELECT COUNT(*) FROM accounts WHERE u_id = :u_id");
                 $checkStmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
                 $checkStmt->execute();
     
                 if ($checkStmt->fetchColumn()) {
-                 
                     $collabStmt = $this->conn->prepare("
                         INSERT INTO collab_exhibit (exbt_id, u_id)
                         VALUES (:exbt_id, :u_id)
@@ -149,24 +147,60 @@ class ExhibitManager {
                     if (!$collabStmt->execute()) {
                         throw new Exception("Failed to insert collaborator into collab_exhibit for collaborator ID $u_id: " . implode(", ", $collabStmt->errorInfo()));
                     }
+    
+                    // Insert notification for collaborator
+                    $notificationStmt = $this->conn->prepare("
+                        INSERT INTO notifications (u_id, exbt_id, message)
+                        VALUES (:u_id, :exbt_id, :message)
+                    ");
+                    $notificationMessage = "You have been added as a collaborator to the exhibit: $exbt_title.";
+                    $notificationStmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
+                    $notificationStmt->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
+                    $notificationStmt->bindValue(':message', $notificationMessage, PDO::PARAM_STR);
+    
+                    if (!$notificationStmt->execute()) {
+                        throw new Exception("Failed to insert notification for collaborator ID $u_id: " . implode(", ", $notificationStmt->errorInfo()));
+                    }
                 } else {
-                  
                     error_log("Invalid collaborator ID: " . $u_id);
                 }
             }
     
+            // Commit the transaction
             $this->conn->commit();
-            header("Location: dashboard.php");  
+            header("Location: dashboard.php");
             exit; 
         } catch (Exception $e) {
-           
+            // Rollback on error
             $this->conn->rollBack();
             error_log("Error: " . $e->getMessage());
-            header("Location: dashboard.php?error=true");  
+            header("Location: dashboard.php?error=true");
             exit;
         }
     }
- 
+    
+    public function getNotifications($u_id) {
+        $query = "SELECT * FROM notifications WHERE u_id = :u_id ORDER BY created_at DESC LIMIT 5"; 
+        $statement = $this->conn->prepare($query);
+        $statement->bindParam(':u_id', $u_id, PDO::PARAM_INT);
+        
+        // Execute the query and check if any records are found
+        if ($statement->execute()) {
+            $notifications = $statement->fetchAll(PDO::FETCH_ASSOC); 
+    
+            // Debug: Output the result to verify it's returning the expected data
+            if (empty($notifications)) {
+                error_log("No notifications found for user ID: $u_id");
+            }
+    
+            return $notifications;
+        } else {
+            error_log("Error executing query: " . implode(" ", $statement->errorInfo()));
+            return [];
+        }
+    }
+    
+    
     
     public function getAcceptedExhibits() {
         $statement = $this->conn->prepare("
@@ -371,7 +405,7 @@ class ExhibitManager {
             echo json_encode(["status" => "error", "message" => "Invalid status"]);
             exit;
         }
-
+    
         if ($status === 'Accepted') {
             // Check if there's already an exhibit with status 'Accepted'
             $query = "SELECT * FROM exhibit_tbl WHERE exbt_status = 'Accepted' LIMIT 1";
@@ -383,15 +417,20 @@ class ExhibitManager {
             }
         }
     
+        // Update exhibit status
         $statement = $this->conn->prepare("UPDATE exhibit_tbl SET exbt_status = ?, accepted_at = ? WHERE exbt_id = ?");
-    
+        
         $accepted_at = ($status === 'Accepted') ? date("Y-m-d H:i:s") : null;
-    
+        
         $statement->bindValue(1, $status, PDO::PARAM_STR);
         $statement->bindValue(2, $accepted_at, PDO::PARAM_STR); 
         $statement->bindValue(3, $exbt_id, PDO::PARAM_INT);
-
+    
         if ($statement->execute()) {
+
+            $message = "Your exhibit status is $status";
+            $this->createNotification($exbt_id, $message);
+    
             echo json_encode(["status" => "success", "message" => "Exhibit status updated to $status"]);
         } else {
             $errorInfo = $statement->errorInfo();
@@ -399,6 +438,28 @@ class ExhibitManager {
         }
         exit();
     }
+    
+    private function createNotification($exbt_id, $message) {
+        $query = "SELECT u_id FROM exhibit_tbl WHERE exbt_id = :exbt_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':exbt_id', $exbt_id, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        if ($stmt->rowCount() > 0) {
+            $exhibit = $stmt->fetch(PDO::FETCH_ASSOC);
+            $u_id = $exhibit['u_id']; 
+            
+            $notificationQuery = "INSERT INTO notifications (u_id, exbt_id, message, is_read, created_at) 
+                                  VALUES (:u_id, :exbt_id, :message, 0, NOW())";
+            $notificationStmt = $this->conn->prepare($notificationQuery);
+            $notificationStmt->bindParam(':u_id', $u_id, PDO::PARAM_INT);
+            $notificationStmt->bindParam(':exbt_id', $exbt_id, PDO::PARAM_INT);
+            $notificationStmt->bindParam(':message', $message, PDO::PARAM_STR);
+            
+            $notificationStmt->execute();
+        }
+    }
+    
     
     
     public function autoMarkExhibitsAsDone() {

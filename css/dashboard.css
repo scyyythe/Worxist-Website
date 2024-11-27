@@ -1828,7 +1828,7 @@ a {
 }
 
 .exhibition-description-popup-content {
-    background: rgba(255, 255, 255, 0.2);
+    background:#a20d0d;
     padding: 20px;
     border-radius: 10px;
     position: relative;
@@ -2661,6 +2661,60 @@ textarea{
 .close-btn {
     background-color: gray;
     color: white;
+}
+
+/* UPLOAD COLLAB PAGE */
+.head-collab{
+    text-align: center;
+    padding: 20px;
+
+    h3 {
+        color: #a20d0d;
+        display: inline-block;
+        border-bottom: 5px solid #a20d0d; 
+        padding-bottom: 5px; 
+    }
+    
+}
+
+.selectart-collab{
+    width: 50%;
+    margin-inline: auto;
+}
+
+.includeArt-collab {
+    margin-top: 1rem;
+    border-radius: 20px;
+    background-color: #f4f1f1;
+    height: 700px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.includeArt-collab img {
+    width: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+
+.saveCollabArt{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+
+    button{
+        padding: 5px;
+        border-radius: 20px;
+        width: 200px;
+        background-color: #b61616;
+        color: white;
+        border: none;
+    }
 }
 @media (max-width: 768px) {
     .exhibit-container {

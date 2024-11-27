@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2024 at 10:10 AM
+-- Generation Time: Nov 27, 2024 at 05:24 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,8 +43,11 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`u_id`, `u_name`, `email`, `username`, `password`, `u_type`, `profile`, `u_status`) VALUES
-(82, 'Jeralyn Peritos', 'jeralynpreitos@gmail.com', 'jera', '$2y$10$rn70sVxqhjRMS87rQ7uoJevSLdOWGFr6VlLDK.8LEW6e8vBj2Coj.', 'User', '', 'Pending'),
-(83, 'Jamaica Anuba', 'jamaicaanuba@gmail.com', 'jai', '$2y$10$HIjyKTX/TVqQVg7G.ymNo.5qn3OE4zUIh3M.SZvi8FeCbis2.wa.a', 'User', '', 'Pending');
+(82, 'Jeralyn Peritos', 'jeralynpreitos@gmail.com', 'jera', '$2y$10$rn70sVxqhjRMS87rQ7uoJevSLdOWGFr6VlLDK.8LEW6e8vBj2Coj.', 'User', '82/1732025894_eyes.jpg', 'Active'),
+(83, 'Jamaica Anuba', 'jamaicaanuba@gmail.com', 'jai', '$2y$10$HIjyKTX/TVqQVg7G.ymNo.5qn3OE4zUIh3M.SZvi8FeCbis2.wa.a', 'Admin', '', 'Active'),
+(84, 'Kyle Canete', 'kylecanete@gmail.om', 'kyle', '$2y$10$IZETVl5oO2fVJaJqqNnLaOSY5TdZzs1nFlK7jsN3MX.ZncvphdYXa', 'User', '84/1732026167_girl(1).jpg', 'Archived'),
+(85, 'Angel Canete', 'angelcanete86@yahoo.com', 'angel', '$2y$10$yNMFQlS4nUGtc6rBQQDuru3rpM0zTwy14M5EQTAt5LxsmX8LJKJSO', 'Organizer', '85/1732187862_lips.jpg', 'Active'),
+(92, 'Kyle Canete', 'kylecanete@gmail.om', 'kyle', '$2y$10$7Okiy6ksSVhCXZqVzake4e2T669XQs42buCobwZCjvZQR.V21vb3K', 'User', '', 'Active');
 
 -- --------------------------------------------------------
 
@@ -63,13 +66,6 @@ CREATE TABLE `art_info` (
   `a_status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `art_info`
---
-
-INSERT INTO `art_info` (`a_id`, `u_id`, `title`, `description`, `category`, `file`, `date`, `a_status`) VALUES
-(59, 82, 'Girl', 'Lorem ipsumLorem ipsumLorem ipsum', 'Sketches', 'files/20EbNnN8/girl.jpg', '2024-11-18', 'Pending');
-
 -- --------------------------------------------------------
 
 --
@@ -80,6 +76,19 @@ CREATE TABLE `collab_exhibit` (
   `collab_id` int(100) NOT NULL,
   `exbt_id` int(100) NOT NULL,
   `u_id` int(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comment`
+--
+
+CREATE TABLE `comment` (
+  `comment_id` int(100) NOT NULL,
+  `u_id` int(100) NOT NULL,
+  `a_id` int(100) NOT NULL,
+  `content` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -107,7 +116,8 @@ CREATE TABLE `exhibit_tbl` (
   `exbt_descrip` text NOT NULL,
   `exbt_date` date NOT NULL,
   `exbt_type` varchar(20) NOT NULL,
-  `exbt_status` varchar(20) NOT NULL
+  `exbt_status` varchar(20) NOT NULL,
+  `accepted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -122,14 +132,6 @@ CREATE TABLE `favorite` (
   `a_id` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `favorite`
---
-
-INSERT INTO `favorite` (`fav_id`, `u_id`, `a_id`) VALUES
-(39, 82, 59),
-(44, 83, 59);
-
 -- --------------------------------------------------------
 
 --
@@ -142,13 +144,20 @@ CREATE TABLE `likes` (
   `a_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `likes`
+-- Table structure for table `notifications`
 --
 
-INSERT INTO `likes` (`like_id`, `u_id`, `a_id`) VALUES
-(89, 83, 59),
-(92, 82, 59);
+CREATE TABLE `notifications` (
+  `notification_id` int(11) NOT NULL,
+  `u_id` int(11) NOT NULL,
+  `exbt_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `is_read` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -161,14 +170,6 @@ CREATE TABLE `saved` (
   `u_id` int(100) NOT NULL,
   `a_id` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `saved`
---
-
-INSERT INTO `saved` (`save_id`, `u_id`, `a_id`) VALUES
-(24, 82, 59),
-(29, 83, 59);
 
 --
 -- Indexes for dumped tables
@@ -194,6 +195,14 @@ ALTER TABLE `collab_exhibit`
   ADD PRIMARY KEY (`collab_id`),
   ADD KEY `exbt_id` (`exbt_id`),
   ADD KEY `u_id` (`u_id`);
+
+--
+-- Indexes for table `comment`
+--
+ALTER TABLE `comment`
+  ADD PRIMARY KEY (`comment_id`),
+  ADD KEY `u_id` (`u_id`),
+  ADD KEY `a_id` (`a_id`);
 
 --
 -- Indexes for table `exhibit_artworks`
@@ -227,6 +236,14 @@ ALTER TABLE `likes`
   ADD KEY `a_id` (`a_id`);
 
 --
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`notification_id`),
+  ADD KEY `u_id` (`u_id`),
+  ADD KEY `exbt_id` (`exbt_id`);
+
+--
 -- Indexes for table `saved`
 --
 ALTER TABLE `saved`
@@ -242,49 +259,61 @@ ALTER TABLE `saved`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `u_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `u_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `art_info`
 --
 ALTER TABLE `art_info`
-  MODIFY `a_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `a_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT for table `collab_exhibit`
 --
 ALTER TABLE `collab_exhibit`
-  MODIFY `collab_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `collab_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- AUTO_INCREMENT for table `comment`
+--
+ALTER TABLE `comment`
+  MODIFY `comment_id` int(100) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `exhibit_artworks`
 --
 ALTER TABLE `exhibit_artworks`
-  MODIFY `exbtArwork_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `exbtArwork_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `exhibit_tbl`
 --
 ALTER TABLE `exhibit_tbl`
-  MODIFY `exbt_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
+  MODIFY `exbt_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
 
 --
 -- AUTO_INCREMENT for table `favorite`
 --
 ALTER TABLE `favorite`
-  MODIFY `fav_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `fav_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `likes`
 --
 ALTER TABLE `likes`
-  MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `like_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `saved`
 --
 ALTER TABLE `saved`
-  MODIFY `save_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `save_id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Constraints for dumped tables
@@ -302,6 +331,13 @@ ALTER TABLE `art_info`
 ALTER TABLE `collab_exhibit`
   ADD CONSTRAINT `collab_exhibit_ibfk_1` FOREIGN KEY (`exbt_id`) REFERENCES `exhibit_tbl` (`exbt_id`),
   ADD CONSTRAINT `collab_exhibit_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `accounts` (`u_id`);
+
+--
+-- Constraints for table `comment`
+--
+ALTER TABLE `comment`
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `accounts` (`u_id`),
+  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`a_id`) REFERENCES `art_info` (`a_id`);
 
 --
 -- Constraints for table `exhibit_artworks`
@@ -329,6 +365,13 @@ ALTER TABLE `favorite`
 ALTER TABLE `likes`
   ADD CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `accounts` (`u_id`),
   ADD CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`a_id`) REFERENCES `art_info` (`a_id`);
+
+--
+-- Constraints for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`u_id`) REFERENCES `accounts` (`u_id`),
+  ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`exbt_id`) REFERENCES `exhibit_tbl` (`exbt_id`);
 
 --
 -- Constraints for table `saved`

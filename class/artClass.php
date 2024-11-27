@@ -197,13 +197,6 @@ class artManager
             ];
         }
     }
-
-  
-    
-    
-
-    
-    
     
     
 
