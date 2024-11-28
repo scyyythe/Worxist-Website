@@ -633,6 +633,13 @@ document.querySelectorAll('.display-creations img').forEach((img) => {
   });
 });
 
+
+
+
+document.querySelectorAll('.includeArt-collab img').forEach((img) => {
+  console.log('Attaching click event to:', img);
+});
+
 //validation in requesting an exhibit
 //solo
 document.getElementById('soloExhibitForm').addEventListener('submit', function (e) {

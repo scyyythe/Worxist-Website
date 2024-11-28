@@ -539,6 +539,33 @@ class ExhibitManager {
             }
         }
 
+        public function addArtworkToExhibit($exbt_id, $a_id) {
+
+            $checkCollabQuery = "SELECT * FROM `collab_exhibit` WHERE `exbt_id` = :exbt_id AND `u_id` = :u_id";
+            $stmt = $this->conn->prepare($checkCollabQuery);
+            $stmt->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
+            $stmt->bindValue(':u_id', $this->u_id, PDO::PARAM_INT);
+            $stmt->execute();
+        
+            if ($stmt->rowCount() == 0) {
+                echo '<script>alert("You are not a collaborator for this exhibit.");</script>';
+                return;
+            }
+
+            $insertQuery = "INSERT INTO `exhibit_artworks` (`exbt_id`, `a_id`) VALUES (:exbt_id, :a_id)";
+            $stmt = $this->conn->prepare($insertQuery);
+            $stmt->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
+            $stmt->bindValue(':a_id', $a_id, PDO::PARAM_INT);
+        
+            if ($stmt->execute()) {
+                echo '<script>alert("Artwork added to exhibit successfully.");</script>';
+            } else {
+                echo '<script>alert("Error adding artwork to exhibit: ' . implode(", ", $stmt->errorInfo()) . '");</script>';
+            }
+        }
+        
+    
 }
+
 
 ?>

@@ -12,7 +12,43 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 }
 
 $exhibitManager = new artManager($conn);
-$images = $exhibitManager->getUserArtworks();
+$collabImages = $exhibitManager->getUserArtworks();
+
+if (isset($_GET['exbt_id']) && isset($_SESSION['u_id'])) {
+    $exbt_id = $_GET['exbt_id']; 
+    $u_id = $_SESSION['u_id'];  
+
+    $checkCollabQuery = "SELECT * FROM `collab_exhibit` WHERE `exbt_id` = :exbt_id AND `u_id` = :u_id";
+    $stmt = $conn->prepare($checkCollabQuery);
+    $stmt->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
+    $stmt->bindValue(':u_id', $u_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+        
+        $checkStatusQuery = "SELECT `exbt_status` FROM `exhibit_tbl` WHERE `exbt_id` = :exbt_id";
+        $stmtStatus = $conn->prepare($checkStatusQuery);
+        $stmtStatus->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
+        $stmtStatus->execute();
+        $status = $stmtStatus->fetchColumn();
+    }
+
+    if (isset($_POST['selected_artworks_collab'])) {
+        $selectedArtworks = json_decode($_POST['selected_artworks_collab'], true);
+
+        if (empty($selectedArtworks)) {
+            echo 'No artworks selected.';
+        } else {
+            $exhibitManager = new ExhibitManager($conn);
+            foreach ($selectedArtworks as $a_id) {
+                $result = $exhibitManager->addArtworkToExhibit($exbt_id, $a_id);
+                echo $result . "<br>"; 
+            }
+        }
+    }
+} else {
+    echo 'Exhibit ID or user not found.';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,19 +66,62 @@ $images = $exhibitManager->getUserArtworks();
     </header>
 
     <main>
-        <div class="selectart-collab">
-             <h3>Select Artworks (Maximum of 5)</h3>
+        <?php if (isset($status) && $status =='Approved'): ?>
+            <p class="displayAlertCollab">You already have an on going exhibit.</p>
+        <?php else: ?>
+            <form action="" name="submitArtCollab" method="POST" id="submitArtCollab">
+                <input type="hidden" id="selectedArtworksCollab" name="selected_artworks_collab" value="[]">
+                <input type="hidden" id="selectedArtworks" name="selected_artworks" value="[]">
 
-             <div class="includeArt-collab">
-                 <img src="files/yZDBIRPR/2b2b0cb62b723dececee9ec1e9815533.jpg" alt="">
-                
-             </div>
+                <div class="saveCollabArt">
+                    <button type="submit">Submit Artworks</button>
+                </div>
+            </form>
 
-             <div class="saveCollabArt">
-                <button type="submit">Submit Artworks</button>
-             </div>
-        </div>
-       
+            <div class="selectart-collab">
+                <h3>Select Artworks (Maximum of 5)</h3>
+                <div class="includeArt-collab">
+                    <?php if (!empty($collabImages)): ?>
+                        <?php foreach ($collabImages as $image): ?>
+                            <div class="image-itemColab">
+                                <img class="imgCollab" 
+                                     src="<?php echo ($image['file']); ?>" 
+                                     alt="Collaborative Artwork" 
+                                     data-id="<?php echo ($image['a_id']); ?>">
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No collaborative artworks available.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endif; ?>
     </main>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const maxSelection = 5;
+        const selectedArtworks = new Set(); 
+
+        document.querySelectorAll('.imgCollab').forEach((img) => {
+            img.addEventListener('click', function () {
+                const artworkId = img.dataset.id;
+                if (selectedArtworks.has(artworkId)) {
+                    selectedArtworks.delete(artworkId);
+                    img.classList.remove('selected');
+                } else {
+                    if (selectedArtworks.size < maxSelection) {
+                        selectedArtworks.add(artworkId);
+                        img.classList.add('selected');
+                    } else {
+                        alert('You can only select up to 5 artworks.');
+                        return;
+                    }
+                }
+                document.getElementById('selectedArtworksCollab').value = JSON.stringify([...selectedArtworks]);
+            });
+        });
+    });
+    </script>
 </body>
 </html>
