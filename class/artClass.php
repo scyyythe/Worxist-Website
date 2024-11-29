@@ -81,6 +81,7 @@ class artManager
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    
     public function getPendingArtworks() {
         $statement = $this->conn->prepare("
             SELECT 
@@ -108,7 +109,23 @@ class artManager
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    public function getCollabArtworks($exbt_id) {
+        $loggedInUserId = $_SESSION['u_id'];
+        $checkArtworksQuery = "
+            SELECT art_info.file, art_info.a_id, art_info.title, art_info.description, art_info.category
+            FROM art_info
+            JOIN exhibit_artworks ON art_info.a_id = exhibit_artworks.a_id
+            WHERE exhibit_artworks.exbt_id = :exbt_id
+            AND art_info.u_id = :loggedInUserId
+        ";
     
+        $stmtArtworks = $this->conn->prepare($checkArtworksQuery);
+        $stmtArtworks->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
+        $stmtArtworks->bindValue(':loggedInUserId', $loggedInUserId, PDO::PARAM_INT);  // Bind the logged-in user ID
+        $stmtArtworks->execute();
+        return $stmtArtworks->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     public function visitArtworks($userId){
         $statement = $this->conn->prepare("SELECT a_id, file, title, description, category FROM art_info WHERE u_id = :u_id");

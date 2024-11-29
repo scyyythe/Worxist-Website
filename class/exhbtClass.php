@@ -540,29 +540,30 @@ class ExhibitManager {
         }
 
         public function addArtworkToExhibit($exbt_id, $a_id) {
-
             $checkCollabQuery = "SELECT * FROM `collab_exhibit` WHERE `exbt_id` = :exbt_id AND `u_id` = :u_id";
-            $stmt = $this->conn->prepare($checkCollabQuery);
-            $stmt->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
-            $stmt->bindValue(':u_id', $this->u_id, PDO::PARAM_INT);
-            $stmt->execute();
+            $statement = $this->conn->prepare($checkCollabQuery);
+            $statement->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
+            $statement->bindValue(':u_id', $this->u_id, PDO::PARAM_INT);
+            $statement->execute();
         
-            if ($stmt->rowCount() == 0) {
-                echo '<script>alert("You are not a collaborator for this exhibit.");</script>';
-                return;
+            if ($statement->rowCount() == 0) {
+                return "You are not a collaborator for this exhibit.";
             }
-
-            $insertQuery = "INSERT INTO `exhibit_artworks` (`exbt_id`, `a_id`) VALUES (:exbt_id, :a_id)";
-            $stmt = $this->conn->prepare($insertQuery);
-            $stmt->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
-            $stmt->bindValue(':a_id', $a_id, PDO::PARAM_INT);
         
-            if ($stmt->execute()) {
-                echo '<script>alert("Artwork added to exhibit successfully.");</script>';
+            $insertQuery = "INSERT INTO `exhibit_artworks` (`exbt_id`, `a_id`) VALUES (:exbt_id, :a_id)";
+            $statement = $this->conn->prepare($insertQuery);
+            $statement->bindValue(':exbt_id', $exbt_id, PDO::PARAM_INT);
+            $statement->bindValue(':a_id', $a_id, PDO::PARAM_INT);
+        
+            if ($statement->execute()) {
+                return "Artwork added to exhibit successfully.";
             } else {
-                echo '<script>alert("Error adding artwork to exhibit: ' . implode(", ", $stmt->errorInfo()) . '");</script>';
+                $errorMessage = implode(", ", $statement->errorInfo());
+                return "Error adding artwork to exhibit: $errorMessage";
             }
         }
+        
+        
         
     
 }
