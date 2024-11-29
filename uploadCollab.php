@@ -168,12 +168,10 @@ $includedArtworks = $exhibitManager->getCollabArtworks($exbt_id);
         img.addEventListener('click', function () {
             const artworkId = img.dataset.id;
 
-            // If the artwork is already selected, unselect it
             if (selectedArtworks.has(artworkId)) {
                 selectedArtworks.delete(artworkId);
                 img.classList.remove('selected');
             }
-            // If artwork limit is not reached, select it
             else if (selectedArtworks.size < maxSelection) {
                 selectedArtworks.add(artworkId);
                 img.classList.add('selected');
@@ -198,7 +196,7 @@ $includedArtworks = $exhibitManager->getCollabArtworks($exbt_id);
             showAlert(data.message);
             if (data.success) {
                 setTimeout(() => {
-                    location.reload(); // Refresh the page to reflect changes
+                    location.reload();
                 }, 1500);
             }
         })
