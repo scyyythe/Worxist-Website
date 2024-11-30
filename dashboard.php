@@ -857,29 +857,37 @@ $hasPendingExhibit = $pendingExhibit ? true : false;
             </div>
         </div>
 
+        <div id="dateValidationModal" class="date-modal">
+            <div class="date-modal-content">
+                <span id="dateCloseButton" class="date-close">&times;</span>
+                <h3>Date Validation Error</h3>
+                <p>The selected exhibit date is already scheduled. Please choose a different date.</p>
+            </div>
+        </div>
+
 
 
     <div class="exhibit-inputs">
-    <form action="" name="collabExhibit" method="POST">
+    <form action="" name="collabExhibit" method="POST" id="collabExhibitForm">
 
-            <label for="exhibit-title">Exhibit Title</label><br>
-            <input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit" required><br>
+<label for="exhibit-title">Exhibit Title</label><br>
+<input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit" required><br>
 
-            <label for="exhibit-description">Exhibit Description</label><br>
-            <textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit" required></textarea><br>
+<label for="exhibit-description">Exhibit Description</label><br>
+<textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit" required></textarea><br>
 
-            <label for="exhibit-date">Exhibit Date</label><br>
-            <input type="date" id="exhibit-date" name="exhibit-date" required><br>
+<label for="exhibit-date">Exhibit Date</label><br>
+<input type="date" id="exhibit-date" name="exhibit-date" required><br>
 
-    
-            <input type="hidden" id="selectedCollaboratorsInput" name="selected_collaborators" value="" required>
+<input type="hidden" id="selectedCollaboratorsInput" name="selected_collaborators" value="" required>
 
-            <input type="hidden" name="selected_artworks_collab" id="selectedArtworksCollab" required>
+<input type="hidden" name="selected_artworks_collab" id="selectedArtworksCollab" required>
 
-            <div class="confirm-solo">
-                <button class="collab-btn" name="requestCollab">Confirm Schedule</button>
-            </div>
-        </form>
+<div class="confirm-solo">
+    <button type="submit" class="collab-btn" name="requestCollab">Confirm Schedule</button>
+</div>
+</form>
+
 
         <div class="add-collab">
             
