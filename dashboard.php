@@ -85,8 +85,6 @@ $query->execute(['u_id' => $u_id]);
 $pendingExhibit = $query->fetch(PDO::FETCH_ASSOC);
 $hasPendingExhibit = $pendingExhibit ? true : false;
    
-
-
 ?>
 
 
