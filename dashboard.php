@@ -172,20 +172,26 @@ $hasPendingExhibit = $pendingExhibit ? true : false;
 
             <div class="bottom-content">
                 <li class="nav-link">
-                    <a href="./logout.php">
-                        <i class='bx bx-log-out'></i>
-                        <span class="text nav-text">
-                        Sign Out
-                        </span>
-                    </a>
-                </li>
+                <a href="#" id="logoutButton" class="logoutButton">
+                <i class='bx bx-log-out'></i>
+                <span class="text nav-text">Sign Out</span>
+            </a>
+                            </li>
    
            
             </div>
         </div>   
    </nav>
 <!-- end of sidebar -->
-
+<div id="logoutModal" class="logoutModal">
+    <div class="logoutModal-content">
+        <p>Are you sure you want to sign out?</p>
+        <div class="logoutModal-buttons">
+            <a href="./logout.php" class="logoutModal-confirm">Yes</a>
+            <button id="logoutModalCancel" class="logoutModal-cancel">Cancel</button>
+        </div>
+    </div>
+</div>
    <div class="wrapper">
 
 
@@ -1175,8 +1181,6 @@ $hasPendingExhibit = $pendingExhibit ? true : false;
    </div>
    <script>
 console.log(<?php echo json_encode($collaborators); ?>);
-
-
 const collaborators = [
     <?php foreach ($collaborators as $collaborator): ?>{
         artistName: "<?php echo htmlspecialchars($collaborator['u_name']); ?>",
@@ -1278,6 +1282,19 @@ function updateCarousel() {
 updateArtist();
 updateCarousel();
 
+const logoutButton = document.getElementById('logoutButton');
+const logoutModal = document.getElementById('logoutModal');
+const logoutModalCancel = document.getElementById('logoutModalCancel');
+
+
+logoutButton.addEventListener('click', (e) => {
+    e.preventDefault(); 
+    logoutModal.style.display = 'flex';
+});
+
+logoutModalCancel.addEventListener('click', () => {
+    logoutModal.style.display = 'none';
+});
 
 </script>
 
