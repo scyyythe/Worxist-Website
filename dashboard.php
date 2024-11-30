@@ -172,20 +172,26 @@ $hasPendingExhibit = $pendingExhibit ? true : false;
 
             <div class="bottom-content">
                 <li class="nav-link">
-                    <a href="./logout.php">
-                        <i class='bx bx-log-out'></i>
-                        <span class="text nav-text">
-                        Sign Out
-                        </span>
-                    </a>
-                </li>
+                <a href="#" id="logoutButton" class="logoutButton">
+                <i class='bx bx-log-out'></i>
+                <span class="text nav-text">Sign Out</span>
+            </a>
+                            </li>
    
            
             </div>
         </div>   
    </nav>
 <!-- end of sidebar -->
-
+<div id="logoutModal" class="logoutModal">
+    <div class="logoutModal-content">
+        <p>Are you sure you want to sign out?</p>
+        <div class="logoutModal-buttons">
+            <a href="./logout.php" class="logoutModal-confirm">Yes</a>
+            <button id="logoutModalCancel" class="logoutModal-cancel">Cancel</button>
+        </div>
+    </div>
+</div>
    <div class="wrapper">
 
 
@@ -851,29 +857,37 @@ $hasPendingExhibit = $pendingExhibit ? true : false;
             </div>
         </div>
 
+        <div id="dateValidationModal" class="date-modal">
+            <div class="date-modal-content">
+                <span id="dateCloseButton" class="date-close">&times;</span>
+                <h3>Date Validation Error</h3>
+                <p>The selected exhibit date is already scheduled. Please choose a different date.</p>
+            </div>
+        </div>
+
 
 
     <div class="exhibit-inputs">
-    <form action="" name="collabExhibit" method="POST">
+    <form action="" name="collabExhibit" method="POST" id="collabExhibitForm">
 
-            <label for="exhibit-title">Exhibit Title</label><br>
-            <input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit" required><br>
+<label for="exhibit-title">Exhibit Title</label><br>
+<input type="text" name="exhibit-title" placeholder="Enter the title of your exhibit" required><br>
 
-            <label for="exhibit-description">Exhibit Description</label><br>
-            <textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit" required></textarea><br>
+<label for="exhibit-description">Exhibit Description</label><br>
+<textarea name="exhibit-description" id="exhibit-description" placeholder="Describe the theme or story behind your exhibit" required></textarea><br>
 
-            <label for="exhibit-date">Exhibit Date</label><br>
-            <input type="date" id="exhibit-date" name="exhibit-date" required><br>
+<label for="exhibit-date">Exhibit Date</label><br>
+<input type="date" id="exhibit-date" name="exhibit-date" required><br>
 
-    
-            <input type="hidden" id="selectedCollaboratorsInput" name="selected_collaborators" value="" required>
+<input type="hidden" id="selectedCollaboratorsInput" name="selected_collaborators" value="" required>
 
-            <input type="hidden" name="selected_artworks_collab" id="selectedArtworksCollab" required>
+<input type="hidden" name="selected_artworks_collab" id="selectedArtworksCollab" required>
 
-            <div class="confirm-solo">
-                <button class="collab-btn" name="requestCollab">Confirm Schedule</button>
-            </div>
-        </form>
+<div class="confirm-solo">
+    <button type="submit" class="collab-btn" name="requestCollab">Confirm Schedule</button>
+</div>
+</form>
+
 
         <div class="add-collab">
             
@@ -1175,8 +1189,6 @@ $hasPendingExhibit = $pendingExhibit ? true : false;
    </div>
    <script>
 console.log(<?php echo json_encode($collaborators); ?>);
-
-
 const collaborators = [
     <?php foreach ($collaborators as $collaborator): ?>{
         artistName: "<?php echo htmlspecialchars($collaborator['u_name']); ?>",
@@ -1278,6 +1290,19 @@ function updateCarousel() {
 updateArtist();
 updateCarousel();
 
+const logoutButton = document.getElementById('logoutButton');
+const logoutModal = document.getElementById('logoutModal');
+const logoutModalCancel = document.getElementById('logoutModalCancel');
+
+
+logoutButton.addEventListener('click', (e) => {
+    e.preventDefault(); 
+    logoutModal.style.display = 'flex';
+});
+
+logoutModalCancel.addEventListener('click', () => {
+    logoutModal.style.display = 'none';
+});
 
 </script>
 

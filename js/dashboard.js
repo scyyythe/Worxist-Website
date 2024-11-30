@@ -520,9 +520,6 @@ function closePopup() {
   }, 300); 
 }
 
-
-
-
 function toggleEditProfile() {
 
   const dashboardContainer = document.getElementById('dashboardContainer');
@@ -660,6 +657,8 @@ document.getElementById('soloExhibitForm').addEventListener('submit', function (
       });
   }
 });
+
+
 //validation in requesting an exhibit
 //collab
 document.querySelector('form[name="collabExhibit"]').addEventListener('submit', function (e) {
@@ -698,8 +697,6 @@ document.querySelector('form[name="collabExhibit"]').addEventListener('submit', 
       return; 
   }
 });
-
-
 
 
 //search collaboratots
@@ -762,13 +759,20 @@ function searchCollaborators(query) {
             });
     }, 300);  
 }
-
 function selectCollaborator(name, u_id) {
   console.log("Collaborator Selected:", name, u_id);  
 
   const selectedCollaboratorsDiv = document.getElementById("selectedCollaborators");
   const selectedCollaboratorsInput = document.getElementById("selectedCollaboratorsInput");
-  
+
+  const selectedCollaborators = selectedCollaboratorsInput.value ? selectedCollaboratorsInput.value.split(',') : [];
+
+  // Restrict selection to 5 collaborators
+  if (selectedCollaborators.length >= 5) {
+      alert("You can only select up to 5 collaborators.");
+      return;
+  }
+
   if (selectedCollaboratorsDiv.innerHTML.includes(name)) {
       alert("This collaborator is already selected.");
       return;
@@ -788,10 +792,10 @@ function selectCollaborator(name, u_id) {
   collaboratorItem.appendChild(removeBtn);
   selectedCollaboratorsDiv.appendChild(collaboratorItem);
 
-  const selectedCollaborators = selectedCollaboratorsInput.value ? selectedCollaboratorsInput.value.split(',') : [];
   selectedCollaborators.push(u_id); 
-  selectedCollaboratorsInput.value = selectedCollaborators.join(','); 
+  selectedCollaboratorsInput.value = selectedCollaborators.join(',');
 }
+
 
 function removeCollaborator(collaboratorItem, u_id) {
   const selectedCollaboratorsDiv = document.getElementById("selectedCollaborators");
